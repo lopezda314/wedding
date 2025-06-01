@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lookupStatus.textContent = 'Searching...';
         lookupStatus.style.color = '#333';
 
-        fetch(`<span class="math-inline">\{SCRIPT\_URL\}?name\=</span>{encodeURIComponent(guestName)}`)
+        fetch(`<span class="math-inline">${SCRIPT_URL}?name\=</span>{encodeURIComponent(guestName)}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const plusOneAllowed = guestData.PlusOneAllowed === true;
 
         const formHTML = `
-            <p style="text-align:center;">Welcome, <span class="math-inline">\{guestData\.GuestName\}\!</p\>
+            <p style="text-align:center;">Welcome, <span class="math-inline">${guestData.GuestName}\!</p\>
 <form id="guest-rsvp-form">
-<input type="hidden" name="GuestName" value="{guestData.GuestName}">
+<input type="hidden" name="GuestName" value="${guestData.GuestName}">
 <div class="form-group">
 <label>Will you be celebrating with us?</label>
 <select id="attending-status" name="Attending" required>
@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 </select>
 </div>
 <div id="dynamic-fields" style="display:none;">
-\${plusOneAllowed ? <div class="form-group"> <label for="plus-one-name">Name of your Guest</label> <input type="text" id="plus-one-name" name="PlusOneName"> </div> : ''}
+${plusOneAllowed ? `<div class="form-group"> <label for="plus-one-name">Name of your Guest</label> <input type="text" id="plus-one-name" name="PlusOneName"> </div>` : ''}
 <div class="form-group">
 <label>Please check the events you will be attending:</label>
-\${invitedEvents.map(event => <label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>).join('')}
+${invitedEvents.map(event => `<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}
 </div>
 <div class="form-group">
 <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
