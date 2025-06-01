@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>David & Amanda | Home</title>
+    <title>David & Amanda | Schedule</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
     <script src="js/protect.js"></script>
 </head>
 <body>
@@ -16,7 +15,6 @@
     <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
         <span class="sr-only">Menu</span>
     </button>
-
     <nav class="primary-navigation" id="primary-navigation">
         <ul aria-label="Primary" role="list">
             <li><a href="home.html">Home</a></li>
@@ -30,31 +28,67 @@
     </nav>
 
     <main class="main-content">
-        <div class="hero">
-            <div class="names">
-                <span>DAVID</span>
-                <div class="hero-image">
-                    <img src="https://via.placeholder.com/150x150" alt="David and Amanda">
-                </div>
-                <span>AMANDA</span>
+        <div class="page-header">
+            <h1>Schedule of Events</h1>
+        </div>
+
+        <div id="schedule-family" class="schedule-group" style="display: none;">
+            <div class="event">
+                <h2>Rehearsal Dinner</h2>
+                <p class="event-time">Friday, August 15, 2026 at 6:00 PM</p>
+                <p class="event-location">The Garden Room</p>
+                <p class="event-details">An intimate dinner for our immediate family and wedding party.</p>
             </div>
-            <div class="date-location">
-                <p>AUGUST 16TH, 2026 | SOMEWHERE, USA</p>
+            <div class="event">
+                <h2>Wedding Ceremony</h2>
+                <p class="event-time">Saturday, August 16, 2026 at 4:00 PM</p>
+                <p class="event-location">The Grand Hall</p>
+                <p class="event-details">Please arrive by 3:45 PM. Attire is formal.</p>
+            </div>
+            <div class="event">
+                <h2>Reception</h2>
+                <p class="event-time">Saturday, August 16, 2026 at 5:30 PM</p>
+                <p class="event-location">The Ballroom</p>
+                <p class="event-details">Join us for dinner, drinks, and dancing!</p>
+            </div>
+        </div>
+
+        <div id="schedule-friends" class="schedule-group" style="display: none;">
+             <div class="event">
+                <h2>Wedding Ceremony</h2>
+                <p class="event-time">Saturday, August 16, 2026 at 4:00 PM</p>
+                <p class="event-location">The Grand Hall</p>
+                <p class="event-details">Please arrive by 3:45 PM. Attire is formal.</p>
+            </div>
+            <div class="event">
+                <h2>Reception</h2>
+                <p class="event-time">Saturday, August 16, 2026 at 5:30 PM</p>
+                <p class="event-location">The Ballroom</p>
+                <p class="event-details">Join us for dinner, drinks, and dancing!</p>
             </div>
         </div>
         
-        <div class="rsvp-section">
-             <h2>ARE YOU ATTENDING?</h2>
-             <p>We can't wait to celebrate with you. Please let us know if you can make it.</p>
-             <a href="#rsvp-form" class="button">RSVP</a>
-        </div>
     </main>
 
     <footer class="site-footer">
         <p>D & A | EST. 2026</p>
-        </footer>
-
+    </footer>
+    
     <script src="js/main.js"></script>
-
+    <script>
+        // This inline script shows the correct schedule based on login
+        document.addEventListener('DOMContentLoaded', () => {
+            const guestGroup = sessionStorage.getItem('guestGroup');
+            
+            if (guestGroup === 'family') {
+                document.getElementById('schedule-family').style.display = 'block';
+            } else if (guestGroup === 'friends') {
+                document.getElementById('schedule-friends').style.display = 'block';
+            } else {
+                // Fallback or default schedule if needed
+                // For now, it just shows nothing if the group is unknown
+            }
+        });
+    </script>
 </body>
 </html>

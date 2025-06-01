@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,14 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+
     <script src="js/protect.js"></script>
     <script src="js/rsvp.js"></script>
 </head>
+
 <body>
 
     <button class="mobile-nav-toggle" aria-controls="primary-navigation" aria-expanded="false">
@@ -21,6 +25,7 @@
     <nav class="primary-navigation" id="primary-navigation">
         <ul aria-label="Primary" role="list">
             <li><a href="home.html">Home</a></li>
+            <li><a href="rsvp.html" class="button">RSVP</a></li>
             <li><a href="schedule.html">Schedule</a></li>
             <li><a href="accommodations.html">Accommodations</a></li>
             <li><a href="registry.html">Registry</a></li>
@@ -34,64 +39,34 @@
         <div class="hero">
             <div class="names">
                 <span>DAVID</span>
-                <div class="hero-image">
-                    <img src="https://via.placeholder.com/150x150" alt="David and Amanda">
-                </div>
+                <span>&nbsp;&&nbsp;</span>
                 <span>AMANDA</span>
             </div>
-            <div class="date-location">
-                <p>AUGUST 16TH, 2026 | SOMEWHERE, USA</p>
+            <!--        
+            TODO: david - use a real image or a series of images.
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/150x150" alt="David and Amanda">
             </div>
-        </div>
-                
-        <div class="rsvp-section" id="rsvp-form">
-            <h2>ARE YOU ATTENDING?</h2>
-            <form id="guest-rsvp-form">
-                <div class="form-group">
-                    <label for="guest-name">Full Name</label>
-                    <input type="text" id="guest-name" name="GuestName" required>
-                </div>
+            
+-->
+            <div class="rsvp-section">
+                <h2>ARE YOU ATTENDING?</h2>
+                <p>We can't wait to celebrate with you. Please let us know if you can make it.</p>
+                <a href="rsvp.html" class="button">RSVP</a>
+            </div>
 
-                <div class="form-group">
-                    <label>Will you be celebrating with us?</label>
-                    <select id="attending-status" name="Attending" required>
-                        <option value="" disabled selected>Please choose an option</option>
-                        <option value="Yes, with pleasure!">Yes, with pleasure!</option>
-                        <option value="No, with regrets.">No, with regrets.</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="plus-one-group" style="display: none;">
-                    <label for="plus-one-name">Name of your Guest</label>
-                    <input type="text" id="plus-one-name" name="PlusOneName">
-                </div>
-
-                <div class="form-group" id="events-group" style="display: none;">
-                    <label>Please check the events you will be attending:</label>
-                    <div id="events-checkboxes"></div>
-                </div>
-
-                <div class="form-group" id="dietary-group" style="display: none;">
-                    <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
-                    <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free">
-                </div>
-
-                <div class="form-group" id="message-group" style="display: none;">
-                    <label for="message">Leave us a message? (optional)</label>
-                    <textarea id="message" name="Message" rows="4"></textarea>
-                </div>
-
-                <button type="submit" class="button">Submit RSVP</button>
-                <p id="rsvp-status"></p>
-            </form>
+            <div class="date-location">
+                <p>October 12-14 2026 | Toledo, Spain</p>
+            </div>
         </div>
     </main>
 
     <footer class="site-footer">
         <p>D & A | EST. 2026</p>
-        </footer>
+    </footer>
 
     <script src="js/main.js"></script>
 
 </body>
+
 </html>
