@@ -262,3 +262,48 @@ body {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* --- RSVP Form Styles --- */
+#guest-rsvp-form {
+    max-width: 600px;
+    margin: 2rem auto 0;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Checkbox styles */
+#events-checkboxes label {
+    display: block;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+}
+#events-checkboxes input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+#rsvp-status {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 700;
+}

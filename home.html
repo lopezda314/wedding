@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <script src="js/protect.js"></script>
+    <script src="js/rsvp.js"></script>
 </head>
 <body>
 
@@ -42,11 +43,47 @@
                 <p>AUGUST 16TH, 2026 | SOMEWHERE, USA</p>
             </div>
         </div>
-        
-        <div class="rsvp-section">
-             <h2>ARE YOU ATTENDING?</h2>
-             <p>We can't wait to celebrate with you. Please let us know if you can make it.</p>
-             <a href="#rsvp-form" class="button">RSVP</a>
+                
+        <div class="rsvp-section" id="rsvp-form">
+            <h2>ARE YOU ATTENDING?</h2>
+            <form id="guest-rsvp-form">
+                <div class="form-group">
+                    <label for="guest-name">Full Name</label>
+                    <input type="text" id="guest-name" name="GuestName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Will you be celebrating with us?</label>
+                    <select id="attending-status" name="Attending" required>
+                        <option value="" disabled selected>Please choose an option</option>
+                        <option value="Yes, with pleasure!">Yes, with pleasure!</option>
+                        <option value="No, with regrets.">No, with regrets.</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="plus-one-group" style="display: none;">
+                    <label for="plus-one-name">Name of your Guest</label>
+                    <input type="text" id="plus-one-name" name="PlusOneName">
+                </div>
+
+                <div class="form-group" id="events-group" style="display: none;">
+                    <label>Please check the events you will be attending:</label>
+                    <div id="events-checkboxes"></div>
+                </div>
+
+                <div class="form-group" id="dietary-group" style="display: none;">
+                    <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
+                    <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free">
+                </div>
+
+                <div class="form-group" id="message-group" style="display: none;">
+                    <label for="message">Leave us a message? (optional)</label>
+                    <textarea id="message" name="Message" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="button">Submit RSVP</button>
+                <p id="rsvp-status"></p>
+            </form>
         </div>
     </main>
 
