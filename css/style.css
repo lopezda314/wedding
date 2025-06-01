@@ -65,3 +65,200 @@ body {
     color: #a94442;
     margin-top: 1rem;
 }
+
+/* Use a different font for the main heading for impact */
+.names {
+    font-family: 'Playfair Display', serif;
+}
+
+/* --- Main Layout & Navigation --- */
+.main-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.primary-navigation {
+    padding: 2rem 2.5rem;
+    position: fixed; /* Fixes the nav to the viewport */
+    top: 0;
+    right: 0;
+    text-align: right;
+}
+
+.primary-navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.primary-navigation a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.primary-navigation a:hover {
+    color: #888;
+}
+
+/* --- Mobile Navigation (defaults to hidden) --- */
+.mobile-nav-toggle {
+    display: none; /* Hidden on desktop */
+    position: fixed;
+    z-index: 1000;
+    top: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+/* The hamburger icon lines */
+.mobile-nav-toggle::before,
+.mobile-nav-toggle::after,
+.mobile-nav-toggle span {
+    content: '';
+    display: block;
+    background-color: #333;
+    height: 3px;
+    width: 25px;
+    margin: 5px 0;
+    transition: transform 0.3s ease-out, opacity 0.1s ease-out;
+}
+
+/* --- Media Query for Mobile Devices --- */
+@media (max-width: 768px) {
+    .primary-navigation {
+        /* On mobile, make it a full-screen overlay */
+        position: fixed;
+        inset: 0 0 0 0; /* top, right, bottom, left */
+        background-color: rgba(244, 244, 244, 0.95);
+        z-index: 999;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        /* Hide it by default */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .primary-navigation[data-visible="true"] {
+        /* Show it when toggled */
+        transform: translateY(0);
+    }
+    
+    .primary-navigation a {
+        font-size: 1.5rem;
+    }
+
+    .mobile-nav-toggle {
+        display: block; /* Show the hamburger */
+    }
+
+    /* Animate hamburger to an 'X' when menu is open */
+    .mobile-nav-toggle[aria-expanded="true"] span {
+       opacity: 0;
+    }
+    .mobile-nav-toggle[aria-expanded="true"]::before {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-nav-toggle[aria-expanded="true"]::after {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+
+/* --- Homepage Hero Section --- */
+.hero {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.hero .names {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(3rem, 10vw, 6rem); /* Responsive font size */
+    font-weight: 700;
+    color: #000;
+}
+
+.hero .hero-image {
+    width: clamp(100px, 20vw, 180px); /* Responsive image size */
+    height: clamp(100px, 20vw, 180px);
+    margin: 0 1.5rem;
+    overflow: hidden;
+    border: 4px solid #000;
+}
+
+.hero .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents image from stretching */
+}
+
+.date-location {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+/* --- Homepage RSVP Section --- */
+.rsvp-section {
+    padding: 4rem 2rem;
+    background-color: #e9e9e9;
+    margin: 2rem -2rem; /* Stretch to edges of content area */
+}
+
+.rsvp-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.button {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+.button:hover {
+    background-color: #555;
+}
+
+
+/* --- Site Footer --- */
+.site-footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* --- Screen-reader only text --- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
