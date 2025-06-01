@@ -1,13 +1,12 @@
 // Wait for the HTML document to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-
+console.log(CryptoJS.SHA256("vamos").toString())
     // --- Configuration ---
     // Hashed passwords. Replace these with your own generated hashes.
     // TODO: david - generate these hashes using a secure method
     const PASSWORDS = {
         // 'groupName': 'hashedPassword'
-        'family': '', // Corresponds to ''
-        'friends': ''  // Corresponds to ''
+        'all': '06b557a84d9e50cb1eed5a963d848406a64dc2f0cfd781ef89f667abbfcf1c9b', // Corresponds to 'vamos'
     };
     // -------------------
 
