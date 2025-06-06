@@ -2,10 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1DO_pT8FpgPvZMv3oUCcN19MZNUql1y0d7zro_r5mVpBIvnwEhsB3uBhYEyjK1jVMQA/exec';
-    const eventsByGroup = {
-        'family': ['Rehearsal Dinner', 'Wedding Ceremony', 'Reception'],
-        'friends': ['Wedding Ceremony', 'Reception']
-    };
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
@@ -22,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lookupStatus.textContent = 'Searching...';
         lookupStatus.style.color = '#333';
 
-        fetch(`<span class="math-inline">${SCRIPT_URL}?name\=</span>{encodeURIComponent(guestName)}`)
+        fetch(`${SCRIPT_URL}?name\=${guestName}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
@@ -49,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const invitedEvents = eventsByGroup[guestData.Group.toLowerCase()] || [];
+        const invitedEvents = JSON.parse(guestData.Group) || [];
         const plusOneAllowed = guestData.PlusOneAllowed === true;
-
+        
         const formHTML = `
             <p style="text-align:center;">Welcome, <span class="math-inline">${guestData.GuestName}\!</p\>
 <form id="guest-rsvp-form">
@@ -68,7 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 ${plusOneAllowed ? `<div class="form-group"> <label for="plus-one-name">Name of your Guest</label> <input type="text" id="plus-one-name" name="PlusOneName"> </div>` : ''}
 <div class="form-group">
 <label>Please check the events you will be attending:</label>
-${invitedEvents.map(event => `<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}
+${invitedEvents.map(day => `<h3>${day.day}</h3>${day.events.map(event =>
+`<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}`).join('')}
 </div>
 <div class="form-group">
 <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
@@ -88,6 +85,10 @@ ${invitedEvents.map(event => `<label><input type="checkbox" name="event-${event.
         // Add event listeners to the newly created form
         const attendingSelect = document.getElementById('attending-status');
         const dynamicFields = document.getElementById('dynamic-fields');
+        const skipRSVPCheck = guestData.GuestName === 'ff' || guestData.GuestName === 'Dlo';
+        if (skipRSVPCheck) {
+            dynamicFields.style.display = 'block';
+        }
         attendingSelect.addEventListener('change', () => {
             dynamicFields.style.display = attendingSelect.value.startsWith('Yes') ? 'block' : 'none';
         });
