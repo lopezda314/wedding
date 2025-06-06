@@ -40,14 +40,35 @@ document.addEventListener('DOMContentLoaded', () => {
         lookupSection.style.display = 'none';
         rsvpSection.style.display = 'block';
 
+        let rsvpHTML;
         if (guestData.HasResponded) {
-            rsvpSection.innerHTML = `<p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>`;
+            rsvpHTML = `
+            <p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>
+            <p style="text-align:center;">Would you like to make changes?</p>
+            <select id="modify-status" name="Modify" required>
+            <option value="" disabled selected>Please choose an option</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            </select>
+            `;
+            rsvpSection.innerHTML = rsvpHTML;
+            const modifySelect = document.getElementById('modify-status');
+            modifySelect.addEventListener('change', () => {
+                if (modifySelect.value === 'Yes') {
+                    guestData.HasResponded = false; // Reset the response
+                    displayRsvpForm(guestData); // Redisplay the form
+                    return;
+                } else {
+                    return;
+                }
+            });
+
             return;
         }
 
         const invitedEvents = JSON.parse(guestData.Group) || [];
         const plusOneAllowed = guestData.PlusOneAllowed === true;
-        
+
         const formHTML = `
             <p style="text-align:center;">Welcome, <span class="math-inline">${guestData.GuestName}\!</p\>
 <form id="guest-rsvp-form">
@@ -65,7 +86,7 @@ ${plusOneAllowed ? `<div class="form-group"> <label for="plus-one-name">Name of 
 <div class="form-group">
 <label>Please check the events you will be attending:</label>
 ${invitedEvents.map(day => `<h3>${day.day}</h3>${day.events.map(event =>
-`<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}`).join('')}
+            `<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}`).join('')}
 </div>
 <div class="form-group">
 <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
