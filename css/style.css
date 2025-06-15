@@ -170,7 +170,7 @@ body {
        opacity: 0;
     }
     .mobile-nav-toggle[aria-expanded="true"]::before {
-        transform: translateY(8px) rotate(45deg);
+        transform: translateY(0) rotate(45deg);
     }
     .mobile-nav-toggle[aria-expanded="true"]::after {
         transform: translateY(-8px) rotate(-45deg);

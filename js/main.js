@@ -6,7 +6,7 @@ const navToggle = document.querySelector('.mobile-nav-toggle');
 navToggle.addEventListener('click', () => {
     const visibility = primaryNav.getAttribute('data-visible');
 
-    if (visibility === "false") {
+    if (visibility === "false" || visibility === null) {
         primaryNav.setAttribute('data-visible', true);
         navToggle.setAttribute('aria-expanded', true);
     } else {
