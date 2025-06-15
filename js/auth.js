@@ -1,6 +1,5 @@
 // Wait for the HTML document to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-console.log(CryptoJS.SHA256("vamos").toString())
     // --- Configuration ---
     // Hashed passwords. Replace these with your own generated hashes.
     // TODO: david - generate these hashes using a secure method
