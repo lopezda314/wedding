@@ -24,11 +24,20 @@
             --animation-duration: 2s;
             --rotation-duration: 1s;
             --flap-duration: 1s;
+            --max-width: 475px;
+            --max-height: 300px;
+            --dynamic-width: 100vw;
+            --dynamic-height: 63vw;
         }
 
         /* The main scene wrapper to control perspective and positioning */
         .invitation-scene {
             perspective: 1200px;
+            overflow-x: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
         }
 
         .background {
@@ -37,8 +46,10 @@
 
         /* Initial state of the letter */
         #letter {
-            width: 400px;
-            height: 300px;
+            width: var(--dynamic-width);
+            height: var(--dynamic-height);
+            max-width: var(--max-width);
+            max-height: var(--max-height);
             position: absolute;
             transform: translateY(100px); /* Starts 'inside' the envelope */
             z-index: 3; /* Behind the envelope front but in front of the back */
@@ -51,6 +62,7 @@
             transform: translateY(-300px);
         }
 
+        /* TODO: figure out width/height here. */
         #letterInside {
             width: 400;
             height: 300;
@@ -69,6 +81,13 @@
         #letterInsideRotate {
             transform-origin: 50% 50%;
             transition: transform var(--rotation-duration) cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow:
+                0px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+                0px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+                0px 12.5px 10px rgba(0, 0, 0, 0.035),
+                0px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+                0px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+                0px 100px 80px rgba(0, 0, 0, 0.07);
         }
 
         #letterInsideRotate.rotate {
@@ -76,11 +95,14 @@
         }
 
         #envelope {
-            width: 475px;
-            height: 300px;
+            width: var(--dynamic-width);
+            height: var(--dynamic-height);
+            max-width: var(--max-width);
+            max-height: var(--max-height);
             transform: translateX(0%) translateY(-28%) scale(1.2);
             transition: transform var(--animation-duration) cubic-bezier(0.22, 1, 0.36, 1);
             position: absolute;
+            top: 40vh;
         }
 
         #envelope.animate {
@@ -92,8 +114,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 475px;
-            height: 326px;
+            width: var(--dynamic-width);
+            height: var(--dynamic-height);
+            max-width: var(--max-width);
+            max-height: var(--max-height);
             z-index: 100;
             transform-style: preserve-3d;
             transform-origin: top;
@@ -108,10 +132,12 @@
 
         #flapBack {
             position: absolute;
-            top: -300px;
+            top: max(-63vw, -300px);
             left: 0;
-            width: 475px;
-            height: 300px;
+            width: var(--dynamic-width);
+            height: var(--dynamic-height);
+            max-width: var(--max-width);
+            max-height: var(--max-height);
             transform-origin: bottom;
             transform: translateY(-0.25%) translateZ(-0.4px) rotateY(0deg) rotateX(180deg);
             transition: transform var(--animation-duration) cubic-bezier(0.22, 1, 0.36, 1);
@@ -136,7 +162,7 @@
 <body class="background flex items-center justify-center min-h-screen">
 
     <!-- The container for the entire animation scene -->
-    <div class="invitation-scene relative w-full max-w-sm h-96">
+    <div class="invitation-scene relative w-full">
 
         <!-- The Invitation Card -->
         <div id="letter" class="absolute bg-white shadow-xl rounded-lg p-6 text-center will-change-transform">
@@ -157,7 +183,7 @@
         </div>
 
         <!-- The Envelope -->
-        <div id="envelope" class="absolute bottom-0 w-full h-48">
+        <div id="envelope" class="absolute w-full h-48">
             <!-- The Invitation Card while inside the envelope. -->
             <div id="letterInside">
                 <div id="letterInsideRotate">
