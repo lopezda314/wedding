@@ -13,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/lopezda314/wedding/issues"
   },
-  "homepage": "https://github.com/lopezda314/wedding#readme"
+  "homepage": "https://github.com/lopezda314/wedding#readme",
+  "dependencies": {
+    "@cloudinary/url-gen": "^1.21.0"
+  }
 }
