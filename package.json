@@ -1,0 +1,17 @@
+{
+  "name": "wedding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lopezda314/wedding.git"
+  },
+  "keywords": [],
+  "author": "David Lopez & Amanda Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lopezda314/wedding/issues"
+  },
+  "homepage": "https://github.com/lopezda314/wedding#readme"
+}
