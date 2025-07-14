@@ -347,3 +347,52 @@ body {
 .event-time {
     font-weight: 700;
 }
+
+/* --- Event Button Styles --- */
+.event-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    text-align: left;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.event-day-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.event-button {
+    display: inline-block;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 4px; /* Optional: for slightly rounded corners */
+}
+
+.event-button span {
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Style for the SELECTED button */
+.event-button:has(input:checked) {
+    background-color: #333;
+    border-color: #333;
+}
+
+.event-button:has(input:checked) span {
+    color: #fff;
+}
+
+/* A subtle hover effect */
+.event-button:not(:has(input:checked)):hover {
+    border-color: #888;
+}

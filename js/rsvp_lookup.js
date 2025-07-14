@@ -70,36 +70,52 @@ document.addEventListener('DOMContentLoaded', () => {
         const plusOneAllowed = guestData.PlusOneAllowed === true;
 
         const formHTML = `
-            <p style="text-align:center;">Welcome, <span class="math-inline">${guestData.GuestName}\!</p\>
-<form id="guest-rsvp-form">
-<input type="hidden" name="GuestName" value="${guestData.GuestName}">
-<div class="form-group">
-<label>Will you be celebrating with us?</label>
-<select id="attending-status" name="Attending" required>
-<option value="" disabled selected>Please choose an option</option>
-<option value="Yes, with pleasure!">Yes, with pleasure!</option>
-<option value="No, with regrets.">No, with regrets.</option>
-</select>
-</div>
-<div id="dynamic-fields" style="display:none;">
-${plusOneAllowed ? `<div class="form-group"> <label for="plus-one-name">Name of your Guest</label> <input type="text" id="plus-one-name" name="PlusOneName"> </div>` : ''}
-<div class="form-group">
-<label>Please check the events you will be attending:</label>
-${invitedEvents.map(day => `<h3>${day.day}</h3>${day.events.map(event =>
-            `<label><input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}"> ${event}</label>`).join('')}`).join('')}
-</div>
-<div class="form-group">
-<label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
-<input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free">
-</div>
-<div class="form-group">
-<label for="message">Leave us a message? (optional)</label>
-<textarea id="message" name="Message" rows="4"></textarea>
-</div>
-</div>
-<button type="submit" class="button">Submit RSVP</button>
-<p id="rsvp-status" class="status-message"></p>
-</form>
+    <p style="text-align:center;">Welcome, ${guestData.GuestName}!</p>
+    <form id="guest-rsvp-form">
+        <input type="hidden" name="GuestName" value="${guestData.GuestName}">
+        <div class="form-group">
+            <label>Will you be celebrating with us?</label>
+            <select id="attending-status" name="Attending" required>
+                <option value="" disabled selected>Please choose an option</option>
+                <option value="Yes, with pleasure!">Yes, with pleasure!</option>
+                <option value="No, with regrets.">No, with regrets.</option>
+            </select>
+        </div>
+        <div id="dynamic-fields" style="display:none;">
+            ${plusOneAllowed ? `
+            <div class="form-group">
+                <label for="plus-one-name">Name of your Guest</label>
+                <input type="text" id="plus-one-name" name="PlusOneName">
+            </div>` : ''}
+
+            <div class="form-group">
+                <label>Please select the events you will be attending:</label>
+                <div class="event-selector">
+                    ${invitedEvents.map(day => `
+                        <h3 class="event-day">${day.day}</h3>
+                        <div class="event-day-buttons">
+                            ${day.events.map(event => `
+                                <label class="event-button">
+                                    <input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}" class="sr-only">
+                                    <span>${event}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
+                <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free">
+            </div>
+            <div class="form-group">
+                <label for="message">Leave us a message? (optional)</label>
+                <textarea id="message" name="Message" rows="4"></textarea>
+            </div>
+        </div>
+        <button type="submit" class="button">Submit RSVP</button>
+        <p id="rsvp-status" class="status-message"></p>
+    </form>
 `;
         rsvpSection.innerHTML = formHTML;
 
