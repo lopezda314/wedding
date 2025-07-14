@@ -41,7 +41,8 @@
         }
 
         .background {
-            background: url("https://assets.ppassets.com/p-5J10W4Y4SNahlRzu6tLyqv/flyer/backdrop_static/jpeg_large") center center / cover no-repeat;
+            background: url("https://assets.ppassets.com/p-5lTL0LmEBGvfNVxG14Flsn/flyer/backdrop_static/jpeg_large") center center / cover no-repeat;
+            /* background: url("https://assets.ppassets.com/p-5J10W4Y4SNahlRzu6tLyqv/flyer/backdrop_static/jpeg_large") center center / cover no-repeat; */
         }
 
         /* Initial state of the letter */
@@ -157,9 +158,34 @@
         .envelope-front {
             z-index: 4;
         }
+
+        .footer {
+            background-color: #faf7ed;
+            color: #15406b;
+            padding: 20px;
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100vw;
+            transform: translateY(100px);
+            transition: transform var(--animation-duration) cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .team-link {
+            text-decoration: underline;
+        }
+
+        .hide-footer {
+            display: none;
+        }
+
+        .slide-footer {
+            transform: translateY(0);
+        }
     </style>
 </head>
-<body class="background flex items-center justify-center min-h-screen">
+<body>
+    <div class="background flex items-center justify-center min-h-screen">
 
     <!-- The container for the entire animation scene -->
     <div class="invitation-scene relative w-full">
@@ -193,7 +219,7 @@
             
             <!-- Envelope base -->
             <div class="envelope-back absolute w-full h-full shadow-2xl">
-                <img src="/save_the_date/EnvelopeBase.png"></img>
+                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/v1750467087/EnvelopeBase_yix797.png"></img>
             </div>
             
             <!-- Envelope front pocket -->
@@ -203,16 +229,22 @@
 
             <!-- The flap while the envelope is closed -->
             <div id="flap" class="absolute left-0">
-                <img src="/save_the_date/EnvelopeFlapOutside.png"></img>
+                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/v1750467087/EnvelopeFlapOutside_rg9yii.png"></img>
             </div>
 
             <!-- The flap while the envelope is open. -->
             <div id="flapBack" class="absolute left-0">
-                 <img src="/save_the_date/EnvelopeFlapInside.png"></img>
+                 <img src="https://res.cloudinary.com/duk0nthsi/image/upload/v1750467087/EnvelopeFlapInside_xaix4l.png"></img>
             </div>
         </div>
-
     </div>
+    </div>
+    <!-- The Footer -->
+    <footer id="footer" class="footer hide-footer">
+        <p class="inline">Website coming soon! Our </p>
+        <a href="http://127.0.0.1:5500/save_the_date/team.html" class="inline team-link">team of engineers</a>
+        <p class="inline"> is on it!</p>
+    </footer>
 
     <script>
         // JavaScript to trigger the animation sequence
@@ -221,6 +253,7 @@
             const flap = document.getElementById('flap');
             const flapBack = document.getElementById('flapBack');
             const envelope = document.getElementById('envelope');
+            const footer = document.getElementById('footer');
             
             // 1. Start opening the flap after a short delay
             setTimeout(() => {
@@ -245,6 +278,14 @@
             setTimeout(() => {
                 letterInsideRotate.classList.add('rotate');
             }, 1500); 
+
+            // 4. Show footer after letter opens.
+            setTimeout(() => {
+                footer.classList.remove('hide-footer');
+            }, 3900); 
+            setTimeout(() => {
+                footer.classList.add('slide-footer');
+            }, 4000); 
         });
     </script>
 
