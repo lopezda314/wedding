@@ -175,7 +175,7 @@
             text-decoration: underline;
         }
 
-        .hide-footer {
+        .hide {
             display: none;
         }
 
@@ -191,37 +191,38 @@
     <div class="invitation-scene relative w-full">
         <!-- The Envelope -->
         <div id="envelope" class="absolute w-full h-48">
-            <!-- The Invitation Card while inside the envelope. -->
-            <div id="letterInside">
-                <div id="letterInsideRotate">
-                    <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752542491/Amanda_David_Save_the_Date_mrqpho.png"></img>
-                </div>
-            </div>
-            
+
             <!-- Envelope base -->
             <div class="envelope-back absolute w-full h-full shadow-2xl">
-                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1750467087/EnvelopeBase_yix797.png"></img>
+                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752634758/EnvelopeBase_yix797_bpflhp.png"></img>
             </div>
             
             <!-- Envelope front pocket -->
             <div class="envelope-front absolute w-full h-full">
-                 <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1750467088/EnvelopeFront_tqlyys.png"></img>
+                 <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752634638/EnvelopeFront_tqlyys_gqb7w9.png"></img>
             </div>
 
             <!-- The flap while the envelope is closed -->
             <div id="flap" class="absolute left-0">
-                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1750467087/EnvelopeFlapOutside_rg9yii.png"></img>
+                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752634826/EnvelopeFlapOutside_rg9yii_e9ggyt.png"></img>
             </div>
 
             <!-- The flap while the envelope is open. -->
             <div id="flapBack" class="absolute left-0">
-                 <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1750467087/EnvelopeFlapInside_xaix4l.png"></img>
+                 <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752634712/EnvelopeFlapInside_xaix4l_qy2k3r.png"></img>
+            </div>
+
+            <!-- The Invitation Card while inside the envelope. -->
+            <div id="letterInside" class="hide">
+                <div id="letterInsideRotate">
+                    <img src="https://res.cloudinary.com/duk0nthsi/image/upload/q_auto,f_auto/v1752542491/Amanda_David_Save_the_Date_mrqpho.png"></img>
+                </div>
             </div>
         </div>
     </div>
     </div>
     <!-- The Footer -->
-    <footer id="footer" class="footer hide-footer">
+    <footer id="footer" class="footer hide">
         <p class="inline">Website coming soon! Our </p>
         <a href="team.html" class="inline team-link">team of engineers</a>
         <p class="inline"> is on it!</p>
@@ -230,13 +231,19 @@
     <script>
         // JavaScript to trigger the animation sequence
         window.addEventListener('load', () => {
-            const letter = document.getElementById('letter');
+            const letterInside = document.getElementById('letterInside');
+            const letterInsideRotate = document.getElementById('letterInsideRotate');
             const flap = document.getElementById('flap');
             const flapBack = document.getElementById('flapBack');
             const envelope = document.getElementById('envelope');
             const footer = document.getElementById('footer');
             
-            // 1. Start opening the flap after a short delay
+            // 1. Unhide save the date card
+            setTimeout(() => {
+                letterInside.classList.remove('hide');
+            }, 500);
+            
+            // 2. Start opening the flap after a short delay
             setTimeout(() => {
                 flap.classList.add('open');
             }, 1000);
@@ -244,10 +251,7 @@
                 flapBack.classList.add('open');
             }, 800);
             
-            // 2. Start the letter animation slightly after the flap starts opening
-            setTimeout(() => {
-                letter.classList.add('animate');
-            }, 1400);
+            // 3. Start the letter animation slightly after the flap starts opening
             setTimeout(() => {
                 letterInside.classList.add('animate');
             }, 1400);
@@ -255,14 +259,14 @@
                 envelope.classList.add('animate');
             }, 1400);
 
-            // 3. Rotate the letter after it comes out of the envelope
+            // 4. Rotate the letter after it comes out of the envelope
             setTimeout(() => {
                 letterInsideRotate.classList.add('rotate');
             }, 2000); 
 
-            // 4. Show footer after letter opens.
+            // 5. Show footer after letter opens.
             setTimeout(() => {
-                footer.classList.remove('hide-footer');
+                footer.classList.remove('hide');
             }, 4400); 
             setTimeout(() => {
                 footer.classList.add('slide-footer');
