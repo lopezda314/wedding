@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>David & Amanda | Home</title>
+    <title>David & Amanda | Games</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,25 +16,120 @@
 <body>
 
     <main class="main-content">
-        <div class="hero">
-            <div class="names">
-                <span>DAVID</span>
-                <div class="hero-image">
-                    <img src="https://via.placeholder.com/150x150" alt="David and Amanda">
-                </div>
-                <span>AMANDA</span>
-            </div>
-            <div class="date-location">
-                <p>AUGUST 16TH, 2026 | SOMEWHERE, USA</p>
-            </div>
+        <div class="page-header">
+            <h1>Games</h1>
         </div>
-        
-        <div class="rsvp-section">
-             <h2>ARE YOU ATTENDING?</h2>
-             <p>We can't wait to celebrate with you. Please let us know if you can make it.</p>
-             <a href="#rsvp-form" class="button">RSVP</a>
+
+        <div class="game-grid">
+            <div class="game-item" data-game="spelling-bee">
+                <img src="img/SpellingBee.svg" alt="Spelling Bee">
+                <h3>Spelling Bee</h3>
+            </div>
+            <div class="game-item" data-game="wordle">
+                <img src="" alt="Wordle">
+                <h3>Wordle</h3>
+            </div>
+            <div class="game-item" data-game="crossword-mini">
+                <img src="img/CrosswordMini.png" alt="Crossword Mini">
+                <h3>Crossword Mini</h3>
+            </div>
+            <div class="game-item" data-game="connections">
+                <img src="" alt="Connections">
+                <h3>Connections</h3>
+            </div>
+            <div class="game-item" data-game="dino-game">
+                <img src="img/bike-icon.svg" alt="Bike Game">
+                <h3>Dino Game</h3>
+            </div>
+            <div class="game-item" data-game="crossword">
+                <img src="img/Crossword.svg" alt="Crossword">
+                <h3>Crossword</h3>
+            </div>
         </div>
     </main>
 
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="game-container"></div>
+        </div>
+    </div>
+
+    <div id="game-templates" style="display: none;">
+        <div id="spelling-bee-template">
+            <h2>Spelling Bee</h2>
+            <p>Create words using the 7 letters below. The center letter must be used in every word.</p>
+            <div class="spelling-bee-container">
+                <div class="sb-hive">
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter sb-center"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                </div>
+                <div class="sb-input-container">
+                    <input type="text" id="sb-input" readonly>
+                    <button id="sb-enter">Enter</button>
+                </div>
+                <div class="sb-feedback"></div>
+                <div class="sb-words-container">
+                    <h3>Found Words:</h3>
+                    <ul id="sb-word-list"></ul>
+                </div>
+                <div class="sb-score-container">
+                    <h3>Score: <span id="sb-score">0</span></h3>
+                </div>
+            </div>
+        </div>
+        <div id="wordle-template">
+            <h2>Wordle</h2>
+            <p>Guess the 5-letter word in 6 tries.</p>
+            <div id="wordle-grid"></div>
+            <div id="wordle-keyboard"></div>
+        </div>
+        <div id="crossword-mini-template">
+            <h2>Crossword Mini</h2>
+            <p>Fill in the crossword puzzle.</p>
+            <div class="crossword-container">
+                <div id="crossword-mini-grid"></div>
+                <div class="crossword-clues">
+                    <div class="clue-list-container">
+                        <h3>Across</h3>
+                        <ul id="across-clues"></ul>
+                    </div>
+                    <div class="clue-list-container">
+                        <h3>Down</h3>
+                        <ul id="down-clues"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="connections-template">
+            <h2>Connections</h2>
+            <p>Group the words into 4 categories.</p>
+            <div id="connections-grid"></div>
+            <button id="connections-submit">Submit</button>
+        </div>
+        <div id="dino-game-template">
+            <h2>Dino Game</h2>
+            <p>Press spacebar to jump over the obstacles.</p>
+            <canvas id="dino-canvas" width="600" height="200"></canvas>
+        </div>
+        <div id="crossword-template">
+            <h2>Crossword</h2>
+            <p>Fill in the crossword puzzle.</p>
+            <!-- Crossword game will be rendered here -->
+        </div>
+    </div>
+
+    <script src="js/games.js"></script>
 </body>
 </html>
