@@ -567,12 +567,12 @@ body {
 .sb-hex {
     width: 80px;
     height: 92.38px;
-    background-color: #f0f0f0;
+    background-color: #dce0e3;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 -10px;
+    margin: 10px;
 }
 
 .sb-letter {
@@ -583,8 +583,8 @@ body {
     cursor: pointer;
 }
 
-.sb-center .sb-letter {
-    color: #f9a825;
+.sb-center {
+    background-color: #ddc35b
 }
 
 #sb-input {
@@ -680,7 +680,7 @@ body {
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     max-width: 500px;
-    margin: 20px auto;
+    margin: 20px -1.75rem;
 }
 
 .connection-word {

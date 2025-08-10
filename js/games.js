@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (secretIndex !== -1) {
                         cell.classList.add('present');
                         // To avoid double counting, we can mark this letter as used in the secret word copy
-                        secretWordLetters[secretIndex] = null; 
+                        secretWordLetters[secretIndex] = null;
                     } else {
                         cell.classList.add('absent');
                     }
@@ -274,9 +274,98 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initSpellingBee() {
-        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-        const centerLetter = 'G';
-        const validWords = ['CAGE', 'FADE', 'GEAR', 'BADGE']; // Placeholder
+        const letters = ['T', 'S', 'C', 'A', 'N', 'U'];
+        const centerLetter = 'O';
+        const validWords = [
+            "ACCOUNTANT",
+            "CONSONANT",
+            "CONSONANTS",
+            "COCONUT",
+            "COCONUTS",
+            "CONSTANT",
+            "CONSTANTS",
+            "COUSCOUS",
+            "STACCATO",
+            "UNCTUOUS",
+            "ACCOUNT",
+            "CONCOCT",
+            "CONCOCTS",
+            "CONCUSS",
+            "CONTACT",
+            "CONTACTS",
+            "OUTCAST",
+            "OUTCASTS",
+            "ACCOST",
+            "ACCOSTS",
+            "CANNON",
+            "CANNONS",
+            "CANON",
+            "COCOON",
+            "COCOONS",
+            "COTTON",
+            "CUTOUTS",
+            "CUTOUT",
+            "SONATA",
+            "STUCCO",
+            "STUCCOS",
+            "TATTOO",
+            "TOUCAN",
+            "ASCOT",
+            "ASCOTS",
+            "CACAO",
+            "COAST",
+            "COASTS",
+            "COCOA",
+            "COSTS",
+            "COUNTS",
+            "COUNT",
+            "SCOOT",
+            "SCOOTS",
+            "SCOUTS",
+            "SCOUT",
+            "SNOUT",
+            "SNOUTS",
+            "STOAT",
+            "STOATS",
+            "STOUT",
+            "STOUTS",
+            "TOAST",
+            "TOASTS",
+            "ANON",
+            "AUTO",
+            "COAT",
+            "COATS",
+            "COST",
+            "COOT",
+            "COOTS",
+            "NOON",
+            "NOUN",
+            "NOUNS",
+            "ONTO",
+            "ONUS",
+            "OUST",
+            "SNOT",
+            "SOOT",
+            "SOON",
+            "TACO",
+            "TACOS",
+            "TONS",
+            "TOON",
+            "TOOT",
+            "TOOTS",
+            "TOSS",
+            "TOUT",
+            "TOUTS",
+            "UNTO",
+        ]; // Placeholder
+        const validWordsSet = new Set(validWords.map(word => word.toUpperCase()));
+
+        const validPangrams = [
+            "ACCOUNTANTS",
+            "ACCOUNTS",
+            "TOUCANS",
+        ]
+        const validPangramsSet = new Set(validPangrams.map(word => word.toUpperCase()));
 
         const letterButtons = document.querySelectorAll('.sb-letter');
         const input = document.getElementById('sb-input');
@@ -288,10 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let foundWords = [];
 
         // Populate letters
-        const allLetters = [...letters, centerLetter];
         const buttons = Array.from(letterButtons);
         const centerIndex = 3; // Assuming the center button is the 4th one
-        buttons.splice(centerIndex, 0, buttons.splice(buttons.findIndex(b => b.parentElement.classList.contains('sb-center')), 1)[0]);
         buttons.forEach((button, i) => {
             const letter = i === centerIndex ? centerLetter : letters.pop();
             button.textContent = letter;
@@ -308,21 +395,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 showFeedback('Missing center letter');
             } else if (foundWords.includes(word)) {
                 showFeedback('Already found');
-            } else if (isValidWord(word)) {
+            } else if (validWordsSet.has(word)) {
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
                 score += word.length;
                 scoreDisplay.textContent = score;
                 input.value = '';
                 showFeedback('Good!');
+            }  else if (validPangramsSet.has(word)) {
+                foundWords.push(word);
+                wordList.innerHTML += `<li>${word}</li>`;
+                score += word.length * 2; // Double points for pangrams
+                scoreDisplay.textContent = score;
+                input.value = '';
+                showFeedback('Pangram!');
             } else {
                 showFeedback('Not in word list');
             }
         });
-
-        function isValidWord(word) {
-            return validWords.includes(word);
-        }
 
         function showFeedback(message) {
             feedback.textContent = message;
