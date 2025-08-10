@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>David & Amanda | Spelling Bee</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <script src="js/protect.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/include.js"></script>
+</head>
+<body>
+    <main class="main-content">
+        <a href="games.html">Back to Games</a>
+        <div id="spelling-bee-template">
+            <h2>Spelling Bee</h2>
+            <p>Create words using the 7 letters below. The center letter must be used in every word.</p>
+            <div class="spelling-bee-container">
+                <div class="sb-hive">
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter sb-center"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                    <div class="sb-hex-row">
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                        <div class="sb-hex"><button class="sb-letter"></button></div>
+                    </div>
+                </div>
+                <div class="sb-input-container">
+                    <input type="text" id="sb-input" readonly>
+                    <button id="sb-enter">Enter</button>
+                </div>
+                <div class="sb-feedback"></div>
+                <div class="sb-words-container">
+                    <h3>Found Words:</h3>
+                    <ul id="sb-word-list"></ul>
+                </div>
+                <div class="sb-score-container">
+                    <h3>Score: <span id="sb-score">0</span></h3>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/games.js"></script>
+</body>
+</html>

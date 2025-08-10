@@ -1,58 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const gameModal = document.getElementById('game-modal');
-    const closeModal = document.querySelector('.close-button');
-    const gameGrid = document.querySelector('.game-grid');
-    const gameContainer = document.getElementById('game-container');
-    const gameTemplates = document.getElementById('game-templates');
 
-    if (gameGrid) {
-        gameGrid.addEventListener('click', (e) => {
-            const gameItem = e.target.closest('.game-item');
-            if (gameItem) {
-                const gameId = gameItem.dataset.game;
-                const gameTemplate = document.getElementById(`${gameId}-template`);
-                if (gameTemplate) {
-                    gameContainer.innerHTML = gameTemplate.innerHTML;
-                    gameModal.style.display = 'block';
-                    // Initialize the game
-                    initGame(gameId);
-                }
-            }
-        });
-    }
-
-    if (closeModal) {
-        closeModal.addEventListener('click', () => {
-            gameModal.style.display = 'none';
-        });
-    }
-
-    window.addEventListener('click', (e) => {
-        if (e.target === gameModal) {
-            gameModal.style.display = 'none';
+    function init() {
+        if (document.getElementById('spelling-bee-template')) {
+            initSpellingBee();
         }
-    });
-
-    function initGame(gameId) {
-        switch (gameId) {
-            case 'spelling-bee':
-                initSpellingBee();
-                break;
-            case 'wordle':
-                initWordle();
-                break;
-            case 'crossword-mini':
-                initCrosswordMini();
-                break;
-            case 'connections':
-                initConnections();
-                break;
-            case 'dino-game':
-                initDinoGame();
-                break;
-            case 'crossword':
-                initCrosswordMini(); // Using the mini version as a prototype
-                break;
+        if (document.getElementById('wordle-template')) {
+            initWordle();
+        }
+        if (document.getElementById('crossword-mini-template')) {
+            initCrosswordMini();
+        }
+        if (document.getElementById('connections-template')) {
+            initConnections();
+        }
+        if (document.getElementById('dino-game-template')) {
+            initDinoGame();
         }
     }
 
@@ -64,8 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let bike = { x: 50, y: 150, width: 20, height: 20, dy: 0, gravity: 0.6, jumpPower: -10, onGround: true };
         let obstacles = [];
         let score = 0;
+        let highScore = localStorage.getItem('dino-high-score') || 0;
         let frame = 0;
         let gameLoop;
+        let gameOver = false;
 
         function drawBike() {
             ctx.fillStyle = 'black';
@@ -83,9 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
             ctx.fillText(`Score: ${score}`, 10, 20);
+            ctx.fillText(`High Score: ${highScore}`, canvas.width - 150, 20);
+        }
+
+        function drawGameOver() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.font = '40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
+            ctx.font = '20px Arial';
+            ctx.fillText(`Your Score: ${score}`, canvas.width / 2, canvas.height / 2);
+            ctx.fillText('Click to Restart', canvas.width / 2, canvas.height / 2 + 40);
         }
 
         function update() {
+            if (gameOver) {
+                drawGameOver();
+                return;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Bike physics
@@ -120,8 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     bike.y < obstacle.y + obstacle.height &&
                     bike.y + bike.height > obstacle.y
                 ) {
-                    alert(`Game Over! Your score: ${score}`);
-                    cancelAnimationFrame(gameLoop);
+                    gameOver = true;
+                    if (score > highScore) {
+                        highScore = score;
+                        localStorage.setItem('dino-high-score', highScore);
+                    }
                 }
             });
 
@@ -132,10 +117,33 @@ document.addEventListener('DOMContentLoaded', () => {
             gameLoop = requestAnimationFrame(update);
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && bike.onGround) {
+        function restart() {
+            bike = { x: 50, y: 150, width: 20, height: 20, dy: 0, gravity: 0.6, jumpPower: -10, onGround: true };
+            obstacles = [];
+            score = 0;
+            frame = 0;
+            gameOver = false;
+            update();
+        }
+
+        function jump() {
+            if (bike.onGround) {
                 bike.dy = bike.jumpPower;
                 bike.onGround = false;
+            }
+        }
+
+        canvas.addEventListener('click', () => {
+            if (gameOver) {
+                restart();
+            } else {
+                jump();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                jump();
             }
         });
 
@@ -145,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initWordle() {
         const wordleGrid = document.getElementById('wordle-grid');
         const wordleKeyboard = document.getElementById('wordle-keyboard');
-        const secretWord = 'DAVID'; // Placeholder
+        const secretWord = 'CYCLE';
         const numGuesses = 6;
         let currentRow = 0;
         let currentCol = 0;
@@ -167,15 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const keys = [
             'QWERTYUIOP',
             'ASDFGHJKL',
-            'ZXCVBNM'
+            'ENTER,Z,X,C,V,B,N,M,BACKSPACE'
         ];
         keys.forEach(keyRow => {
             const row = document.createElement('div');
             row.classList.add('keyboard-row');
-            for (const key of keyRow) {
+            const keyArr = keyRow.split(',');
+            for (const key of keyArr) {
                 const keyElement = document.createElement('button');
                 keyElement.classList.add('key');
                 keyElement.textContent = key;
+                if (key === 'ENTER' || key === 'BACKSPACE') {
+                    keyElement.classList.add('large');
+                }
                 keyElement.addEventListener('click', () => handleKeyPress(key));
                 row.appendChild(keyElement);
             }
@@ -209,14 +221,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function checkGuess() {
             const row = wordleGrid.children[currentRow];
+            const secretWordLetters = secretWord.split('');
+            const guessLetters = guess.split('');
+            const correctIndices = [];
+
+            // First pass: find correct letters
             for (let i = 0; i < secretWord.length; i++) {
-                const cell = row.children[i];
-                if (guess[i] === secretWord[i]) {
-                    cell.classList.add('correct');
-                } else if (secretWord.includes(guess[i])) {
-                    cell.classList.add('present');
-                } else {
-                    cell.classList.add('absent');
+                if (guessLetters[i] === secretWordLetters[i]) {
+                    row.children[i].classList.add('correct');
+                    correctIndices.push(i);
+                }
+            }
+
+            // Second pass: find present and absent letters
+            for (let i = 0; i < secretWord.length; i++) {
+                if (!correctIndices.includes(i)) {
+                    const cell = row.children[i];
+                    const letter = guessLetters[i];
+                    const secretIndex = secretWordLetters.findIndex((l, index) => l === letter && !correctIndices.includes(index));
+
+                    if (secretIndex !== -1) {
+                        cell.classList.add('present');
+                        // To avoid double counting, we can mark this letter as used in the secret word copy
+                        secretWordLetters[secretIndex] = null; 
+                    } else {
+                        cell.classList.add('absent');
+                    }
                 }
             }
 
@@ -412,4 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    init();
 });
