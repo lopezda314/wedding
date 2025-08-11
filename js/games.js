@@ -370,21 +370,81 @@ document.addEventListener('DOMContentLoaded', () => {
         const letterButtons = document.querySelectorAll('.sb-letter');
         const input = document.getElementById('sb-input');
         const enterButton = document.getElementById('sb-enter');
+        const deleteButton = document.getElementById('sb-delete');
+        const shuffleButton = document.getElementById('sb-shuffle');
         const wordList = document.getElementById('sb-word-list');
         const scoreDisplay = document.getElementById('sb-score');
         const feedback = document.querySelector('.sb-feedback');
         let score = 0;
         let foundWords = [];
 
+        // Load saved data
+        const savedWords = localStorage.getItem('sb-foundWords');
+        const savedScore = localStorage.getItem('sb-score');
+
+        if (savedWords && savedScore) {
+            foundWords = JSON.parse(savedWords);
+            score = parseInt(savedScore, 10);
+
+            scoreDisplay.textContent = score;
+            foundWords.forEach(word => {
+                wordList.innerHTML += `<li>${word}</li>`;
+            });
+        }
+
         // Populate letters
         const buttons = Array.from(letterButtons);
         const centerIndex = 3; // Assuming the center button is the 4th one
+
         buttons.forEach((button, i) => {
             const letter = i === centerIndex ? centerLetter : letters.pop();
             button.textContent = letter;
-            button.addEventListener('click', () => {
-                input.value += letter;
+            button.addEventListener('click', (event) => {
+                input.value += event.target.textContent;
             });
+        });
+
+        deleteButton.addEventListener('click', () => {
+            input.value = input.value.slice(0, -1);
+        });
+
+        shuffleButton.addEventListener('click', () => {
+            const outerButtons = [];
+            buttons.forEach((button, i) => {
+                if (i !== centerIndex) {
+                    outerButtons.push(button);
+                }
+            });
+
+            // Add fade-out class
+            outerButtons.forEach(button => button.classList.add('fade-out'));
+
+            setTimeout(() => {
+                const outerLetters = outerButtons.map(button => button.textContent);
+
+                // Shuffle the outer letters
+                for (let i = outerLetters.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [outerLetters[i], outerLetters[j]] = [outerLetters[j], outerLetters[i]];
+                }
+
+                outerButtons.forEach((button, i) => {
+                    button.textContent = outerLetters[i];
+                });
+
+                // Add fade-in class and remove fade-out
+                outerButtons.forEach(button => {
+                    button.classList.remove('fade-out');
+                    button.classList.add('fade-in');
+                });
+
+                // Clean up fade-in class after animation
+                setTimeout(() => {
+                    outerButtons.forEach(button => {
+                        button.classList.remove('fade-in');
+                    });
+                }, 200);
+            }, 200);
         });
 
         enterButton.addEventListener('click', () => {
@@ -400,18 +460,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 wordList.innerHTML += `<li>${word}</li>`;
                 score += word.length;
                 scoreDisplay.textContent = score;
-                input.value = '';
                 showFeedback('Good!');
+                localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
+                localStorage.setItem('sb-score', score);
             }  else if (validPangramsSet.has(word)) {
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
                 score += word.length * 2; // Double points for pangrams
                 scoreDisplay.textContent = score;
-                input.value = '';
                 showFeedback('Pangram!');
+                localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
+                localStorage.setItem('sb-score', score);
             } else {
                 showFeedback('Not in word list');
             }
+            input.value = '';
         });
 
         function showFeedback(message) {

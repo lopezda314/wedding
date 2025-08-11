@@ -699,3 +699,13 @@ body {
 .connection-word.correct {
     background-color: #a5d6a7;
 }
+
+.sb-letter.fade-out {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.sb-letter.fade-in {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
