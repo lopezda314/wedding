@@ -18,10 +18,45 @@
         <a href="games.html">Back to Games</a>
         <div id="spelling-bee-template">
             <h2>Spelling Bee</h2>
-            <p>Create words using the 7 letters below. The center letter must be used in every word.</p>
+            <div class="sb-instructions">Create words using the 7 letters below. Words must contain at least 4 letters. The center letter must be used in every word.</div>
             <div class="spelling-bee-container">
+                <div class="sb-rank-container">
+                    <div class="sb-rank-label">Beginner</div>
+                    <div class="sb-dot-line">
+                    <div class="sb-rank-line"></div>
+                    <div class="sb-rank-dots">
+                        <div class="sb-rank-dot" data-rank="Beginner"></div>
+                        <div class="sb-rank-dot" data-rank="Good Start"></div>
+                        <div class="sb-rank-dot" data-rank="Moving Up"></div>
+                        <div class="sb-rank-dot" data-rank="Good"></div>
+                        <div class="sb-rank-dot" data-rank="Solid"></div>
+                        <div class="sb-rank-dot" data-rank="Nice"></div>
+                        <div class="sb-rank-dot" data-rank="Great"></div>
+                        <div class="sb-rank-dot" data-rank="Amazing"></div>
+                        <div class="sb-rank-dot" data-rank="Genius"></div>
+                    </div>
+                    </div>
+                </div>
+                <div id="sb-rank-popup" class="modal">
+                    <div class="modal-content">
+                        <span class="close-button">&times;</span>
+                        <h2>Ranks</h2>
+                        <div class="sb-rank-list-container">
+                        <ul id="sb-rank-list">
+                            <li class="sb-rank-list-header">
+                                <span>Rank</span>
+                                <span>Minimum Score</span>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="sb-score-container">
+                    <h3>Score: <span id="sb-score">0</span></h3>
+                </div>
+                <div class="sb-feedback"></div>
                 <div class="sb-hive">
-                    <div class="sb-hex-row">
+                    <div class="sb-hex-row sb-row-top">
                         <div class="sb-hex"><button class="sb-letter"></button></div>
                         <div class="sb-hex"><button class="sb-letter"></button></div>
                     </div>
@@ -30,24 +65,22 @@
                         <div class="sb-hex sb-center"><button class="sb-letter"></button></div>
                         <div class="sb-hex"><button class="sb-letter"></button></div>
                     </div>
-                    <div class="sb-hex-row">
+                    <div class="sb-hex-row sb-row-bottom">
                         <div class="sb-hex"><button class="sb-letter"></button></div>
                         <div class="sb-hex"><button class="sb-letter"></button></div>
                     </div>
                 </div>
                 <div class="sb-input-container">
                     <input type="text" id="sb-input" readonly>
-                    <button id="sb-shuffle">&#x21BB;</button>
-                    <button id="sb-delete">Delete</button>
-                    <button id="sb-enter">Enter</button>
                 </div>
-                <div class="sb-feedback"></div>
+                <div class="sb-button-container">
+                    <button id="sb-delete" class="sb-button">Delete</button>
+                    <button id="sb-shuffle" class="sb-button">&#x21BB;</button>
+                    <button id="sb-enter" class="sb-button">Enter</button>
+                </div>
                 <div class="sb-words-container">
                     <h3>Found Words:</h3>
                     <ul id="sb-word-list"></ul>
-                </div>
-                <div class="sb-score-container">
-                    <h3>Score: <span id="sb-score">0</span></h3>
                 </div>
             </div>
         </div>

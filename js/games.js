@@ -367,6 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
         const validPangramsSet = new Set(validPangrams.map(word => word.toUpperCase()));
 
+        const hexes = document.querySelectorAll('.sb-hex');
         const letterButtons = document.querySelectorAll('.sb-letter');
         const input = document.getElementById('sb-input');
         const enterButton = document.getElementById('sb-enter');
@@ -375,8 +376,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const wordList = document.getElementById('sb-word-list');
         const scoreDisplay = document.getElementById('sb-score');
         const feedback = document.querySelector('.sb-feedback');
+        const rankLabel = document.querySelector('.sb-rank-label');
+        const rankDots = document.querySelectorAll('.sb-rank-dot');
+        const rankContainer = document.querySelector('.sb-rank-container');
+        const rankPopup = document.getElementById('sb-rank-popup');
+        const rankList = document.getElementById('sb-rank-list');
+        const closeButton = rankPopup.querySelector('.close-button');
+
+        const ranks = [
+            { name: 'Beginner', score: 0 },
+            { name: 'Good Start', score: 5 },
+            { name: 'Moving Up', score: 13 },
+            { name: 'Good', score: 21 },
+            { name: 'Solid', score: 40 },
+            { name: 'Nice', score: 67 },
+            { name: 'Great', score: 107 },
+            { name: 'Amazing', score: 134 },
+            { name: 'Genius', score: 187 },
+        ];
+
         let score = 0;
         let foundWords = [];
+
+        function updateRank() {
+            let currentRank = ranks[0];
+            for (let i = ranks.length - 1; i >= 0; i--) {
+                if (score >= ranks[i].score) {
+                    currentRank = ranks[i];
+                    break;
+                }
+            }
+
+            rankLabel.textContent = currentRank.name;
+
+            rankDots.forEach((dot, i) => {
+                if (i <= ranks.indexOf(currentRank)) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        rankContainer.addEventListener('click', () => {
+            const header = rankList.querySelector('.sb-rank-list-header');
+            rankList.innerHTML = ''; // Clear previous list
+            rankList.appendChild(header);
+            ranks.forEach(rank => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${rank.name}</span><span>${rank.score}</span>`;
+                rankList.appendChild(li);
+            });
+            rankPopup.style.display = 'block';
+        });
+
+        closeButton.addEventListener('click', () => {
+            rankPopup.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == rankPopup) {
+                rankPopup.style.display = 'none';
+            }
+        });
 
         // Load saved data
         const savedWords = localStorage.getItem('sb-foundWords');
@@ -390,17 +452,19 @@ document.addEventListener('DOMContentLoaded', () => {
             foundWords.forEach(word => {
                 wordList.innerHTML += `<li>${word}</li>`;
             });
+            updateRank();
         }
 
         // Populate letters
         const buttons = Array.from(letterButtons);
         const centerIndex = 3; // Assuming the center button is the 4th one
 
-        buttons.forEach((button, i) => {
+        hexes.forEach((hex, i) => {
+            const button = hex.querySelector('.sb-letter');
             const letter = i === centerIndex ? centerLetter : letters.pop();
             button.textContent = letter;
-            button.addEventListener('click', (event) => {
-                input.value += event.target.textContent;
+            hex.addEventListener('click', (event) => {
+                input.value += button.textContent;
             });
         });
 
@@ -456,31 +520,47 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (foundWords.includes(word)) {
                 showFeedback('Already found');
             } else if (validWordsSet.has(word)) {
+                const points = word.length;
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
-                score += word.length;
+                score += points;
                 scoreDisplay.textContent = score;
-                showFeedback('Good!');
+                showFeedback('Good!', points);
                 localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
                 localStorage.setItem('sb-score', score);
+                updateRank();
             }  else if (validPangramsSet.has(word)) {
+                const points = word.length * 2;
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
-                score += word.length * 2; // Double points for pangrams
+                score += points; // Double points for pangrams
                 scoreDisplay.textContent = score;
-                showFeedback('Pangram!');
+                showFeedback('Pangram!', points);
                 localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
                 localStorage.setItem('sb-score', score);
+                updateRank();
             } else {
                 showFeedback('Not in word list');
             }
             input.value = '';
         });
 
-        function showFeedback(message) {
-            feedback.textContent = message;
+        function showFeedback(message, points = 0) {
+            let feedbackMessage = message;
+            if (points > 0) {
+                feedbackMessage += ` +${points}`;
+            }
+            feedback.textContent = feedbackMessage;
+            feedback.classList.add('fade-in');
+
+            setTimeout(() => {
+                feedback.classList.remove('fade-in');
+                feedback.classList.add('fade-out');
+            }, 1200);
+
             setTimeout(() => {
                 feedback.textContent = '';
+                feedback.classList.remove('fade-out');
             }, 1500);
         }
     }
