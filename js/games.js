@@ -23,25 +23,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        let bike = { x: 50, y: 150, width: 60, height: 60, dy: 0, gravity: 0.6, jumpPower: -12, onGround: true };
+        let bike = { x: 50, y: 155, width: 74, height: 41, dy: 0, gravity: 0.47, jumpPower: -12, onGround: true };
         let obstacles = [];
         let score = 0;
         let highScore = localStorage.getItem('dino-high-score') || 0;
         let frame = 0;
+        let nextObstacleFrame = 100;
         let gameLoop;
         let gameOver = false;
         let gameStarted = false;
         const bikeImage = new Image();
-        bikeImage.src = 'https://res.cloudinary.com/duk0nthsi/image/upload/v1754880686/pixil-frame-0_1_wkhmaw.png';
+        bikeImage.src = 'https://res.cloudinary.com/duk0nthsi/image/upload/v1754954198/pixil-frame-0_1_xh7orx.png';
+        const carImage = new Image();
+        carImage.src = 'https://res.cloudinary.com/duk0nthsi/image/upload/v1754953915/pixil-frame-0_2_gitdvl.png';
+        const truckImage = new Image();
+        truckImage.src = 'https://res.cloudinary.com/duk0nthsi/image/upload/v1754954758/pixil-frame-0_3_ztxngy.png';
 
         function drawBike() {
             ctx.drawImage(bikeImage, bike.x, bike.y, bike.width, bike.height);
         }
 
+        function drawRoad() {
+            ctx.beginPath();
+            ctx.moveTo(0, 195);
+            ctx.lineTo(canvas.width, 195);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+
         function drawObstacles() {
             obstacles.forEach(obstacle => {
-                ctx.fillStyle = 'red';
-                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                let image = obstacle.type === 'car' ? carImage : truckImage;
+                ctx.drawImage(image, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
             });
         }
 
@@ -69,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.font = '30px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
+            drawRoad();
         }
 
         function update() {
@@ -90,16 +104,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 bike.y += bike.dy;
             }
 
-            if (bike.y + bike.height >= canvas.height) {
-                bike.y = canvas.height - bike.height;
+            if (bike.y + bike.height >= 195) {
+                bike.y = 195 - bike.height;
                 bike.dy = 0;
                 bike.onGround = true;
             }
 
             // Obstacles
             frame++;
-            if (frame % 100 === 0) {
-                obstacles.push({ x: canvas.width, y: 150, width: 20, height: 20 });
+            if (frame > nextObstacleFrame) {
+                let type = Math.random() < 0.5 ? 'car' : 'truck';
+                if (type === 'car') {
+                    obstacles.push({ x: canvas.width, y: 165, width: 58, height: 30, type: 'car' });
+                } else {
+                    obstacles.push({ x: canvas.width, y: 155, width: 80, height: 40, type: 'truck' });
+                }
+                nextObstacleFrame = frame + Math.floor(Math.random() * 120) + 80; // Random time for next obstacle
             }
 
             obstacles.forEach((obstacle, index) => {
@@ -127,15 +147,17 @@ document.addEventListener('DOMContentLoaded', () => {
             drawBike();
             drawObstacles();
             drawScore();
+            drawRoad();
 
             gameLoop = requestAnimationFrame(update);
         }
 
         function restart() {
-            bike = { x: 50, y: 150, width: 60, height: 60, dy: 0, gravity: 0.6, jumpPower: -12, onGround: true };
+            bike = { x: 50, y: 155, width: 74, height: 41, dy: 0, gravity: 0.47, jumpPower: -12, onGround: true };
             obstacles = [];
             score = 0;
             frame = 0;
+            nextObstacleFrame = 100;
             gameOver = false;
             update();
         }
