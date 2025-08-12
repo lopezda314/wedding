@@ -23,7 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        let bike = { x: 50, y: 155, width: 74, height: 41, dy: 0, gravity: 0.47, jumpPower: -12, onGround: true };
+        const originalWidth = 600;
+        let scale = canvas.offsetWidth / originalWidth;
+
+        let bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.35, jumpPower: -9, onGround: true };
         let obstacles = [];
         let score = 0;
         let highScore = localStorage.getItem('dino-high-score') || 0;
@@ -45,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function drawRoad() {
             ctx.beginPath();
-            ctx.moveTo(0, 195);
-            ctx.lineTo(canvas.width, 195);
+            ctx.moveTo(0, canvas.height-5);
+            ctx.lineTo(canvas.width, canvas.height-5);
             ctx.strokeStyle = 'black';
             ctx.stroke();
         }
@@ -60,26 +63,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function drawScore() {
             ctx.fillStyle = 'black';
-            ctx.font = '20px Arial';
+            ctx.font = `${20 * scale}px Arial`;
+            ctx.textAlign = 'left';
             ctx.fillText(`Score: ${score}`, 10, 20);
-            ctx.fillText(`High Score: ${highScore}`, canvas.width - 150, 20);
+            ctx.textAlign = 'right';
+            ctx.fillText(`High Score: ${highScore}`, canvas.width - 10, 20);
         }
 
         function drawGameOver() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '40px Arial';
+            ctx.font = `${40 * scale}px Arial`;
             ctx.textAlign = 'center';
-            ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
-            ctx.font = '20px Arial';
-            ctx.fillText(`Your Score: ${score}`, canvas.width / 2, canvas.height / 2);
-            ctx.fillText('Click to Restart', canvas.width / 2, canvas.height / 2 + 40);
+            ctx.fillText('Game Over', canvas.width / 2, canvas.height * 3 / 8);
+            ctx.font = `${20 * scale}px Arial`;
+            ctx.fillText(`Your Score: ${score}`, canvas.width / 2, canvas.height * 5 / 8);
+            ctx.fillText('Click to Restart', canvas.width / 2, canvas.height * 7 / 8);
         }
 
         function drawStartMessage() {
             ctx.fillStyle = 'black';
-            ctx.font = '30px Arial';
+            ctx.font = `${30 * scale}px Arial`;
             ctx.textAlign = 'center';
             ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
             drawRoad();
@@ -104,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 bike.y += bike.dy;
             }
 
-            if (bike.y + bike.height >= 195) {
-                bike.y = 195 - bike.height;
+            if (bike.y + bike.height >= (canvas.height - 5)) {
+                bike.y = (canvas.height - 5) - bike.height;
                 bike.dy = 0;
                 bike.onGround = true;
             }
@@ -115,15 +120,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (frame > nextObstacleFrame) {
                 let type = Math.random() < 0.5 ? 'car' : 'truck';
                 if (type === 'car') {
-                    obstacles.push({ x: canvas.width, y: 165, width: 58, height: 30, type: 'car' });
+                    obstacles.push({ x: canvas.width, y: canvas.height - 20, width: 29, height: 15, type: 'car' });
                 } else {
-                    obstacles.push({ x: canvas.width, y: 155, width: 80, height: 40, type: 'truck' });
+                    obstacles.push({ x: canvas.width, y: canvas.height - 25, width: 40, height: 20, type: 'truck' });
                 }
                 nextObstacleFrame = frame + Math.floor(Math.random() * 120) + 80; // Random time for next obstacle
             }
 
             obstacles.forEach((obstacle, index) => {
-                obstacle.x -= 4;
+                obstacle.x -= 2;
                 if (obstacle.x + obstacle.width < 0) {
                     obstacles.splice(index, 1);
                     score++;
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function restart() {
-            bike = { x: 50, y: 155, width: 74, height: 41, dy: 0, gravity: 0.47, jumpPower: -12, onGround: true };
+            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.35, jumpPower: -9, onGround: true };
             obstacles = [];
             score = 0;
             frame = 0;

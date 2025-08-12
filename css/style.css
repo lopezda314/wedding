@@ -816,3 +816,10 @@ body {
 .sb-rank-list-header {
     font-weight: bold;
 }
+
+#dino-canvas {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    /* border: 1px solid black; */
+}
