@@ -522,6 +522,9 @@ body {
 
 #wordle-keyboard {
     margin-top: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .keyboard-row {
@@ -531,12 +534,13 @@ body {
 }
 
 .key {
-    height: 50px;
-    width: 40px;
+    height: 7vh;
+    width: 7vw;
+    max-width: 40px;
     margin: 2px;
     border: none;
     background-color: #d3d6da;
-    font-size: 1rem;
+    font-size: 1em;
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -545,7 +549,8 @@ body {
 }
 
 .key.large {
-    width: 60px;
+    width: 14vw;
+    max-width: 120px;
 }
 
 /* --- Spelling Bee Game Styles --- */
@@ -821,5 +826,4 @@ body {
     max-width: 600px;
     width: 100%;
     height: auto;
-    /* border: 1px solid black; */
 }

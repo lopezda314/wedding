@@ -26,7 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalWidth = 600;
         let scale = canvas.offsetWidth / originalWidth;
 
-        let bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.35, jumpPower: -9, onGround: true };
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 200;
+            scale = canvas.offsetWidth / originalWidth;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
         let obstacles = [];
         let score = 0;
         let highScore = localStorage.getItem('dino-high-score') || 0;
@@ -74,17 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = `${40 * scale}px Arial`;
+            ctx.font = '40px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('Game Over', canvas.width / 2, canvas.height * 3 / 8);
-            ctx.font = `${20 * scale}px Arial`;
+            ctx.font = '20px Arial';
             ctx.fillText(`Your Score: ${score}`, canvas.width / 2, canvas.height * 5 / 8);
             ctx.fillText('Click to Restart', canvas.width / 2, canvas.height * 7 / 8);
         }
 
         function drawStartMessage() {
             ctx.fillStyle = 'black';
-            ctx.font = `${30 * scale}px Arial`;
+            ctx.font = '30px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
             drawRoad();
@@ -158,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function restart() {
-            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.35, jumpPower: -9, onGround: true };
+            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
             obstacles = [];
             score = 0;
             frame = 0;
@@ -221,24 +230,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create keyboard
         const keys = [
-            'QWERTYUIOP',
-            'ASDFGHJKL',
-            'ENTER,Z,X,C,V,B,N,M,BACKSPACE'
+            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+            ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACKSPACE']
         ];
         keys.forEach(keyRow => {
             const row = document.createElement('div');
             row.classList.add('keyboard-row');
-            const keyArr = keyRow.split(',');
-            for (const key of keyArr) {
+            keyRow.forEach(key => {
                 const keyElement = document.createElement('button');
                 keyElement.classList.add('key');
+                if (key == 'BACKSPACE') {
+                    keyElement.textContent = "\u232B";
+                } else {
                 keyElement.textContent = key;
+                }
                 if (key === 'ENTER' || key === 'BACKSPACE') {
                     keyElement.classList.add('large');
                 }
                 keyElement.addEventListener('click', () => handleKeyPress(key));
                 row.appendChild(keyElement);
-            }
+            });
             wordleKeyboard.appendChild(row);
         });
 
