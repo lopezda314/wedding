@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.text())
         .then(data => {
             document.body.insertAdjacentHTML('afterbegin', data);
+            initMobileNav(); // Initialize mobile nav after loading
         })
         .catch(error => console.error('Error loading navigation:', error));
 
