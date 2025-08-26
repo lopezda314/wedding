@@ -15,4 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.insertAdjacentHTML('beforeend', data);
         })
         .catch(error => console.error('Error loading footer:', error));
+
+    initGallery();
 });

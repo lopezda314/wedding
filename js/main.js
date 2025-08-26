@@ -16,3 +16,55 @@ function initMobileNav() {
         });
     }
 }
+
+function initGallery() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    if (window.innerWidth < 768) {
+        galleryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+            });
+        });
+        return;
+    }
+
+    if (galleryItems.length > 0) {
+        galleryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const imageUrl = item.getAttribute('href');
+                const instance = basicLightbox.create(`
+                    <div class="gallery-lightbox">
+                        <img src="${imageUrl}">
+                        <button class="close-button">&times;</button>
+                    </div>
+                `, {
+                    onShow: (instance) => {
+                        const lightbox = instance.element();
+                        lightbox.querySelector('.close-button').onclick = instance.close;
+                        lightbox.onclick = (event) => {
+                            if (event.target.tagName !== 'IMG') {
+                                instance.close();
+                            }
+                        };
+                        document.addEventListener('keydown', (event) => {
+                            if (event.key === 'Escape') {
+                                instance.close();
+                            }
+                        });
+                    },
+                    onClose: (instance) => {
+                        document.removeEventListener('keydown', (event) => {
+                            if (event.key === 'Escape') {
+                                instance.close();
+                            }
+                        });
+                    }
+                });
+                instance.show();
+            });
+        });
+    }
+}
