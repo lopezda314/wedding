@@ -45,24 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
             rsvpHTML = `
             <p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>
             <p style="text-align:center;">Would you like to make changes?</p>
-            <select id="modify-status" name="Modify" required>
-            <option value="" disabled selected>Please choose an option</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
+            <button id="modify-status" class="button">Modify RSVP</button>
             </select>
             `;
             rsvpSection.innerHTML = rsvpHTML;
             const modifySelect = document.getElementById('modify-status');
-            modifySelect.addEventListener('change', () => {
-                if (modifySelect.value === 'Yes') {
+            modifySelect.addEventListener('click', () => {
                     guestData.HasResponded = false; // Reset the response
                     displayRsvpForm(guestData); // Redisplay the form
-                    return;
-                } else {
-                    return;
-                }
             });
-
             return;
         }
 
