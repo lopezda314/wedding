@@ -1,7 +1,7 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby1DO_pT8FpgPvZMv3oUCcN19MZNUql1y0d7zro_r5mVpBIvnwEhsB3uBhYEyjK1jVMQA/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_sKg5I3A02iXzjfIm68rnUfHNk5AqQW7bbtFAcCQct9dGjI6xkWSaNP1SQt6d3o6xPQ/exec';
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
@@ -40,89 +40,86 @@ document.addEventListener('DOMContentLoaded', () => {
         lookupSection.style.display = 'none';
         rsvpSection.style.display = 'block';
 
-        let rsvpHTML;
         if (guestData.HasResponded) {
-            rsvpHTML = `
-            <p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>
-            <p style="text-align:center;">Would you like to make changes?</p>
-            <button id="modify-status" class="button">Modify RSVP</button>
-            </select>
+            const rsvpHTML = `
+                <p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>
+                <p style="text-align:center;">Would you like to make changes?</p>
+                <button id="modify-status" class="button">Modify RSVP</button>
             `;
             rsvpSection.innerHTML = rsvpHTML;
-            const modifySelect = document.getElementById('modify-status');
-            modifySelect.addEventListener('click', () => {
-                    guestData.HasResponded = false; // Reset the response
-                    displayRsvpForm(guestData); // Redisplay the form
+            document.getElementById('modify-status').addEventListener('click', () => {
+                guestData.HasResponded = false;
+                displayRsvpForm(guestData);
             });
             return;
         }
 
         const invitedEvents = JSON.parse(guestData.Group) || [];
-        const plusOneAllowed = guestData.PlusOneAllowed === true;
+        const attendees = [guestData.GuestName, ...(guestData.PlusOneGuests ? guestData.PlusOneGuests.split(',').map(name => name.trim()).filter(name => name) : [])];
 
         const formHTML = `
-    <p style="text-align:center;">Welcome, ${guestData.GuestName}!</p>
-    <form id="guest-rsvp-form">
-        <input type="hidden" name="GuestName" value="${guestData.GuestName}">
-        <div class="form-group">
-            <label>Will you be celebrating with us?</label>
-            <select id="attending-status" name="Attending" required>
-                <option value="" disabled selected>Please choose an option</option>
-                <option value="Yes, with pleasure!">Yes, with pleasure!</option>
-                <option value="No, with regrets.">No, with regrets.</option>
-            </select>
-        </div>
-        <div id="dynamic-fields" style="display:none;">
-            ${plusOneAllowed ? `
-            <div class="form-group">
-                <label for="plus-one-name">Name of your Guest</label>
-                <input type="text" id="plus-one-name" name="PlusOneName">
-            </div>` : ''}
-
-            <div class="form-group">
-                <label>Please select the events you will be attending:</label>
-                <div class="event-selector">
-                    ${invitedEvents.map(day => `
-                        <h3 class="event-day">${day.day}</h3>
-                        <div class="event-day-buttons">
-                            ${day.events.map(event => `
-                                <label class="event-button">
-                                    <input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}" class="sr-only">
-                                    <span>${event}</span>
-                                </label>
+            <p style="text-align:center;">Welcome, ${guestData.GuestName}!</p>
+            <form id="guest-rsvp-form">
+                <input type="hidden" name="GuestName" value="${guestData.GuestName}">
+                <div class="form-group">
+                    <label>Who will be celebrating with us?</label>
+                    <div id="attendee-list">
+                        ${attendees.map(name => `
+                            <label class="attendee-checkbox">
+                                <input type="checkbox" name="attending_guests" value="${name}">
+                                <span>${name}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+                <div id="dynamic-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>Please select the events you will be attending:</label>
+                        <div class="event-selector">
+                            ${invitedEvents.map(day => `
+                                <h3 class="event-day">${day.day}</h3>
+                                <div class="event-day-buttons">
+                                    ${day.events.map(event => `
+                                        <label class="event-button">
+                                            <input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}" class="sr-only" ${guestData.Events.split(", ").includes(event) ? 'checked' : ''}>
+                                            <span>${event}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
                             `).join('')}
                         </div>
-                    `).join('')}
+                    </div>
+                    <div class="form-group">
+                        <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
+                        <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free" value="${guestData.DietaryRestrictions || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Leave us a message? (optional)</label>
+                        <textarea id="message" name="Message" rows="4">${guestData.Message || ''}</textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
-                <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free">
-            </div>
-            <div class="form-group">
-                <label for="message">Leave us a message? (optional)</label>
-                <textarea id="message" name="Message" rows="4"></textarea>
-            </div>
-        </div>
-        <button type="submit" class="button">Submit RSVP</button>
-        <p id="rsvp-status" class="status-message"></p>
-    </form>
-`;
+                <button type="submit" class="button">Submit RSVP</button>
+                <p id="rsvp-status" class="status-message"></p>
+            </form>
+        `;
         rsvpSection.innerHTML = formHTML;
 
-        // Add event listeners to the newly created form
-        const attendingSelect = document.getElementById('attending-status');
         const dynamicFields = document.getElementById('dynamic-fields');
-        const skipRSVPCheck = guestData.GuestName === 'ff' || guestData.GuestName === 'Dlo';
-        if (skipRSVPCheck) {
-            dynamicFields.style.display = 'block';
+        const attendeeCheckboxes = document.querySelectorAll('input[name="attending_guests"]');
+
+        function updateDynamicFields() {
+            const anyAttending = Array.from(attendeeCheckboxes).some(checkbox => checkbox.checked);
+            dynamicFields.style.display = anyAttending ? 'block' : 'none';
         }
-        attendingSelect.addEventListener('change', () => {
-            dynamicFields.style.display = attendingSelect.value.startsWith('Yes') ? 'block' : 'none';
+
+        attendeeCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateDynamicFields);
         });
 
-        const rsvpForm = document.getElementById('guest-rsvp-form');
-        rsvpForm.addEventListener('submit', handleRsvpSubmission);
+        // Initial check in case of pre-filled form
+        updateDynamicFields();
+
+        document.getElementById('guest-rsvp-form').addEventListener('submit', handleRsvpSubmission);
     }
 
     function handleRsvpSubmission(e) {
@@ -132,6 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const form = e.target;
         const formData = new FormData(form);
+        const confirmedGuests = Array.from(form.querySelectorAll('input[name="attending_guests"]:checked')).map(cb => cb.value);
+
+        if (confirmedGuests.length === 0) {
+            formData.append('Attending', 'No, with regrets.');
+        } else {
+            formData.append('Attending', 'Yes, with pleasure!');
+            formData.append('ConfirmedGuests', confirmedGuests.join(', '));
+        }
 
         fetch(SCRIPT_URL, { method: 'POST', body: formData })
             .then(response => response.json())
