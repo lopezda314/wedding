@@ -629,6 +629,31 @@ object-fit: contain;
     border-color: #888;
 }
 
+/* --- Accommodations Styles --- */
+.hotel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #75130f;
+}
+
+.hotel {
+    font-family: 'Darker Grotesque';
+    font-size: 1.1rem;
+    padding-bottom: 24px;
+}
+
+.booking-steps {
+    text-align: left;
+}
+
+.booking-steps-header {
+    font-weight: 700;
+}
+
+
 /* --- Games Page Styles --- */
 .game-grid {
     display: grid;
