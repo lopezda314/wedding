@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.result === 'success') {
-                alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
-                if (game === 'Spelling Bee') {
+                if (game === 'SpellingBee') {
                     localStorage.setItem('geniusAchieved', 'true');
                 }
+                alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
             } else {
                 alert("There was an error recording your high score. Please try again.");
                 console.error('Error recording high score:', data.message);
