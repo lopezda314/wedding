@@ -479,9 +479,10 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
 }
 
 .page-header h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Allura';
     font-size: 3.5rem;
     margin: 0;
+    color: #75130f;
 }
 
 /* --- Schedule Page Styles --- */
@@ -489,15 +490,72 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
     margin-bottom: 2.5rem;
     padding-bottom: 2.5rem;
     border-bottom: 1px solid #eee;
+    font-family: 'Darker Grotesque';
 }
 
 .event:last-child {
     border-bottom: none;
 }
 
+.subevent {
+    display: flex;
+    justify-content: center;
+}
+
+.schedule-image {
+    padding: 12px;
+    width: 3em;
+}
+
+.schedule-image-up {
+    margin-bottom: 3em;
+}
+
+.schedule-image-down {
+    margin-top: 3em;
+}
+
+.schedule-image-down-more {
+    margin-top: 6em;
+}
+
+.schedule-image-up-more {
+    margin-bottom: 6em;
+}
+
+.schedule-image-rotate-left {
+    transform: rotate(-15deg);
+}
+
+.schedule-image-rotate-right {
+    transform: rotate(15deg);
+}
+
+img.schedule-image {
+    max-width:100%;
+max-height:100%;
+object-fit: contain;
+}
+
+.divider-squiggle {
+    width: 50%;
+    max-width: 350px;
+    min-width: 200px;
+}
+
+/* Day header */
 .event h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #75130f;
+}
+
+/* Event header */
+.event h3 {
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -506,8 +564,20 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
     margin: 0.25rem 0;
 }
 
+.event-location {
+    font-style: italic;
+}
+
 .event-time {
     font-weight: 700;
+}
+
+.event-details {
+    min-width: 60%;
+}
+
+.event-details-wide {
+    min-width: 70%;
 }
 
 /* --- Event Button Styles --- */
