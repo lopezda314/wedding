@@ -1,7 +1,7 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_sKg5I3A02iXzjfIm68rnUfHNk5AqQW7bbtFAcCQct9dGjI6xkWSaNP1SQt6d3o6xPQ/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLfcIlCOOd1StJouun1NL5zkycp23iy7ahJtJNQUGAw-GeTYU5McvXxQcwSCF1XBHnBw/exec';
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
+                    // Store the guest's name in local storage for game high scores
+                    localStorage.setItem('guestName', guestName);
                     lookupStatus.textContent = '';
                     displayRsvpForm(data.guestData);
                 } else {

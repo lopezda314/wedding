@@ -1,4 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- CONFIGURATION ---
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLfcIlCOOd1StJouun1NL5zkycp23iy7ahJtJNQUGAw-GeTYU5McvXxQcwSCF1XBHnBw/exec';
+    // --- END CONFIGURATION ---
+    function recordHighScore(game, score) {
+        let guestName = localStorage.getItem('guestName');
+
+        if (!guestName) {
+            guestName = prompt("Please enter your full name to record your high score. This should be the same name you used to RSVP.");
+            if (!guestName) {
+                alert("High score not recorded. A name is required.");
+                return;
+            }
+            localStorage.setItem('guestName', guestName);
+        }
+
+        const data = {
+            GuestName: guestName,
+        };
+        data[game] = game;
+        data[game + 'Score'] = score;
+
+        // Using a FormData object to send the data
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'success') {
+                alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
+                if (game === 'Spelling Bee') {
+                    localStorage.setItem('geniusAchieved', 'true');
+                }
+            } else {
+                alert("There was an error recording your high score. Please try again.");
+                console.error('Error recording high score:', data.message);
+            }
+        })
+        .catch(error => {
+            alert("There was an error recording your high score. Please try again.");
+            console.error('Error:', error);
+        });
+    }
 
     function init() {
         if (document.getElementById('spelling-bee-template')) {
@@ -154,6 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (score > highScore) {
                         highScore = score;
                         localStorage.setItem('dino-high-score', highScore);
+                        if (confirm(`You passed 10 with: ${highScore}! Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.`)) {
+                            recordHighScore('DinoGame', highScore);
+                        }
                     }
                 }
             });
@@ -167,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function restart() {
-            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
+            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.33, jumpPower: -10, onGround: true };
             obstacles = [];
             score = 0;
             frame = 0;
@@ -311,7 +362,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (guess === secretWord) {
-                alert('You win!');
+                const score = numGuesses - currentRow;
+                if (confirm(`You win! Do you want to record your win? David and Amanda might use your score for a fun activity at the wedding.`)) {
+                    recordHighScore('Wordle', score);
+                }
+                // Disable further interaction
+                document.removeEventListener('keydown', handleKeyDown);
             } else {
                 currentRow++;
                 currentCol = 0;
@@ -322,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        document.addEventListener('keydown', (e) => {
+        function handleKeyDown(e) {
             if (e.key.match(/^[a-zA-Z]$/)) {
                 handleKeyPress(e.key.toUpperCase());
             } else if (e.key === 'Enter') {
@@ -330,7 +386,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (e.key === 'Backspace') {
                 handleKeyPress('BACKSPACE');
             }
-        });
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
     }
 
     function initSpellingBee() {
@@ -358,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "ACCOST",
             "ACCOSTS",
             "CANNON",
+            "CANNOT",
             "CANNONS",
             "CANON",
             "COCOON",
@@ -450,9 +509,9 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Good', score: 21 },
             { name: 'Solid', score: 40 },
             { name: 'Nice', score: 67 },
-            { name: 'Great', score: 107 },
-            { name: 'Amazing', score: 134 },
-            { name: 'Genius', score: 187 },
+            { name: 'Great', score: 85 },
+            { name: 'Amazing', score: 102 },
+            { name: 'Genius', score: 125 },
         ];
 
         let score = 0;
@@ -476,6 +535,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     dot.classList.remove('active');
                 }
             });
+
+            if (currentRank.name === 'Genius') {
+                const geniusAchieved = localStorage.getItem('geniusAchieved');
+                if (!geniusAchieved) {
+                    if (confirm("You've reached Genius! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', 'Genius');
+                    }
+                }
+            }
         }
 
         rankContainer.addEventListener('click', () => {
@@ -629,28 +697,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const gridElement = document.getElementById('crossword-mini-grid');
         const acrossCluesList = document.getElementById('across-clues');
         const downCluesList = document.getElementById('down-clues');
+        const checkButton = document.getElementById('crossword-check');
 
         const puzzle = {
+            solution: [
+                ['C', 'Y', 'C', 'L', 'E'],
+                ['O', '', 'A', '', 'A'],
+                ['M', 'A', 'R', 'R', 'Y'],
+                ['P', '', 'I', '', 'L'],
+                ['L', 'O', 'V', 'E', 'S']
+            ],
             grid: [
-                ['A', 'B', 'C', '', 'D'],
-                ['E', '', 'F', '', 'G'],
-                ['H', 'I', 'J', 'K', 'L'],
-                ['M', '', 'N', '', 'O'],
-                ['P', 'Q', 'R', 'S', 'T']
+                [1, 2, 3, 4, 5],
+                [6, '', 7, '', 8],
+                [9, 10, 11, 12, 13],
+                [14, '', 15, '', 16],
+                [17, 18, 19, 20, 21]
             ],
             clues: {
                 across: [
-                    { num: 1, clue: 'Clue 1 Across' },
-                    { num: 4, clue: 'Clue 4 Across' },
-                    { num: 5, clue: 'Clue 5 Across' },
-                    { num: 6, clue: 'Clue 6 Across' },
-                    { num: 7, clue: 'Clue 7 Across' }
+                    { num: 1, clue: 'Wedding transport' },
+                    { num: 6, clue: 'To get hitched' },
+                    { num: 9, clue: 'What this is all about' },
                 ],
                 down: [
-                    { num: 1, clue: 'Clue 1 Down' },
-                    { num: 2, clue: 'Clue 2 Down' },
-                    { num: 3, clue: 'Clue 3 Down' },
-                    { num: 4, clue: 'Clue 4 Down' }
+                    { num: 1, clue: 'City where it all started' },
+                    { num: 2, clue: 'Where we met' },
+                    { num: 3, clue: 'Country of the proposal' },
+                    { num: 4, clue: 'Last name of the bride' },
+                    { num: 5, clue: 'Last name of the groom' }
                 ]
             }
         };
@@ -685,6 +760,29 @@ document.addEventListener('DOMContentLoaded', () => {
             li.textContent = `${clue.num}. ${clue.clue}`;
             downCluesList.appendChild(li);
         });
+
+        checkButton.addEventListener('click', () => {
+            let isCorrect = true;
+            const inputs = gridElement.querySelectorAll('input');
+            inputs.forEach(input => {
+                const r = input.dataset.row;
+                const c = input.dataset.col;
+                if (input.value.toUpperCase() !== puzzle.solution[r][c]) {
+                    isCorrect = false;
+                    input.style.backgroundColor = '#ffdddd';
+                } else {
+                    input.style.backgroundColor = '#ddffdd';
+                }
+            });
+
+            if (isCorrect) {
+                if (confirm('You solved the puzzle! Do you want to record your achievement?')) {
+                    recordHighScore('CrosswordMini', 'Solved');
+                }
+            } else {
+                alert('Not quite right. Keep trying!');
+            }
+        });
     }
 
     function initConnections() {
@@ -698,6 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         let words = groups.flatMap(g => g.words);
         let selectedWords = [];
+        let correctGroups = 0;
 
         // Shuffle words
         words.sort(() => Math.random() - 0.5);
@@ -708,6 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wordElement.classList.add('connection-word');
             wordElement.textContent = word;
             wordElement.addEventListener('click', () => {
+                if (wordElement.classList.contains('correct')) return;
                 if (selectedWords.includes(word)) {
                     selectedWords = selectedWords.filter(w => w !== word);
                     wordElement.classList.remove('selected');
@@ -724,11 +824,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const correctGroup = groups.find(g => g.words.every(w => selectedWords.includes(w)));
                 if (correctGroup) {
                     alert(`Correct! Category: ${correctGroup.category}`);
+                    correctGroups++;
                     selectedWords.forEach(word => {
                         const el = Array.from(gridElement.children).find(child => child.textContent === word);
                         el.classList.add('correct');
+                        el.classList.remove('selected');
                     });
                     selectedWords = [];
+
+                    if (correctGroups === 4) {
+                        if (confirm(`You've found all connections! Do you want to record your achievement?`)) {
+                            recordHighScore('Connections', 'All Correct');
+                        }
+                    }
                 } else {
                     alert('Incorrect group.');
                 }
