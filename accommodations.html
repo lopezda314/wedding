@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Allura:wght@400;700&family=Darker+Grotesque:wght@400;700&family=Arizonia:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet">
-    
+
     <script src="js/protect.js"></script>
     <script src="js/include.js"></script>
 </head>
+
 <body>
 
     <main class="main-content">
@@ -23,41 +25,153 @@
 
         <div class="hotel">
             <h2>Cigarral de las Mercedes</h2>
-            <p>Our venue has a limited number of on-site rooms. Follow the booking steps below to see prices and reserve.</p>
+            <p>Our venue has a limited number of on-site rooms. Follow the booking steps below to see prices and
+                reserve.</p>
             <div class="booking-steps">
                 <p class="booking-steps-header">Steps to book:</p>
-            <p>1. Visit <a href="https://cigarraldelasmercedes.com">https://cigarraldelasmercedes.com</a></p>
-            <p>2. Enter the dates of your stay</p>
-            <p>3. In the promotional code section, enter the promotional code "AmandayDavid"</p>
+                <p>1. Visit <a href="https://cigarraldelasmercedes.com">https://cigarraldelasmercedes.com</a></p>
+                <p>2. Enter the dates of your stay</p>
+                <p>3. In the promotional code section, enter the promotional code "AmandayDavid"</p>
             </div>
         </div>
 
         <div class="hotel">
             <h2>Airbnbs</h2>
             <p>There are lots of Airbnbs nearby! We've compiled a list with a few options to help you get started</p>
-            <a href="https://www.airbnb.com/wishlists/invite/3deeeae9-a200-484a-908b-37e0eb153281?s=67&unique_share_id=f4cc9f0c-c432-498b-8a4e-d8a00f97ba80"><p>Airbnb List</p></a>
+            <a
+                href="https://www.airbnb.com/wishlists/invite/3deeeae9-a200-484a-908b-37e0eb153281?s=67&unique_share_id=f4cc9f0c-c432-498b-8a4e-d8a00f97ba80">
+                <p>Airbnb List</p>
+            </a>
         </div>
 
         <div class="hotel">
             <h2>Other Hotels</h2>
-            <a href="https://maps.app.goo.gl/VPMdEMiSvN9GV2id8"><p>Cigarral de Caravantes</p></a>
-            <a href="https://maps.app.goo.gl/M5WDfnCAsdeZXMKD7"><p>Hotel Los Cigarrales</p></a>
-            <a href="https://maps.app.goo.gl/ePnnBUjdRRUWuvwf8"><p>AC Hotel Ciudad de Toledo</p></a>
-            <a href="https://maps.app.goo.gl/RBBek375J6yQC6QH8"><p>Hotel Cigarral El Bosque</p></a>
-            <a href="https://maps.app.goo.gl/RBBek375J6yQC6QH8"><p>Hotel Cigarral El Bosque</p></a>
-            <a href="https://maps.app.goo.gl/j1MFCAJeJJ5MKPdN8"><p>Hotel Abaceria</p></a>
-            <a href="https://maps.app.goo.gl/Xaa8qKHz7Aow9TeD9"><p>Hotel Cigarral Santa Maria</p></a>
-            <a href="https://maps.app.goo.gl/gKvyndfETbEhPT3o8"><p>Parador de Toledo</p></a>
+            <p>There are several hotels within a 5-10 minute drive from our venue. See the map below for some examples.</p>
+            <gmp-map center="39.851523346657544,-4.037717155169243" zoom="13" map-id="DEMO_MAP_ID"></gmp-map>
         </div>
-        
-        <!-- <div class="rsvp-section">
-             <h2>ARE YOU ATTENDING?</h2>
-             <p>We can't wait to celebrate with you. Please let us know if you can make it.</p>
-             <a href="#rsvp-form" class="button">RSVP</a>
-        </div> -->
     </main>
 
     <script src="js/main.js"></script>
 
+    <script>
+        let map;
+
+        async function initMap() {
+            // Request needed libraries.
+            //@ts-ignore
+            const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+            const parser = new DOMParser();
+            const mapElement = document.querySelector("gmp-map");
+            const infoWindow = new InfoWindow({pixelOffset:new google.maps.Size(0, -37)});
+
+            const positionVenue = { lat: 39.84722807635875, lng: -4.049055020282619 };
+
+            // Heart SVG for Venue Marker
+            const pinSvgString =
+                '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56" fill="none"><rect width="56" height="56" rx="28" fill="#7837FF"></rect><path d="M46.0675 22.1319L44.0601 22.7843" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9402 33.2201L9.93262 33.8723" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M27.9999 47.0046V44.8933" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M27.9999 9V11.1113" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M39.1583 43.3597L37.9186 41.6532" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.8419 12.6442L18.0816 14.3506" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.93262 22.1319L11.9402 22.7843" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M46.0676 33.8724L44.0601 33.2201" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M39.1583 12.6442L37.9186 14.3506" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.8419 43.3597L18.0816 41.6532" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M28 39L26.8725 37.9904C24.9292 36.226 23.325 34.7026 22.06 33.4202C20.795 32.1378 19.7867 30.9918 19.035 29.9823C18.2833 28.9727 17.7562 28.0587 17.4537 27.2401C17.1512 26.4216 17 25.5939 17 24.7572C17 23.1201 17.5546 21.7513 18.6638 20.6508C19.7729 19.5502 21.1433 19 22.775 19C23.82 19 24.7871 19.2456 25.6762 19.7367C26.5654 20.2278 27.34 20.9372 28 21.8649C28.77 20.8827 29.5858 20.1596 30.4475 19.6958C31.3092 19.2319 32.235 19 33.225 19C34.8567 19 36.2271 19.5502 37.3362 20.6508C38.4454 21.7513 39 23.1201 39 24.7572C39 25.5939 38.8488 26.4216 38.5463 27.2401C38.2438 28.0587 37.7167 28.9727 36.965 29.9823C36.2133 30.9918 35.205 32.1378 33.94 33.4202C32.675 34.7026 31.0708 36.226 29.1275 37.9904L28 39Z" fill="#FF7878"></path></svg>';
+            const pinSvg = parser.parseFromString(
+                pinSvgString,
+                'image/svg+xml'
+            ).documentElement;
+
+
+            // The Venue Marker
+            const markerVenue = new AdvancedMarkerElement({
+                position: positionVenue,
+                title: "Cigarral de las Mercedes",
+                //@ts-ignore
+                anchorLeft: '-50%',
+                anchorTop: '-50%',
+            });
+            markerVenue.append(pinSvg);
+            mapElement.append(markerVenue);
+            markerVenue.addListener('click', ({ domEvent, latLng }) => {
+                    const { target } = domEvent;
+                    infoWindow.close();
+                    infoWindow.setContent(buildContent(venue));
+                    infoWindow.open({anchor: markerVenue, mapElement});
+                });
+
+            for (const hotel of hotels) {
+                const advancedMarkerElement = new AdvancedMarkerElement({
+                    position: hotel.position,
+                    title: hotel.name,
+                    gmpClickable: true,
+                });
+                mapElement.append(advancedMarkerElement);
+                advancedMarkerElement.addListener('click', ({ domEvent, latLng }) => {
+                    const { target } = domEvent;
+                    infoWindow.close();
+                    infoWindow.setContent(buildContent(hotel));
+                    infoWindow.open({anchor: advancedMarkerElement, mapElement});
+                });
+            };
+        }
+
+        function toggleHighlight(markerView, property) {
+            if (markerView.content.classList.contains("highlight")) {
+                markerView.content.classList.remove("highlight");
+                markerView.zIndex = null;
+            }
+            else {
+                markerView.content.classList.add("highlight");
+                markerView.zIndex = 1;
+            }
+        }
+
+        function buildContent(hotel) {
+            const content = document.createElement("div");
+            content.classList.add("hotel");
+            content.innerHTML = `
+        <h3 class="hotel-name">${hotel.name}</h3>
+        <a class="hotel-link" href="${hotel.url}">View on Google Maps</a>
+    `;
+            return content;
+        }
+        const venue = {name: 'Cigarral de las Mercedes (venue)',
+            address: 'Ctra. Piedrabuena, 72, 45004 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/xYRD9Uwp8vbJzLE19',
+            position: { lat: 39.84722807635875, lng: -4.049055020282619 }};
+            
+        const hotels = [{
+            name: 'Cigarral De Caravantes',
+            address: 'Ctra. Circunvalación, 2, 45004 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/zLdqiyGnFzHpfFwR9',
+            position: { lat: 39.852176664396595, lng: -4.036656264417955 },
+        }, {
+            name: 'AC Hotel Ciudad de Toledo',
+            address: 'Ctra. Circunvalación, 15, 45005 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/3j8r4j7duzgBsDwh7',
+            position: { lat: 39.849992333850594, lng: -4.035483086817496 },
+        },
+        {
+            name: 'Hotel Los Cigarrales',
+            address: 'Ctra. Circunvalación, 32, 45004 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/cpcVQy94P5mHT8zd7',
+            position: { lat: 39.84907094803656, lng: -4.033769674753949 },
+        }, {
+            name: 'Hotel Cigarral El Bosque',
+            address: 'Ctra. Navalpino, 49, 45004 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/XUagbQinwS5znHPA7',
+            position: { lat: 39.85942656818135, lng: -4.042698423572828 },
+        }, {
+            name: 'Hotel Cigarral Santa Maria',
+            address: 'Cerro del Emperador, 45002 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/3qFCbRE12NfmXMk46',
+            position: { lat: 39.84624351164035, lng: -4.02550286198542 },
+        }, {
+            name: 'Parador de Toledo',
+            address: 'Cerro del Emperador, s/n, 45002 Toledo, Spain',
+            url: 'https://maps.app.goo.gl/vt8P6QkFewAZNcBW8',
+            position: { lat: 39.848965170640064, lng: -4.023135422981496 },
+        }];
+
+        initMap();
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeXu_fOFTIRCkeEnHskOq1fjrhmFi2JHI&callback=initMap&v=weekly"
+        defer></script>
 </body>
+
 </html>
