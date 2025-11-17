@@ -1,6 +1,6 @@
 /* General Body Styles */
 body {
-    background-color: #f4f4f4;
+    background-color: #FFFDF7;
     color: #333;
     margin: 0;
     padding: 0;
@@ -426,6 +426,11 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
 }
 
 /* --- RSVP Form Styles --- */
+.rsvp-page {
+    font-family: 'Darker Grotesque';
+    font-size: 1.3rem;
+}
+
 #guest-rsvp-form {
     max-width: 600px;
     margin: 2rem auto 0;
@@ -452,6 +457,7 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
     box-sizing: border-box;
+    max-width: 500px;
 }
 
 /* Checkbox styles */
@@ -464,6 +470,26 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
     margin-right: 10px;
 }
 
+input[type=checkbox] {
+  accent-color: #75130f;
+}
+
+/* Leave space for the checkmark */
+.event-button-content {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* Add checkmark when event is selected */
+.event-button .event-button-content::before {
+  content: '✓'; /* The checkmark character */
+  position: absolute;
+  top: 25%;
+  left: 12px;
+  color: white; /* Color of the checkmark */
+  font-size: 1.1em;
+}
+
 #rsvp-status {
     text-align: center;
     margin-top: 1rem;
@@ -474,7 +500,6 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
 .page-header {
     text-align: center;
     padding: 4rem 0;
-    border-bottom: 1px solid #ddd;
     margin-bottom: 3rem;
 }
 
@@ -489,7 +514,6 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
 .event {
     margin-bottom: 2.5rem;
     padding-bottom: 2.5rem;
-    border-bottom: 1px solid #eee;
     font-family: 'Darker Grotesque';
 }
 
@@ -607,6 +631,8 @@ object-fit: contain;
     font-weight: normal;
     text-align: center;
     border-radius: 4px; /* Optional: for slightly rounded corners */
+    position: relative; /* Needed to position checkmark */
+    font-size: 1rem;
 }
 
 .event-button span {
@@ -616,7 +642,7 @@ object-fit: contain;
 
 /* Style for the SELECTED button */
 .event-button:has(input:checked) {
-    background-color: #333;
+    background-color: #390000;
     border-color: #333;
 }
 
@@ -641,8 +667,13 @@ object-fit: contain;
 
 .hotel {
     font-family: 'Darker Grotesque';
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     padding-bottom: 24px;
+}
+
+.hotel-divider {
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .booking-steps {
@@ -651,6 +682,21 @@ object-fit: contain;
 
 .booking-steps-header {
     font-weight: 700;
+}
+
+.airbnb-link {
+    width: fit-content;
+    padding: 12px;
+    background-color: #390000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: 'Darker Grotesque';
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 auto;
 }
 
 gmp-map {

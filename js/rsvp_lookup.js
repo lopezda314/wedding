@@ -44,9 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (guestData.HasResponded) {
             const rsvpHTML = `
+                <div class="rsvp-page">
                 <p style="text-align:center;">Thank you, ${guestData.GuestName}. We have already received your RSVP!</p>
                 <p style="text-align:center;">Would you like to make changes?</p>
                 <button id="modify-status" class="button">Modify RSVP</button>
+                </div>
             `;
             rsvpSection.innerHTML = rsvpHTML;
             document.getElementById('modify-status').addEventListener('click', () => {
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const attendees = [guestData.GuestName, ...(guestData.PlusOneGuests ? guestData.PlusOneGuests.split(',').map(name => name.trim()).filter(name => name) : [])];
 
         const formHTML = `
+            <div class="rsvp-page">
             <p style="text-align:center;">Welcome, ${guestData.GuestName}!</p>
             <form id="guest-rsvp-form">
                 <input type="hidden" name="GuestName" value="${guestData.GuestName}">
@@ -84,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${day.events.map(event => `
                                         <label class="event-button">
                                             <input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}" class="sr-only" ${guestData.Events.split(", ").includes(event) ? 'checked' : ''}>
-                                            <span>${event}</span>
+                                            <span class="event-button-content">${event}</span>
                                         </label>
                                     `).join('')}
                                 </div>
@@ -100,9 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <textarea id="message" name="Message" rows="4">${guestData.Message || ''}</textarea>
                     </div>
                 </div>
-                <button type="submit" class="button">Submit RSVP</button>
+                <button style="display: block; margin: 0 auto;" type="submit" class="button">Submit RSVP</button>
                 <p id="rsvp-status" class="status-message"></p>
             </form>
+            </div>
         `;
         rsvpSection.innerHTML = formHTML;
 
@@ -144,7 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
-                    rsvpSection.innerHTML = `<p style="text-align:center;">Thank you! Your RSVP has been recorded.</p>`;
+                    rsvpSection.innerHTML = `
+                    <div class="rsvp-page">
+                    <p style="text-align:center;">Thank you! Your RSVP has been recorded.</p>
+                    </div>`;
                 } else { throw new Error(data.message); }
             })
             .catch(error => {
