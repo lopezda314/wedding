@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formHTML = `
             <div class="rsvp-page">
-            <p style="text-align:center;">Welcome, ${guestData.GuestName}!</p>
+            <p style="text-align:center; font-size:24px">Welcome, ${guestData.GuestName}!</p>
             <form id="guest-rsvp-form">
                 <input type="hidden" name="GuestName" value="${guestData.GuestName}">
                 <div class="form-group">
@@ -96,10 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="form-group">
                         <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
-                        <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g., Vegetarian, Gluten-Free" value="${guestData.DietaryRestrictions || ''}">
+                        <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g. Vegetarian, No Red Meat, Gluten-Free" value="${guestData.DietaryRestrictions || ''}">
                     </div>
                     <div class="form-group">
-                        <label for="message">Leave us a message? (optional)</label>
+                        <label for="beauty-services">The venue offers hair and makeup for 95€ each. Would you like to book any beauty services for the day of the wedding?</label>
+                        <input type="text" id="beauty-services" name="BeautyServices" placeholder="e.g. Hair for Enoki" value="${guestData.BeautyServices || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Leave us a message! (optional)</label>
                         <textarea id="message" name="Message" rows="4">${guestData.Message || ''}</textarea>
                     </div>
                 </div>

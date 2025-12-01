@@ -167,7 +167,7 @@ body {
         /* On mobile, make it a full-screen overlay */
         position: fixed;
         inset: 0 0 0 0; /* top, right, bottom, left */
-        background-color: rgba(244, 244, 244, 0.95);
+        background-color: #FFFDF7;
         z-index: 999;
         
         display: flex;
@@ -583,7 +583,7 @@ object-fit: contain;
     margin-bottom: 0.5rem;
 }
 
-.event-time, .event-location, .event-details {
+.event-time, .event-location, .event-details, .event-dress-code {
     font-size: 1.1rem;
     margin: 0.25rem 0;
 }
@@ -598,6 +598,11 @@ object-fit: contain;
 
 .event-details {
     min-width: 60%;
+}
+
+.event-dress-code {
+    min-width: 60%;
+    margin-top: 12px;
 }
 
 .event-details-wide {
@@ -705,6 +710,25 @@ gmp-map {
     margin-top: 24px;
     border-radius: 16px;
     overflow: hidden;
+}
+
+/* --- FAQ Styles --- */
+.faq {
+    font-family: 'Darker Grotesque';
+    font-size: 1.3rem;
+}
+
+.faq-content {
+    text-align: left;
+}
+
+.faq h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq-header-padding {
+    margin-top: 2rem;
 }
 
 
