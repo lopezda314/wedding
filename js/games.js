@@ -71,6 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
+        // Prevent player from missing game over page.
+        const gameOverCooldown = 500;
+        let gameOverTimestamp = 0;
+
         const originalWidth = 600;
         let scale = canvas.offsetWidth / originalWidth;
 
@@ -143,7 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = 'black';
             ctx.font = '30px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
+            if(window.matchMedia("(any-hover:none)").matches) {
+                ctx.fillText('Tap to start', canvas.width / 2, canvas.height / 2);
+            } else {
+                ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
+            }
             drawRoad();
         }
 
@@ -181,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     obstacles.push({ x: canvas.width, y: canvas.height - 25, width: 40, height: 20, type: 'truck' });
                 }
-                nextObstacleFrame = frame + Math.floor(Math.random() * 120) + 80; // Random time for next obstacle
+                nextObstacleFrame = frame + Math.floor(Math.random() * 120) + 100; // Random time for next obstacle
             }
 
             obstacles.forEach((obstacle, index) => {
@@ -199,10 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     bike.y + bike.height > obstacle.y
                 ) {
                     gameOver = true;
+                    gameOverTimestamp = Date.now();
                     if (score > highScore) {
                         highScore = score;
                         localStorage.setItem('dino-high-score', highScore);
-                        if (confirm(`You passed 10 with: ${highScore}! Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.`)) {
+                        if (confirm(`Your new high score is ${highScore}! Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.`)) {
                             recordHighScore('DinoGame', highScore);
                         }
                     }
@@ -234,9 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        canvas.addEventListener('click', () => {
-            if (gameOver) {
-                restart();
+        canvas.addEventListener('pointerdown', () => {
+            if (!gameStarted) {
+                gameStarted = true;
+                update();
+            } else if (gameOver) {
+                if (Date.now() - gameOverTimestamp > gameOverCooldown) {
+                    restart();
+                }
             } else {
                 jump();
             }
@@ -247,6 +261,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!gameStarted) {
                     gameStarted = true;
                     update();
+                } else if (gameOver) {
+                    if (Date.now() - gameOverTimestamp > gameOverCooldown) {
+                        restart();
+                    }
                 } else {
                     jump();
                 }

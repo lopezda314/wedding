@@ -748,6 +748,8 @@ gmp-map {
     background-color: #fff;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    color: #75130f;
 }
 
 .game-item:hover {
@@ -772,6 +774,20 @@ gmp-map {
     .game-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.game {
+    font-family: 'Darker Grotesque';
+    font-size: 1.2rem;
+}
+
+.game h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #75130f;
 }
 
 /* --- Game Modal Styles --- */
