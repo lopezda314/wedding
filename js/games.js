@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.result === 'success') {
                 if (game === 'SpellingBee') {
+                    // TODO: UPDATE TO BE SCORE SO THAT GENIUS VS QUEEN BEE CAN BE RECORDED
                     localStorage.setItem('geniusAchieved', 'true');
                 }
                 alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
@@ -446,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "STUCCO",
             "STUCCOS",
             "TATTOO",
+            "TATTOOS",
             "TOUCAN",
             "ASCOT",
             "ASCOTS",
@@ -494,7 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "TOUT",
             "TOUTS",
             "UNTO",
-        ]; // Placeholder
+        ]; // Placeholder, 462 points total
         const validWordsSet = new Set(validWords.map(word => word.toUpperCase()));
 
         const validPangrams = [
@@ -522,14 +524,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const ranks = [
             { name: 'Beginner', score: 0 },
-            { name: 'Good Start', score: 5 },
-            { name: 'Moving Up', score: 13 },
-            { name: 'Good', score: 21 },
-            { name: 'Solid', score: 40 },
-            { name: 'Nice', score: 67 },
-            { name: 'Great', score: 85 },
-            { name: 'Amazing', score: 102 },
-            { name: 'Genius', score: 125 },
+            { name: 'Good Start', score: 9 }, // 2%
+            { name: 'Moving Up', score: 23 }, // 5%
+            { name: 'Good', score: 37 }, // 8%
+            { name: 'Solid', score: 55 }, // 12%
+            { name: 'Nice', score: 92 }, // 20%
+            { name: 'Great', score: 148 }, // 32%
+            { name: 'Amazing', score: 231 }, // 50%
+            { name: 'Genius', score: 323 }, // 70%
+            { name: 'Queen Bee', score: 462 }, // 100%
         ];
 
         let score = 0;
@@ -558,7 +561,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const geniusAchieved = localStorage.getItem('geniusAchieved');
                 if (!geniusAchieved) {
                     if (confirm("You've reached Genius! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', 'Genius');
+                        recordHighScore('SpellingBee', score);
+                    }
+                }
+            }
+
+            if (currentRank.name === 'Queen Bee') {
+                const queenBeeAchieved = localStorage.getItem('queenBeeAchieved');
+                if (!queenBeeAchieved) {
+                    if (confirm("You've reached Queen Bee! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', 'Queen Bee');
                     }
                 }
             }
@@ -569,6 +581,10 @@ document.addEventListener('DOMContentLoaded', () => {
             rankList.innerHTML = ''; // Clear previous list
             rankList.appendChild(header);
             ranks.forEach(rank => {
+                // Don't show Queen Bee rank in popup.
+                if (rank.name === 'Queen Bee') {
+                    return;
+                }
                 const li = document.createElement('li');
                 li.innerHTML = `<span>${rank.name}</span><span>${rank.score}</span>`;
                 rankList.appendChild(li);
@@ -666,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (foundWords.includes(word)) {
                 showFeedback('Already found');
             } else if (validWordsSet.has(word)) {
-                const points = word.length;
+                const points = word.length === 4 ? 1 : word.length;
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
                 score += points;
@@ -676,10 +692,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('sb-score', score);
                 updateRank();
             }  else if (validPangramsSet.has(word)) {
-                const points = word.length * 2;
+                const points = word.length + 7; // Pangrams get +7 bonus
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
-                score += points; // Double points for pangrams
+                score += points;
                 scoreDisplay.textContent = score;
                 showFeedback('Pangram!', points);
                 localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
