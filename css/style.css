@@ -790,6 +790,10 @@ gmp-map {
     color: #75130f;
 }
 
+.game .hide {
+    display: none;
+}
+
 /* --- Game Modal Styles --- */
 .modal {
     display: none; 

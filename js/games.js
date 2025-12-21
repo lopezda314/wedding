@@ -280,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initWordle() {
         const wordleGrid = document.getElementById('wordle-grid');
         const wordleKeyboard = document.getElementById('wordle-keyboard');
+        const tryAgainButton = document.getElementById('wordle-try-again');
         const secretWord = 'ENOKI';
         const numGuesses = 6;
         let currentRow = 0;
@@ -349,6 +350,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        function clearGrid() {
+            for (let i = 0; i < wordleGrid.children.length; i++) {
+                const row = wordleGrid.children[i];
+                for (let j = 0; j < 5; j++) {
+                    row.children[j].textContent = '';
+                    row.children[j].classList.remove('correct');
+                    row.children[j].classList.remove('present');
+                    row.children[j].classList.remove('absent');
+                }
+            }
+            currentRow = 0;
+            currentCol = 0;
+        }
+
         function checkGuess() {
             const row = wordleGrid.children[currentRow];
             const secretWordLetters = secretWord.split('');
@@ -391,8 +406,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentRow++;
                 currentCol = 0;
                 guess = '';
+                // TODO add previous attempts to score
                 if (currentRow === numGuesses) {
                     alert(`You lose! Try again to record your score.`);
+                    tryAgainButton.classList.remove('hide');
                 }
             }
         }
@@ -408,6 +425,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.addEventListener('keydown', handleKeyDown);
+
+        tryAgainButton.addEventListener('click', () => {
+            clearGrid();
+            tryAgainButton.classList.add('hide');
+        });
     }
 
     function initSpellingBee() {
