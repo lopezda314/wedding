@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initWordle() {
         const wordleGrid = document.getElementById('wordle-grid');
         const wordleKeyboard = document.getElementById('wordle-keyboard');
-        const secretWord = 'CYCLE';
+        const secretWord = 'ENOKI';
         const numGuesses = 6;
         let currentRow = 0;
         let currentCol = 0;
@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentCol = 0;
                 guess = '';
                 if (currentRow === numGuesses) {
-                    alert(`You lose! The word was ${secretWord}`);
+                    alert(`You lose! Try again to record your score.`);
                 }
             }
         }
