@@ -791,7 +791,7 @@ gmp-map {
 }
 
 .game .hide {
-    display: none;
+    display:none;
 }
 
 /* --- Game Modal Styles --- */
@@ -980,7 +980,7 @@ gmp-map {
     margin-bottom: 10px;
 }
 
-.sb-feedback {
+.game-feedback {
     height: 16px;
     margin-top: 10px;
     font-weight: bold;
@@ -1058,6 +1058,13 @@ gmp-map {
     gap: 10px;
     max-width: 500px;
     margin: 20px -1.75rem;
+    padding-top: 12px;
+}
+
+.connections-grid-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .connection-word {
@@ -1070,11 +1077,23 @@ gmp-map {
 }
 
 .connection-word.selected {
-    background-color: #bbde fb;
+    background-color: #bbde;
 }
 
-.connection-word.correct {
-    background-color: #a5d6a7;
+.connection-word.correct1 {
+    background-color: #f7de6c;
+}
+
+.connection-word.correct2 {
+    background-color: #a0c35a;
+}
+
+.connection-word.correct3 {
+    background-color: #afc4ef;
+}
+
+.connection-word.correct4 {
+    background-color: #b882c6;
 }
 
 .sb-letter.fade-out {
@@ -1087,12 +1106,12 @@ gmp-map {
     transition: opacity 0.2s ease-in-out;
 }
 
-.sb-feedback.fade-in {
+.game-feedback.fade-in {
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
 
-.sb-feedback.fade-out {
+.game-feedback.fade-out {
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }

@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const shuffleButton = document.getElementById('sb-shuffle');
         const wordList = document.getElementById('sb-word-list');
         const scoreDisplay = document.getElementById('sb-score');
-        const feedback = document.querySelector('.sb-feedback');
+        const feedback = document.querySelector('.game-feedback');
         const rankLabel = document.querySelector('.sb-rank-label');
         const rankDots = document.querySelectorAll('.sb-rank-dot');
         const rankContainer = document.querySelector('.sb-rank-container');
@@ -844,15 +844,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function initConnections() {
         const gridElement = document.getElementById('connections-grid');
         const submitButton = document.getElementById('connections-submit');
+        const feedback = document.querySelector('.game-feedback');
+        const guessDisplay = document.getElementById('connections-guesses');
         const groups = [
-            { category: 'Fish', words: ['Bass', 'Flounder', 'Salmon', 'Trout'] },
-            { category: 'Musical Instruments', words: ['Piano', 'Guitar', 'Violin', 'Drum'] },
-            { category: 'Colors', words: ['Red', 'Blue', 'Green', 'Yellow'] },
-            { category: 'Planets', words: ['Earth', 'Mars', 'Jupiter', 'Saturn'] }
+            { category: 'Fish', difficulty: 1, words: ['Bass', 'Flounder', 'Salmon', 'Trout'] },
+            { category: 'Musical Instruments', difficulty: 2, words: ['Piano', 'Guitar', 'Violin', 'Drum'] },
+            { category: 'Colors', difficulty: 3, words: ['Red', 'Blue', 'Green', 'Yellow'] },
+            { category: 'Planets', difficulty: 4, words: ['Earth', 'Mars', 'Jupiter', 'Saturn'] }
         ];
         let words = groups.flatMap(g => g.words);
         let selectedWords = [];
         let correctGroups = 0;
+        let numGuesses = 0;
 
         // Shuffle words
         words.sort(() => Math.random() - 0.5);
@@ -879,25 +882,52 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedWords.length === 4) {
                 const correctGroup = groups.find(g => g.words.every(w => selectedWords.includes(w)));
                 if (correctGroup) {
-                    alert(`Correct! Category: ${correctGroup.category}`);
+                    showFeedback(`Correct! Category: ${correctGroup.category}`);
                     correctGroups++;
                     selectedWords.forEach(word => {
                         const el = Array.from(gridElement.children).find(child => child.textContent === word);
                         el.classList.add('correct');
+                        el.classList.add('correct' + correctGroup.difficulty);
                         el.classList.remove('selected');
                     });
                     selectedWords = [];
 
+                    // TODO keep track of guess count.
                     if (correctGroups === 4) {
                         if (confirm(`You've found all connections! Do you want to record your achievement?`)) {
-                            recordHighScore('Connections', 'All Correct');
+                            recordHighScore('Connections', numGuesses);
                         }
                     }
                 } else {
-                    alert('Incorrect group.');
+                    showFeedback('Incorrect group');
+                    // Deselect words.
+                    selectedWords.forEach(word => {
+                        const el = Array.from(gridElement.children).find(child => child.textContent === word);
+                        el.classList.remove('selected');
+                    });
+                    selectedWords = [];
                 }
+
+                // Increase guess count.
+                numGuesses++;
+                guessDisplay.textContent = numGuesses;
             }
         });
+
+        function showFeedback(message) {
+            feedback.textContent = message;
+            feedback.classList.add('fade-in');
+
+            setTimeout(() => {
+                feedback.classList.remove('fade-in');
+                feedback.classList.add('fade-out');
+            }, 1200);
+
+            setTimeout(() => {
+                feedback.textContent = '';
+                feedback.classList.remove('fade-out');
+            }, 1500);
+        };
     }
 
     init();

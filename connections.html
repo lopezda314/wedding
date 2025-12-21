@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet"> 
     <script src="js/protect.js"></script>
     <script src="js/main.js"></script>
     <script src="js/include.js"></script>
@@ -16,11 +17,13 @@
 <body>
     <main class="main-content">
         <a href="games.html">Back to Games</a>
-        <div id="connections-template">
+        <div id="connections-template" class="game">
             <h2>Connections</h2>
-            <p>Group the words into 4 categories.</p>
-            <div id="connections-grid"></div>
-            <button id="connections-submit">Submit</button>
+            <p>Group the words into 4 categories that share a common thread.</p>
+            <p>Guesses: <span id="connections-guesses">0</span></p>
+            <div class="game-feedback"></div>
+            <div class="connections-grid-wrapper"><div id="connections-grid"></div></div>
+            <button id="connections-submit" class="button">Submit</button>
         </div>
     </main>
     <script src="js/games.js"></script>
