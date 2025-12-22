@@ -735,9 +735,10 @@ gmp-map {
 
 /* --- Games Page Styles --- */
 .game-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+     gap: 2rem;
+    display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
     margin-top: 3rem;
 }
 
@@ -770,9 +771,30 @@ gmp-map {
     margin: 0;
 }
 
+@media (min-width: 769px) {
+    .game-item {
+        flex: 0 0 calc(20%);
+    }
+}
+
+#leaderboard h2 {
+    font-family: 'Playfair Display', serif;
+    color: #75130f;
+}
+
+.leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
 @media (max-width: 768px) {
-    .game-grid {
-        grid-template-columns: 1fr;
+    .leaderboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .game-item {
+        width: 100%;
     }
 }
 

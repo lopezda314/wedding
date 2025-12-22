@@ -65,6 +65,65 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('dino-game-template')) {
             initDinoGame();
         }
+        if (document.getElementById('leaderboard')) {
+            initLeaderboard();
+        }
+    }
+
+    function initLeaderboard() {
+        const leaderboard = document.getElementById('leaderboard');
+        const header = document.createElement('h2');
+        header.textContent = 'Leaderboard';
+        leaderboard.appendChild(header);
+
+        const scoreRow = document.createElement('div');
+        scoreRow.classList.add('leaderboard-grid');
+
+        const sbScore = document.createElement('div');
+        const sbName = document.createElement('h3');
+        sbName.textContent = "Spelling Bee";
+        sbScore.appendChild(sbName);
+        for (let i = 0; i < 3; i++) {
+            const playerScore = document.createElement('div');
+            playerScore.textContent = "Enoki: 100";
+            sbScore.appendChild(playerScore);
+        }
+        scoreRow.appendChild(sbScore);
+
+        const wordleScore = document.createElement('div');
+        const wordleName = document.createElement('h3');
+        wordleName.textContent = "Wordle";
+        wordleScore.appendChild(wordleName);
+        for (let i = 0; i < 3; i++) {
+            const playerScore = document.createElement('div');
+            playerScore.textContent = "Enoki: 100";
+            wordleScore.appendChild(playerScore);
+        }
+        scoreRow.appendChild(wordleScore);
+
+        const bikeScore = document.createElement('div');
+        const bikeName = document.createElement('h3');
+        bikeName.textContent = "Bike Game";
+        bikeScore.appendChild(bikeName);
+        for (let i = 0; i < 3; i++) {
+            const playerScore = document.createElement('div');
+            playerScore.textContent = "Enoki: 100";
+            bikeScore.appendChild(playerScore);
+        }
+        scoreRow.appendChild(bikeScore);
+
+        const connectionScore = document.createElement('div');
+        const connectionName = document.createElement('h3');
+        connectionName.textContent = "Connections";
+        connectionScore.appendChild(connectionName);
+        for (let i = 0; i < 3; i++) {
+            const playerScore = document.createElement('div');
+            playerScore.textContent = "Enoki: 100";
+            connectionScore.appendChild(playerScore);
+        }
+        scoreRow.appendChild(connectionScore);
+
+        leaderboard.appendChild(scoreRow);
     }
 
     function initDinoGame() {
