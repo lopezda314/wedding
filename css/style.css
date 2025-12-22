@@ -713,6 +713,19 @@ gmp-map {
     overflow: hidden;
 }
 
+/* --- Registry Style --- */
+.registry {
+    font-family: 'Darker Grotesque';
+    font-size: 1.3rem;
+}
+
+.registry-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
 /* --- FAQ Styles --- */
 .faq {
     font-family: 'Darker Grotesque';
