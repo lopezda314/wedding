@@ -1,7 +1,7 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLfcIlCOOd1StJouun1NL5zkycp23iy7ahJtJNQUGAw-GeTYU5McvXxQcwSCF1XBHnBw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl0Mn1fhNVoOyJXA7QU0ZZ8pf6MYwGJxZbvNlvFSp2zzNUogNznk4adyjwjXgPrm3MRw/exec';
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
