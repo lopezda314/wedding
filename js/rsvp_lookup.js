@@ -1,7 +1,7 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl0Mn1fhNVoOyJXA7QU0ZZ8pf6MYwGJxZbvNlvFSp2zzNUogNznk4adyjwjXgPrm3MRw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5w0ErOYxow0e--EYt62GRzyPm_UfWnHxmTDbbk8yR6cL0LpQ6sp9rtd0e1cJiW699/exec';
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="dietary-restrictions">Any dietary restrictions or allergies?</label>
-                        <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="e.g. Vegetarian, No Red Meat, Gluten-Free" value="${guestData.DietaryRestrictions || ''}">
+                        <label for="dietary-restrictions">Any dietary restrictions or allergies for you or any members of your party?</label>
+                        <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="David: Vegan, Amanda: No fish and gluten-free" value="${guestData.DietaryRestrictions || ''}">
                     </div>
                     <div class="form-group">
                         <label for="beauty-services">The venue offers hair and makeup for 95€ each. Would you like to book any beauty services for the day of the wedding?</label>
