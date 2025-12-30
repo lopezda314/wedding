@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5w0ErOYxow0e--EYt62GRzyPm_UfWnHxmTDbbk8yR6cL0LpQ6sp9rtd0e1cJiW699/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybha4fqJNyln8Pcbfqdys09F0DFXYVg8VZdwvlof2zNrNTxyqez4mLs97EoaxTvnG2jA/exec';
     // --- END CONFIGURATION ---
     function recordHighScore(game, score) {
         let guestName = localStorage.getItem('guestName');

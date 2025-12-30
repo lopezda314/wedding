@@ -1,7 +1,13 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5w0ErOYxow0e--EYt62GRzyPm_UfWnHxmTDbbk8yR6cL0LpQ6sp9rtd0e1cJiW699/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybha4fqJNyln8Pcbfqdys09F0DFXYVg8VZdwvlof2zNrNTxyqez4mLs97EoaxTvnG2jA/exec';
+    const EVENT_TO_COLUMN_MAP = {
+        'welcome-cocktail-and-paella-celebration': 'WelcomeCocktail',
+        'padel': 'Padel',
+        'wedding-ceremony-and-reception': 'Ceremony',
+        'farewell-brunch': 'Brunch',
+    }
     // --- END CONFIGURATION ---
 
     const lookupForm = document.getElementById('lookup-form');
@@ -77,6 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         `).join('')}
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="attendee-checkbox">
+                        <input type="checkbox" id="bringing-kids-checkbox">
+                        <span>Are you bringing any children (under 18)?</span>
+                    </label>
+                    <a href="faq.html#kids" target="_blank" class="faq-link">See our FAQ about kids</a>
+                </div>
                 <div id="dynamic-fields" style="display:none;">
                     <div class="form-group">
                         <label>Please select the events you will be attending:</label>
@@ -84,12 +97,31 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${invitedEvents.map(day => `
                                 <h3 class="event-day">${day.day}</h3>
                                 <div class="event-day-buttons">
-                                    ${day.events.map(event => `
-                                        <label class="event-button">
-                                            <input type="checkbox" name="event-${event.toLowerCase().replace(/ /g, '-')}" value="${event}" class="sr-only" ${guestData.Events.split(", ").includes(event) ? 'checked' : ''}>
-                                            <span class="event-button-content">${event}</span>
-                                        </label>
-                                    `).join('')}
+                                    ${day.events.map(event => {
+                                        const eventId = event.toLowerCase().replace(/ /g, '-');
+                                        const isWeddingEvent = eventId === 'wedding-ceremony-and-reception';
+                                        return `
+                                        <div class="event-container">
+                                            <label class="event-button">
+                                                <input type="checkbox" name="event-${eventId}" value="${event}" class="sr-only event-checkbox" ${guestData.Events.split(", ").includes(event) ? 'checked' : ''}>
+                                                <span class="event-button-content">${event}</span>
+                                            </label>
+                                            <div class="event-attendance-details" style="display: none;">
+                                                <div class="form-group adults-input">
+                                                    <label for="adults-${eventId}">Attendees</label>
+                                                    <input type="number" id="adults-${eventId}" name="adults-${eventId}" min="0" max="${attendees.length}" value="${guestData[`${EVENT_TO_COLUMN_MAP[eventId]}Adults`] || 0}">
+                                                </div>
+                                                <div class="kids-input-container" style="display: none;">
+                                                    ${!isWeddingEvent ? `
+                                                    <div class="form-group">
+                                                        <label for="kids-${eventId}">Kids (under 18)</label>
+                                                        <input type="number" id="kids-${eventId}" name="kids-${eventId}" min="0" max="5" value="${guestData[`${EVENT_TO_COLUMN_MAP[eventId]}Kids`] || 0}">
+                                                    </div>
+                                                    ` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `}).join('')}
                                 </div>
                             `).join('')}
                         </div>
@@ -116,36 +148,113 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dynamicFields = document.getElementById('dynamic-fields');
         const attendeeCheckboxes = document.querySelectorAll('input[name="attending_guests"]');
+        const eventCheckboxes = document.querySelectorAll('.event-checkbox');
+        const bringingKidsCheckbox = document.getElementById('bringing-kids-checkbox');
+        const form = document.getElementById('guest-rsvp-form');
 
         function updateDynamicFields() {
-            const anyAttending = Array.from(attendeeCheckboxes).some(checkbox => checkbox.checked);
+            const attendingCount = document.querySelectorAll('input[name="attending_guests"]:checked').length;
+            const anyAttending = attendingCount > 0;
             dynamicFields.style.display = anyAttending ? 'block' : 'none';
+
+            const adultInputs = form.querySelectorAll('.adults-input input[type="number"]');
+            adultInputs.forEach(input => {
+                input.max = attendingCount;
+            });
+        }
+
+        function toggleEventAttendanceDetails(event) {
+            const details = event.target.closest('.event-container').querySelector('.event-attendance-details');
+            if (details) {
+                details.style.display = event.target.checked ? 'block' : 'none';
+            }
+        }
+
+        function toggleKidsInputs() {
+            const kidsInputContainers = form.querySelectorAll('.kids-input-container');
+            kidsInputContainers.forEach(container => {
+                container.style.display = bringingKidsCheckbox.checked ? 'block' : 'none';
+            });
         }
 
         attendeeCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateDynamicFields);
         });
 
-        // Initial check in case of pre-filled form
-        updateDynamicFields();
+        eventCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', toggleEventAttendanceDetails);
+            toggleEventAttendanceDetails({ target: checkbox });
+        });
 
-        document.getElementById('guest-rsvp-form').addEventListener('submit', handleRsvpSubmission);
+        bringingKidsCheckbox.addEventListener('change', toggleKidsInputs);
+
+        updateDynamicFields();
+        toggleKidsInputs();
+
+        form.addEventListener('submit', handleRsvpSubmission);
     }
 
     function handleRsvpSubmission(e) {
         e.preventDefault();
         const rsvpStatus = document.getElementById('rsvp-status');
         rsvpStatus.textContent = 'Sending...';
+        rsvpStatus.style.color = '#333';
 
         const form = e.target;
+
+        const errorInputs = form.querySelectorAll('.error');
+        errorInputs.forEach(input => input.classList.remove('error'));
+
         const formData = new FormData(form);
         const confirmedGuests = Array.from(form.querySelectorAll('input[name="attending_guests"]:checked')).map(cb => cb.value);
+        const confirmedGuestsCount = confirmedGuests.length;
 
-        if (confirmedGuests.length === 0) {
+        if (confirmedGuestsCount === 0) {
             formData.append('Attending', 'No, with regrets.');
         } else {
             formData.append('Attending', 'Yes, with pleasure!');
             formData.append('ConfirmedGuests', confirmedGuests.join(', '));
+        }
+
+        const eventCheckboxes = form.querySelectorAll('.event-checkbox:checked');
+        let validationError = false;
+
+        for (const checkbox of eventCheckboxes) {
+            const eventContainer = checkbox.closest('.event-container');
+            const eventName = checkbox.value;
+            const eventId = checkbox.name.replace('event-', '');
+            const adultsInput = eventContainer.querySelector(`#adults-${eventId}`);
+            const kidsInput = eventContainer.querySelector(`#kids-${eventId}`);
+            
+            const adults = parseInt(adultsInput.value, 10) || 0;
+            const kids = kidsInput ? (parseInt(kidsInput.value, 10) || 0) : 0;
+
+            if (adults > confirmedGuestsCount) {
+                rsvpStatus.textContent = `For the ${eventName} event, the number of adults (${adults}) cannot exceed the number of confirmed guests (${confirmedGuestsCount}).`;
+                rsvpStatus.style.color = '#a94442';
+                adultsInput.classList.add('error');
+                adultsInput.focus();
+                validationError = true;
+                break;
+            }
+
+            if (kids > 5) {
+                rsvpStatus.textContent = `For the ${eventName} event, the number of kids cannot exceed 5.`;
+                rsvpStatus.style.color = '#a94442';
+                kidsInput.classList.add('error');
+                kidsInput.focus();
+                validationError = true;
+                break;
+            }
+            
+            formData.append(`${EVENT_TO_COLUMN_MAP[eventId]}Adults`, adults);
+            if (kidsInput) {
+                formData.append(`${EVENT_TO_COLUMN_MAP[eventId]}Kids`, kids);
+            }
+        }
+
+        if (validationError) {
+            return; 
         }
 
         fetch(SCRIPT_URL, { method: 'POST', body: formData })
@@ -161,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => {
                 console.error('Submit Error!', error);
                 rsvpStatus.textContent = 'An error occurred. Please try again.';
+                rsvpStatus.style.color = '#a94442';
             });
     }
 });
