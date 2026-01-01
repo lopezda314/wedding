@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="checkbox" id="bringing-kids-checkbox">
                         <span>Are you bringing any children (under 18)?</span>
                     </label>
-                    <a href="faq.html#kids" target="_blank" class="faq-link">See our FAQ about kids</a>
+                    <a href="/faq.html#kids" target="_blank" class="faq-link">See our FAQ about kids</a>
                 </div>
                 <div id="dynamic-fields" style="display:none;">
                     <div class="form-group">
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="dietary-restrictions">Any dietary restrictions or allergies for you or any members of your party?</label>
+                        <label for="dietary-restrictions">Any dietary restrictions or allergies for you or any members of your party? We will be having a set menu, so please specify the name of the person and their dietary restriction.</label>
                         <input type="text" id="dietary-restrictions" name="DietaryRestrictions" placeholder="David: Vegan, Amanda: No fish and gluten-free" value="${guestData.DietaryRestrictions || ''}">
                     </div>
                     <div class="form-group">
