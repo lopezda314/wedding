@@ -176,8 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 scores.forEach(entry => {
                     // Only show if valid and score is positive
                     if (entry && entry.score > 0) {
+                        const fullName = entry.name;
+                        const firstName = fullName.trim().split(' ')[0];
                         const scoreEntry = document.createElement('div');
-                        scoreEntry.textContent = `${entry.name}: ${entry.score}`;
+                        scoreEntry.textContent = `${firstName}: ${entry.score}`;
                         gameColumn.appendChild(scoreEntry);
                     }
                 });
