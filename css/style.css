@@ -1077,7 +1077,7 @@ gmp-map {
 
 .game-feedback {
     height: 16px;
-    margin-top: 10px;
+    margin: 10px 0 26px;
     font-weight: bold;
 }
 
@@ -1152,7 +1152,7 @@ gmp-map {
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     max-width: 500px;
-    margin: 20px -1.75rem;
+    margin: 26px -1.75rem;
     padding-top: 12px;
 }
 
