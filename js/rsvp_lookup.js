@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const eventCheckboxes = form.querySelectorAll('.event-checkbox:checked');
+        const bringingKidsCheckbox = document.getElementById('bringing-kids-checkbox');
         let validationError = false;
 
         for (const checkbox of eventCheckboxes) {
@@ -227,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const kidsInput = eventContainer.querySelector(`#kids-${eventId}`);
             
             const adults = parseInt(adultsInput.value, 10) || 0;
-            const kids = kidsInput ? (parseInt(kidsInput.value, 10) || 0) : 0;
+            const kids = bringingKidsCheckbox.checked && kidsInput ? (parseInt(kidsInput.value, 10) || 0) : 0;
 
             if (adults > confirmedGuestsCount) {
                 rsvpStatus.textContent = `For the ${eventName} event, the number of adults (${adults}) cannot exceed the number of confirmed guests (${confirmedGuestsCount}).`;
