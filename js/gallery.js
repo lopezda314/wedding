@@ -1,4 +1,4 @@
-const imageUrls = [
+const rawImageUrls = [
     // Engagement pics
     "https://res.cloudinary.com/dhv1bk5rh/image/upload/c_fit,w_1200,h_1200/f_auto/q_auto/Amanda_David-184_r1osf2.jpg",
     "https://res.cloudinary.com/dhv1bk5rh/image/upload/c_fit,w_1200,h_1200/f_auto/q_auto/Amanda_David-339_1_un4vfv.jpg",
@@ -72,6 +72,8 @@ const imageUrls = [
     "https://res.cloudinary.com/dhv1bk5rh/image/upload/c_fit,w_1200,h_1200/f_auto/q_auto/00100sPORTRAIT_00100_BURST20180922124425012_COVER_viyp3d"
 ];
 
+const imageUrls = shuffle(rawImageUrls);
+
 document.addEventListener('DOMContentLoaded', function() {
     initGallery();
 });
@@ -105,7 +107,7 @@ function loadMoreImages() {
 
 function initGallery(galleryItems) {
 
-    if (window.innerWidth < 768) {
+    if (galleryItems && window.innerWidth < 768) {
         galleryItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -152,6 +154,19 @@ function initGallery(galleryItems) {
             });
         });
     }
+}
+
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
