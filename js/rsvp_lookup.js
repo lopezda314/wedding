@@ -15,14 +15,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const rsvpSection = document.getElementById('rsvp-section');
     const lookupSection = document.getElementById('lookup-section');
 
+    const guestName = localStorage.getItem('guestName');
+    if (guestName) {
+        lookupAndDisplayRsvp(guestName);
+    }
+
     lookupForm.addEventListener('submit', e => {
         e.preventDefault();
         const nameInput = document.getElementById('lookup-name');
         const guestName = nameInput.value.trim();
         if (!guestName) return;
 
-        lookupStatus.textContent = 'Searching...';
+        lookupAndDisplayRsvp(guestName);
+    });
+
+    function lookupAndDisplayRsvp(guestName) {
         lookupStatus.style.color = '#333';
+        lookupStatus.textContent = 'Searching...';
+        lookupSection.style.display = 'none';
 
         fetch(`${SCRIPT_URL}?name\=${guestName}`)
             .then(response => response.json())
@@ -35,14 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     lookupStatus.textContent = "We couldn't find that name. Please ensure it matches your invitation exactly.";
                     lookupStatus.style.color = '#a94442';
+                    lookupSection.style.display = 'block';
                 }
             })
             .catch(error => {
                 console.error('Lookup Error!', error);
                 lookupStatus.textContent = 'An error occurred. Please try again.';
                 lookupStatus.style.color = '#a94442';
+                lookupSection.style.display = 'block';
             });
-    });
+    }
 
     function displayRsvpForm(guestData) {
         lookupSection.style.display = 'none';

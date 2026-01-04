@@ -2,6 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnWXjFefXsSW45bEYuC32qut0yj3H_7P63VIlh8GfQjWflRY_zUXxT_cc-rBGGu8_MEw/exec';
     // --- END CONFIGURATION ---
+
+    function gateGames() {
+        const guestName = localStorage.getItem('guestName');
+        const isGamesPage = window.location.pathname.endsWith('games.html');
+
+        if (isGamesPage) {
+            const namePromptContainer = document.getElementById('name-prompt-container');
+            const gamesContainer = document.getElementById('games-container');
+
+            if (guestName) {
+                gamesContainer.style.display = 'block';
+            } else {
+                namePromptContainer.style.display = 'block';
+                const namePromptForm = document.getElementById('name-prompt-form');
+                namePromptForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('guest-name-input');
+                    const guestName = nameInput.value.trim();
+                    if (guestName) {
+                        localStorage.setItem('guestName', guestName);
+                        namePromptContainer.style.display = 'none';
+                        gamesContainer.style.display = 'block';
+                    }
+                });
+            }
+        } else {
+            if (!guestName) {
+                window.location.href = 'games.html';
+            }
+        }
+    }
+
     function recordHighScore(game, score) {
         let guestName = localStorage.getItem('guestName');
 
@@ -49,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function init() {
+        gateGames();
         if (document.getElementById('spelling-bee-template')) {
             initSpellingBee();
         }

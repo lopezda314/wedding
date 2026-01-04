@@ -69,6 +69,17 @@ body {
     box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
+#guest-name-input {
+    padding: 10px;
+    margin-bottom: 1rem;
+    margin-right: 24px;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    font-family: 'Darker Grotesque', serif;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
 #login-form button {
     width: 100%;
     padding: 12px;
@@ -203,6 +214,10 @@ body {
     }
     .mobile-nav-toggle[aria-expanded="true"]::after {
         transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-open .main-content {
+        display: none;
     }
 }
 
@@ -1274,4 +1289,13 @@ gmp-map {
     max-width: 600px;
     width: 100%;
     height: auto;
+}
+
+#header {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    background-color: #FFFDF7;
+    z-index: 998; /* Below the mobile nav overlay */
+    width: 100%;
 }

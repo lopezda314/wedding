@@ -17,33 +17,46 @@
 <body>
 
     <main class="main-content">
-        <div class="page-header">
-            <h1>Games</h1>
+        <div id="name-prompt-container" style="display: none;">
+            <div class="page-header">
+                <h1>Games</h1>
+            </div>
+            <p class="rsvp-page">Please enter your name as it is written on your invitation to play.</p>
+            <form id="name-prompt-form">
+                <input type="text" id="guest-name-input" required>
+                <button type="submit" class="button">Play</button>
+            </form>
         </div>
 
-        <div id="leaderboard" style="padding-bottom: 24px;"></div>
+        <div id="games-container" style="display: none;">
+            <div class="page-header">
+                <h1>Games</h1>
+            </div>
 
-        <div class="game-grid">
-            <a href="spelling-bee.html" class="game-item">
-                <img src="img/SpellingBee.svg" alt="Spelling Bee">
-                <h3>Spelling Bee</h3>
-            </a>
-            <a href="wordle.html" class="game-item">
-                <img src="" alt="Wordle">
-                <h3>Wordle</h3>
-            </a>
-            <a href="crossword-mini.html" class="game-item">
-                <img src="img/CrosswordMini.png" alt="Crossword Mini">
-                <h3>Crossword Mini</h3>
-            </a>
-            <a href="connections.html" class="game-item game-item-span">
-                <img src="" alt="Connections">
-                <h3>Connections</h3>
-            </a>
-            <a href="dino-game.html" class="game-item game-item-span">
-                <img src="https://res.cloudinary.com/duk0nthsi/image/upload/f_auto/q_auto/v1754954198/pixil-frame-0_1_xh7orx.png" alt="Bike Game">
-                <h3>David & Amanda Biking The World</h3>
-            </a>
+            <div id="leaderboard" style="padding-bottom: 24px;"></div>
+
+            <div class="game-grid">
+                <a href="spelling-bee.html" class="game-item">
+                    <img src="img/SpellingBee.svg" alt="Spelling Bee">
+                    <h3>Spelling Bee</h3>
+                </a>
+                <a href="wordle.html" class="game-item">
+                    <img src="" alt="Wordle">
+                    <h3>Wordle</h3>
+                </a>
+                <a href="crossword-mini.html" class="game-item">
+                    <img src="img/CrosswordMini.png" alt="Crossword Mini">
+                    <h3>Crossword Mini</h3>
+                </a>
+                <a href="connections.html" class="game-item game-item-span">
+                    <img src="" alt="Connections">
+                    <h3>Connections</h3>
+                </a>
+                <a href="dino-game.html" class="game-item game-item-span">
+                    <img src="https://res.cloudinary.com/duk0nthsi/image/upload/f_auto/q_auto/v1754954198/pixil-frame-0_1_xh7orx.png" alt="Bike Game">
+                    <h3>David & Amanda Biking The World</h3>
+                </a>
+            </div>
         </div>
     </main>
 
