@@ -1,7 +1,7 @@
 // js/rsvp_lookup.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybha4fqJNyln8Pcbfqdys09F0DFXYVg8VZdwvlof2zNrNTxyqez4mLs97EoaxTvnG2jA/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnWXjFefXsSW45bEYuC32qut0yj3H_7P63VIlh8GfQjWflRY_zUXxT_cc-rBGGu8_MEw/exec';
     const EVENT_TO_COLUMN_MAP = {
         'welcome-cocktail-and-paella-celebration': 'WelcomeCocktail',
         'padel': 'Padel',

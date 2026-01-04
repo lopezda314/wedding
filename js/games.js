@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybha4fqJNyln8Pcbfqdys09F0DFXYVg8VZdwvlof2zNrNTxyqez4mLs97EoaxTvnG2jA/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnWXjFefXsSW45bEYuC32qut0yj3H_7P63VIlh8GfQjWflRY_zUXxT_cc-rBGGu8_MEw/exec';
     // --- END CONFIGURATION ---
     function recordHighScore(game, score) {
         let guestName = localStorage.getItem('guestName');
@@ -770,6 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         shuffleButton.addEventListener('click', () => {
+            recordHighScore('SpellingBee', 200);
             const outerButtons = [];
             buttons.forEach((button, i) => {
                 if (i !== centerIndex) {
