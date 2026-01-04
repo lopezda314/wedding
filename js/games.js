@@ -173,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadingIndicator.remove();
 
                 // 3. Render the scores as soon as they arrive
+                let scoresShown = false;
                 scores.forEach(entry => {
                     // Only show if valid and score is positive number
                     if (entry && typeof entry.score === 'number' && entry.score > 0) {
@@ -181,8 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         const scoreEntry = document.createElement('div');
                         scoreEntry.textContent = `${firstName}: ${entry.score}`;
                         gameColumn.appendChild(scoreEntry);
+                        scoresShown = true;
                     }
                 });
+
+                if (!scoresShown) {
+                        const noScoresElement = document.createElement('div');
+                        noScoresElement.textContent = `No high scores`;
+                        gameColumn.appendChild(noScoresElement);
+                }
             });
         });
     }
@@ -1082,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (correctGroups === 4) {
                         if (confirm(`You've found all connections! Do you want to record your achievement?`)) {
-                            recordHighScore('Connections', numGuesses);
+                            recordHighScore('Connections', numGuesses+1);
                         }
                     }
                 } else {
