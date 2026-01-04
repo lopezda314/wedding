@@ -811,6 +811,8 @@ gmp-map {
 .too-big-img {
     max-width: 75px;
     object-fit: contain;
+    height: 100px;
+    margin-bottom: 1rem;
 }
 
 .game-item {
