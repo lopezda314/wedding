@@ -707,6 +707,11 @@ object-fit: contain;
     padding: 8px;
     margin-top: 4px;
     margin-bottom: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-family: 'Darker Grotesque', serif;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
 /* --- Accommodations Styles --- */
