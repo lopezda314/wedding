@@ -931,34 +931,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const acrossCluesList = document.getElementById('across-clues');
         const downCluesList = document.getElementById('down-clues');
         const checkButton = document.getElementById('crossword-check');
+        const numberedCells = [1, 2, 3, 4, 5, 10, 15, 20];
 
         const puzzle = {
             solution: [
-                ['C', 'Y', 'C', 'L', 'E'],
-                ['O', '', 'A', '', 'A'],
-                ['M', 'A', 'R', 'R', 'Y'],
-                ['P', '', 'I', '', 'L'],
-                ['L', 'O', 'V', 'E', 'S']
+                ['', 'B', 'A', 'K', 'E'],
+                ['E', 'L', 'T', 'O', 'N'],
+                ['D', 'A', 'I', 'R', 'Y'],
+                ['A', 'M', 'L', 'E', 'E'],
+                ['M', 'E', 'T', 'A', '']
             ],
             grid: [
-                [1, 2, 3, 4, 5],
-                [6, '', 7, '', 8],
-                [9, 10, 11, 12, 13],
-                [14, '', 15, '', 16],
-                [17, 18, 19, 20, 21]
+                ['', 1, 2, 3, 4],
+                [5, 6, 7, 8, 9],
+                [10, 11, 12, 13, 14],
+                [15, 16, 17, 18, 19],
+                [20, 21, 22, 23, '']
             ],
             clues: {
                 across: [
-                    { num: 1, clue: 'Wedding transport' },
-                    { num: 6, clue: 'To get hitched' },
-                    { num: 9, clue: 'What this is all about' },
+                    { num: 1, clue: 'The Great British _____ Off' },
+                    { num: 5, clue: "First name of 'Bennie and the Jets' singer" },
+                    { num: 10, clue: 'Type of food avoided by those with lactose intolerance' },
+                    { num: 15, clue: "The bride's first two initials and last name"},
+                    { num: 20, clue: "Puzzle-within-a-puzzle (that you won't find here)" },
                 ],
                 down: [
-                    { num: 1, clue: 'City where it all started' },
-                    { num: 2, clue: 'Where we met' },
-                    { num: 3, clue: 'Country of the proposal' },
-                    { num: 4, clue: 'Last name of the bride' },
-                    { num: 5, clue: 'Last name of the groom' }
+                    { num: 1, clue: '(Version control) finger-pointing' },
+                    { num: 2, clue: 'Leaning to one side' },
+                    { num: 3, clue: 'Where the bride and groom biked 365 miles along the Han and Nakdong Rivers' },
+                    { num: 4, clue: 'Spanish letter topped with a tilde, spelled out' },
+                    { num: 5, clue: 'A semi-hard cheese from the Netherlands, or what beavers would build if they could use technology' }
                 ]
             }
         };
@@ -966,9 +969,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create grid
         for (let r = 0; r < 5; r++) {
             for (let c = 0; c < 5; c++) {
+                const gridVal = puzzle.grid[r][c];
                 const cell = document.createElement('div');
                 cell.classList.add('crossword-cell');
-                if (puzzle.grid[r][c] === '') {
+                if (gridVal === '') {
                     cell.classList.add('black');
                 } else {
                     const input = document.createElement('input');
@@ -977,6 +981,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.dataset.row = r;
                     input.dataset.col = c;
                     cell.appendChild(input);
+                }
+
+                if (numberedCells.includes(gridVal)) {
+                    const number = document.createElement('span');
+                    number.textContent = puzzle.grid[r][c];
+                    number.classList.add('crossword-cell-number') ;
+                    cell.appendChild(number);
                 }
                 gridElement.appendChild(cell);
             }

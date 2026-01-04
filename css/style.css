@@ -1092,13 +1092,15 @@ gmp-map {
     display: flex;
     justify-content: center;
     gap: 40px;
+    flex-direction: column;
 }
 
 #crossword-mini-grid {
     display: grid;
-    grid-template-columns: repeat(5, 40px);
-    grid-template-rows: repeat(5, 40px);
+    grid-template-columns: repeat(5, 41px);
+    grid-template-rows: repeat(5, 41px);
     border: 2px solid black;
+    align-self: center;
 }
 
 .crossword-cell {
@@ -1111,9 +1113,15 @@ gmp-map {
     position: relative;
 }
 
+.crossword-cell-number {
+    font-size: 10px;
+    position: absolute;
+    left: 4px;
+}
+
 .crossword-cell input {
-    width: 100%;
-    height: 100%;
+    width: 36px;
+    height: 36px;
     border: none;
     text-align: center;
     font-size: 1.5rem;
@@ -1134,6 +1142,11 @@ gmp-map {
 .crossword-clues {
     display: flex;
     gap: 20px;
+    margin-bottom: 20px;
+}
+
+.clue-list-container {
+    flex: 1;
 }
 
 .clue-list-container h3 {
