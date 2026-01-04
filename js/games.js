@@ -30,23 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result === 'success') {
-                if (game === 'SpellingBee') {
-                    // TODO: UPDATE TO BE SCORE SO THAT GENIUS VS QUEEN BEE CAN BE RECORDED
-                    localStorage.setItem('geniusAchieved', 'true');
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    if (game === 'SpellingBee') {
+                        // TODO: UPDATE TO BE SCORE SO THAT GENIUS VS QUEEN BEE CAN BE RECORDED
+                        localStorage.setItem('geniusAchieved', 'true');
+                    }
+                    alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
+                } else {
+                    alert("There was an error recording your high score. Please try again.");
+                    console.error('Error recording high score:', data.message);
                 }
-                alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
-            } else {
+            })
+            .catch(error => {
                 alert("There was an error recording your high score. Please try again.");
-                console.error('Error recording high score:', data.message);
-            }
-        })
-        .catch(error => {
-            alert("There was an error recording your high score. Please try again.");
-            console.error('Error:', error);
-        });
+                console.error('Error:', error);
+            });
     }
 
     function init() {
@@ -70,11 +70,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function initScores(gameName) {
+        for (let i = 1; i < 4; i++) {
+            const leader = gameName + 'Leader' + i;
+            const score = gameName + 'Score' + i;
+            const name = gameName + 'Name' + i;
+
+            fetch(`${SCRIPT_URL}?name\=${leader}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        localStorage.setItem(score, data.guestData.LeaderboardScore);
+                        localStorage.setItem(name, data.guestData.LeaderboardName);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lookup Error!', error);
+                });
+        }
+    }
+
     function initLeaderboard() {
         const leaderboard = document.getElementById('leaderboard');
         const header = document.createElement('h2');
         header.textContent = 'Leaderboard';
         leaderboard.appendChild(header);
+
+        // Look up and save high scores in local storage.
+        initScores('SpellingBee');
+        initScores('Wordle');
+        initScores('Bike');
+        initScores('Connections');
 
         const scoreRow = document.createElement('div');
         scoreRow.classList.add('leaderboard-grid');
@@ -83,9 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const sbName = document.createElement('h3');
         sbName.textContent = "Spelling Bee";
         sbScore.appendChild(sbName);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 1; i < 4; i++) {
+            let scoreKey = 'SpellingBeeScore' + i;
+            let scoreValue = localStorage.getItem(scoreKey);
+            if (scoreValue <= 0) {
+                break;
+            }
+
+            let nameKey = 'SpellingBeeName' + i;
             const playerScore = document.createElement('div');
-            playerScore.textContent = "Enoki: 100";
+            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
             sbScore.appendChild(playerScore);
         }
         scoreRow.appendChild(sbScore);
@@ -94,9 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const wordleName = document.createElement('h3');
         wordleName.textContent = "Wordle";
         wordleScore.appendChild(wordleName);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 1; i < 4; i++) {
+            let scoreKey = 'WordleScore' + i;
+            let scoreValue = localStorage.getItem(scoreKey);
+            if (scoreValue <= 0) {
+                break;
+            }
+
+            let nameKey = 'WordleName' + i;
             const playerScore = document.createElement('div');
-            playerScore.textContent = "Enoki: 100";
+            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
             wordleScore.appendChild(playerScore);
         }
         scoreRow.appendChild(wordleScore);
@@ -105,9 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const bikeName = document.createElement('h3');
         bikeName.textContent = "Bike Game";
         bikeScore.appendChild(bikeName);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 1; i < 4; i++) {
+            let scoreKey = 'BikeScore' + i;
+            let scoreValue = localStorage.getItem(scoreKey);
+            if (scoreValue <= 0) {
+                break;
+            }
+
+            let nameKey = 'BikeName' + i;
             const playerScore = document.createElement('div');
-            playerScore.textContent = "Enoki: 100";
+            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
             bikeScore.appendChild(playerScore);
         }
         scoreRow.appendChild(bikeScore);
@@ -116,9 +163,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const connectionName = document.createElement('h3');
         connectionName.textContent = "Connections";
         connectionScore.appendChild(connectionName);
-        for (let i = 0; i < 3; i++) {
+        for (let i = 1; i < 4; i++) {
+            let scoreKey = 'ConnectionsScore' + i;
+            let scoreValue = localStorage.getItem(scoreKey);
+            if (scoreValue <= 0) {
+                break;
+            }
+
+            let nameKey = 'ConnectionsName' + i;
             const playerScore = document.createElement('div');
-            playerScore.textContent = "Enoki: 100";
+            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
             connectionScore.appendChild(playerScore);
         }
         scoreRow.appendChild(connectionScore);
@@ -169,8 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function drawRoad() {
             ctx.beginPath();
-            ctx.moveTo(0, canvas.height-5);
-            ctx.lineTo(canvas.width, canvas.height-5);
+            ctx.moveTo(0, canvas.height - 5);
+            ctx.lineTo(canvas.width, canvas.height - 5);
             ctx.strokeStyle = 'black';
             ctx.stroke();
         }
@@ -207,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillStyle = 'black';
             ctx.font = '30px Arial';
             ctx.textAlign = 'center';
-            if(window.matchMedia("(any-hover:none)").matches) {
+            if (window.matchMedia("(any-hover:none)").matches) {
                 ctx.fillText('Tap to start', canvas.width / 2, canvas.height / 2);
             } else {
                 ctx.fillText('Press space to start', canvas.width / 2, canvas.height / 2);
@@ -373,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (key == 'BACKSPACE') {
                     keyElement.textContent = "\u232B";
                 } else {
-                keyElement.textContent = key;
+                    keyElement.textContent = key;
                 }
                 if (key === 'ENTER' || key === 'BACKSPACE') {
                     keyElement.classList.add('large');
@@ -772,7 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('sb-foundWords', JSON.stringify(foundWords));
                 localStorage.setItem('sb-score', score);
                 updateRank();
-            }  else if (validPangramsSet.has(word)) {
+            } else if (validPangramsSet.has(word)) {
                 const points = word.length + 7; // Pangrams get +7 bonus
                 foundWords.push(word);
                 wordList.innerHTML += `<li>${word}</li>`;
