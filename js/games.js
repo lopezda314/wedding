@@ -70,87 +70,87 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Helper function to fetch top 3 scores for a single game
-async function getGameScores(gameName) {
-    const promises = [];
-    // We request all 3 leaders for this game in parallel
-    for (let i = 1; i <= 3; i++) {
-        const leaderKey = `${gameName}Leader${i}`;
-        // Create a promise for each fetch
-        const p = fetch(`${SCRIPT_URL}?name=${leaderKey}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    return {
-                        name: data.guestData.LeaderboardName,
-                        score: data.guestData.LeaderboardScore
-                    };
-                }
-                return null;
-            })
-            .catch(error => {
-                console.error(`Error fetching ${leaderKey}`, error);
-                return null;
-            });
-        promises.push(p);
+    async function getGameScores(gameName) {
+        const promises = [];
+        // We request all 3 leaders for this game in parallel
+        for (let i = 1; i <= 3; i++) {
+            const leaderKey = `${gameName}Leader${i}`;
+            // Create a promise for each fetch
+            const p = fetch(`${SCRIPT_URL}?name=${leaderKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        return {
+                            name: data.guestData.LeaderboardName,
+                            score: data.guestData.LeaderboardScore
+                        };
+                    }
+                    return null;
+                })
+                .catch(error => {
+                    console.error(`Error fetching ${leaderKey}`, error);
+                    return null;
+                });
+            promises.push(p);
+        }
+        // Wait for all 3 requests to finish and return the array of results
+        return Promise.all(promises);
     }
-    // Wait for all 3 requests to finish and return the array of results
-    return Promise.all(promises);
-}
 
-function initLeaderboard() {
-    const leaderboard = document.getElementById('leaderboard');
-    leaderboard.innerHTML = ''; // Clear previous content if any
+    function initLeaderboard() {
+        const leaderboard = document.getElementById('leaderboard');
+        leaderboard.innerHTML = ''; // Clear previous content if any
 
-    const header = document.createElement('h2');
-    header.textContent = 'Leaderboard';
-    leaderboard.appendChild(header);
+        const header = document.createElement('h2');
+        header.textContent = 'Leaderboard';
+        leaderboard.appendChild(header);
 
-    const scoreRow = document.createElement('div');
-    scoreRow.classList.add('leaderboard-grid');
-    leaderboard.appendChild(scoreRow);
+        const scoreRow = document.createElement('div');
+        scoreRow.classList.add('leaderboard-grid');
+        leaderboard.appendChild(scoreRow);
 
-    // Define the games we want to show
-    const games = [
-        { key: 'SpellingBee', title: 'Spelling Bee' },
-        { key: 'Wordle', title: 'Wordle' },
-        { key: 'Bike', title: 'Bike Game' },
-        { key: 'Connections', title: 'Connections' }
-    ];
+        // Define the games we want to show
+        const games = [
+            { key: 'SpellingBee', title: 'Spelling Bee' },
+            { key: 'Wordle', title: 'Wordle' },
+            { key: 'Bike', title: 'Bike Game' },
+            { key: 'Connections', title: 'Connections' }
+        ];
 
-    // Loop through each game to create its column
-    games.forEach(game => {
-        // 1. Create the visual structure immediately (so the layout doesn't jump)
-        const gameColumn = document.createElement('div');
-        const gameTitle = document.createElement('h3');
-        gameTitle.textContent = game.title;
-        gameColumn.appendChild(gameTitle);
-        
-        // Add a temporary loading text
-        const loadingIndicator = document.createElement('div');
-        loadingIndicator.textContent = 'Loading...';
-        loadingIndicator.style.fontSize = '0.8em';
-        loadingIndicator.style.color = '#888';
-        gameColumn.appendChild(loadingIndicator);
+        // Loop through each game to create its column
+        games.forEach(game => {
+            // 1. Create the visual structure immediately (so the layout doesn't jump)
+            const gameColumn = document.createElement('div');
+            const gameTitle = document.createElement('h3');
+            gameTitle.textContent = game.title;
+            gameColumn.appendChild(gameTitle);
 
-        scoreRow.appendChild(gameColumn);
+            // Add a temporary loading text
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.textContent = 'Loading...';
+            loadingIndicator.style.fontSize = '0.8em';
+            loadingIndicator.style.color = '#888';
+            gameColumn.appendChild(loadingIndicator);
 
-        // 2. Fetch the data in the background
-        getGameScores(game.key).then(scores => {
-            // Remove loading text
-            loadingIndicator.remove();
+            scoreRow.appendChild(gameColumn);
 
-            // 3. Render the scores as soon as they arrive
-            scores.forEach(entry => {
-                // Only show if valid and score is positive
-                if (entry && entry.score > 0) {
-                    const scoreEntry = document.createElement('div');
-                    scoreEntry.textContent = `${entry.name}: ${entry.score}`;
-                    gameColumn.appendChild(scoreEntry);
-                }
+            // 2. Fetch the data in the background
+            getGameScores(game.key).then(scores => {
+                // Remove loading text
+                loadingIndicator.remove();
+
+                // 3. Render the scores as soon as they arrive
+                scores.forEach(entry => {
+                    // Only show if valid and score is positive
+                    if (entry && entry.score > 0) {
+                        const scoreEntry = document.createElement('div');
+                        scoreEntry.textContent = `${entry.name}: ${entry.score}`;
+                        gameColumn.appendChild(scoreEntry);
+                    }
+                });
             });
         });
-    });
-}
+    }
 
     function initDinoGame() {
         const canvas = document.getElementById('dino-canvas');
@@ -672,17 +672,17 @@ function initLeaderboard() {
                     }
                 } else {
                     if (score >= 428) {
-                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                        } 
+                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                            recordHighScore('SpellingBee', score);
+                        }
                     } else if (score >= 393) {
-                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                        } 
+                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                            recordHighScore('SpellingBee', score);
+                        }
                     } else if (score >= 358) {
-                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                        } 
+                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                            recordHighScore('SpellingBee', score);
+                        }
                     }
                 }
             }
