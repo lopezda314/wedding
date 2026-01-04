@@ -219,6 +219,11 @@ body {
     .nav-open .main-content {
         display: none;
     }
+    
+    .connection-word {
+        padding: 10px;
+        font-size: clamp(0.7rem, 2vw, 1rem);
+    }
 }
 
 
@@ -1163,25 +1168,25 @@ gmp-map {
 #connections-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    max-width: 500px;
-    margin: 26px -1.75rem;
-    padding-top: 12px;
+    gap: 5px;
+    width: 100%;
 }
 
 .connections-grid-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 26px 0 26px -0.4rem;
 }
 
 .connection-word {
     background-color: #efefef;
-    padding: 20px;
+    padding: 15px;
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
     font-weight: bold;
+    font-size: clamp(0.8rem, 2.5vw, 1.2rem);
 }
 
 .connection-word.selected {
