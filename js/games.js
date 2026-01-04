@@ -33,6 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    
+    function getNameForGame(gameKey) {
+        const gameNames = {
+            "SpellingBee": "Spelling Bee",
+            "Wordle": "Wordle",
+            "CrosswordMini": "Crossword Mini",
+            "Connections": "Connections",
+            "DinoGame": "Bike Game"
+        };
+        return gameNames[gameKey] || gameKey;
+    }
 
     function recordHighScore(game, score) {
         let guestName = localStorage.getItem('guestName');
@@ -68,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (game === 'SpellingBee') {
                         localStorage.setItem('geniusAchieved', 'true');
                     }
-                    alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
+                    alert(`Congratulations, ${guestName}! Your high score for ${getNameForGame(game)} has been recorded.`);
                 } else {
                     alert("There was an error recording your high score. Please try again.");
                     console.error('Error recording high score:', data.message);
