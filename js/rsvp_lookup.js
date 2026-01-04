@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="checkbox" id="bringing-kids-checkbox">
                         <span>Are you bringing any children (under 18)?</span>
                     </label>
-                    <a href="/faq.html#kids" target="_blank" class="faq-link">See our FAQ about kids</a>
+                    <a href="faq.html#kids" class="faq-link">See our FAQ about kids</a>
                 </div>
                 <div id="dynamic-fields" style="display:none;">
                     <div class="form-group">
