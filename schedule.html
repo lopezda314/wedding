@@ -21,44 +21,15 @@
         <div class="page-header">
             <h1>Schedule of Events</h1>
         </div>
-        <!-- <img class="divider-squiggle" height="24px" src="https://res.cloudinary.com/dhv1bk5rh/image/upload/v1762485988/Save-the-date-drawn-elements-0024-A5-TABLE-1__13_-removebg-preview_gpyw00.png"></img> -->
 
-        <div id="schedule-family" class="schedule-group" style="display: none;">
-            <div class="event">
-                <h2>Welcome Cocktail & Paella Celebration</h2>
-                <p class="event-time">Sunday, October 11, 2026 | Evening</p>
-                <p class="event-location">Cigarral de las Mercedes</p>
-                <p class="event-details">Join us as we kick off the weekend with drinks and traditional Spanish paella.
-                </p>
-            </div>
-            <div class="event">
-                <h2>Rehearsal Lunch</h2>
-                <p class="event-time">Monday, October 12, 2026 | Afternoon</p>
-                <p class="event-location">Cigarral de las Mercedes</p>
-                <p class="event-details">A special gathering for our immediate family and wedding party.</p>
-            </div>
-            <div class="event">
-                <h2>Wedding Ceremony</h2>
-                <p class="event-time">Tuesday, October 13, 2026 | 5:00 PM</p>
-                <p class="event-location">Cigarral de las Mercedes</p>
-                <p class="event-details">The moment we say "I do". We can't wait to share it with you.</p>
-            </div>
-            <div class="event">
-                <h2>Farewell Brunch</h2>
-                <p class="event-time">Wednesday, October 14, 2026 | Morning</p>
-                <p class="event-location">Cigarral de las Mercedes</p>
-                <p class="event-details">One last get-together to say our goodbyes before you depart.</p>
-            </div>
-        </div>
-
-        <div id="schedule-friends" class="schedule-group" style="display: none;">
+        <div class="schedule-group">
             <div class="event">
                 <h2>Monday, October 12</h2>
                 <div class="subevent">
                     <img class="schedule-image schedule-image-down-more"
                         src="https://res.cloudinary.com/dhv1bk5rh/image/upload/f_auto/q_auto/v1762472749/Save-the-date-drawn-elements-0024-A5-TABLE-1__5_-removebg-preview_azikfy.png"></img>
                     <div class="event-details">
-                        <h3>Tennis & Padel</h3>
+                        <h3>Padel</h3>
                         <p class="event-time">Exact time TBD</p>
                         <p class="event-location">Exact location TBD</p>
                         <p class="event-details">For those of you who arrive early and want to channel your inner Alcaraz - Vamos!</p>
@@ -142,21 +113,6 @@
     </main>
 
     <script src="js/main.js"></script>
-    <script>
-        // This inline script shows the correct schedule based on login
-        document.addEventListener('DOMContentLoaded', () => {
-            const guestGroup = sessionStorage.getItem('guestGroup');
-
-            if (guestGroup === 'family') {
-                document.getElementById('schedule-family').style.display = 'block';
-            } else if (guestGroup === 'friends') {
-                document.getElementById('schedule-friends').style.display = 'block';
-            } else {
-                // Fallback for an unknown group - shows the 'friends' schedule
-                document.getElementById('schedule-friends').style.display = 'block';
-            }
-        });
-    </script>
 </body>
 
 </html>
