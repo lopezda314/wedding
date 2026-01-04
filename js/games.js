@@ -206,9 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // const data = JSON.parse(response.json());
             const data = response.json();
-            alert('hi');
             return data;
         } catch (e) {
             // This usually happens if Google returns an HTML error page
@@ -241,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let highScore = parseInt(localStorage.getItem('dino-high-score')) || 0;
         loadGameProgress().then(cloudData => {
             // Update high score to backend data if it's greater than local score.
-            // alert(oldScore);
             if (cloudData && cloudData.guestData !== undefined) {
                 const oldScore = cloudData.guestData.DinoGame;
                 if (parseInt(oldScore) > parseInt(highScore)) {
