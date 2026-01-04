@@ -176,13 +176,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 scores.forEach(entry => {
                     // Only show if valid and score is positive
                     if (entry && entry.score > 0) {
+                        const fullName = entry.name;
+                        const firstName = fullName.trim().split(' ')[0];
                         const scoreEntry = document.createElement('div');
-                        scoreEntry.textContent = `${entry.name}: ${entry.score}`;
+                        scoreEntry.textContent = `${firstName}: ${entry.score}`;
                         gameColumn.appendChild(scoreEntry);
                     }
                 });
             });
         });
+    }
+
+    // Function to load data from Google Sheet
+    async function loadGameProgress() {
+        const guestName = localStorage.getItem('guestName');
+        // Safety check: Don't fetch if no name exists
+        if (!guestName) {
+            console.warn("No guest name found in local storage.");
+            return null;
+        }
+
+        // FIX 1 & 2: Remove backslash and add encoding
+        const url = `${SCRIPT_URL}?name=${encodeURIComponent(guestName)}`;
+        console.log("Attempting to fetch:", url); // DEBUG LOG
+
+        const response = await fetch(url);
+
+        // FIX 3: Check if the response was actually successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        try {
+            const data = response.json();
+            return data;
+        } catch (e) {
+            // This usually happens if Google returns an HTML error page
+            console.error("Server returned non-JSON response"); 
+            return null;
+        }
     }
 
     function initDinoGame() {
@@ -206,10 +238,22 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        let highScore = parseInt(localStorage.getItem('dino-high-score')) || 0;
+        loadGameProgress().then(cloudData => {
+            // Update high score to backend data if it's greater than local score.
+            if (cloudData && cloudData.guestData !== undefined) {
+                const oldScore = cloudData.guestData.DinoGame;
+                if (parseInt(oldScore) > parseInt(highScore)) {
+                    localStorage.setItem('dino-high-score', oldScore);
+                    highScore = oldScore;
+                    drawScore();
+                }
+            }
+        });
+
         let bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
         let obstacles = [];
         let score = 0;
-        let highScore = localStorage.getItem('dino-high-score') || 0;
         let frame = 0;
         let nextObstacleFrame = 100;
         let gameLoop;
