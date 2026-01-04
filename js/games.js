@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.result === 'success') {
                     if (game === 'SpellingBee') {
-                        // TODO: UPDATE TO BE SCORE SO THAT GENIUS VS QUEEN BEE CAN BE RECORDED
                         localStorage.setItem('geniusAchieved', 'true');
                     }
                     alert(`Congratulations, ${guestName}! Your high score for ${game} has been recorded.`);
@@ -698,6 +697,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("You've reached Genius! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
                     }
+                } else {
+                    if (score >= 428) {
+                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', score);
+                        } 
+                    } else if (score >= 393) {
+                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', score);
+                        } 
+                    } else if (score >= 358) {
+                       if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', score);
+                        } 
+                    }
                 }
             }
 
@@ -705,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const queenBeeAchieved = localStorage.getItem('queenBeeAchieved');
                 if (!queenBeeAchieved) {
                     if (confirm("You've reached Queen Bee! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', 'Queen Bee');
+                        recordHighScore('SpellingBee', score);
                     }
                 }
             }
