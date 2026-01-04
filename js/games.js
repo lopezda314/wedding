@@ -69,115 +69,88 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function initScores(gameName) {
-        for (let i = 1; i < 4; i++) {
-            const leader = gameName + 'Leader' + i;
-            const score = gameName + 'Score' + i;
-            const name = gameName + 'Name' + i;
-
-            fetch(`${SCRIPT_URL}?name\=${leader}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.result === 'success') {
-                        localStorage.setItem(score, data.guestData.LeaderboardScore);
-                        localStorage.setItem(name, data.guestData.LeaderboardName);
-                    }
-                })
-                .catch(error => {
-                    console.error('Lookup Error!', error);
-                });
-        }
+    // Helper function to fetch top 3 scores for a single game
+async function getGameScores(gameName) {
+    const promises = [];
+    // We request all 3 leaders for this game in parallel
+    for (let i = 1; i <= 3; i++) {
+        const leaderKey = `${gameName}Leader${i}`;
+        // Create a promise for each fetch
+        const p = fetch(`${SCRIPT_URL}?name=${leaderKey}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    return {
+                        name: data.guestData.LeaderboardName,
+                        score: data.guestData.LeaderboardScore
+                    };
+                }
+                return null;
+            })
+            .catch(error => {
+                console.error(`Error fetching ${leaderKey}`, error);
+                return null;
+            });
+        promises.push(p);
     }
+    // Wait for all 3 requests to finish and return the array of results
+    return Promise.all(promises);
+}
 
-    function initLeaderboard() {
-        const leaderboard = document.getElementById('leaderboard');
-        const header = document.createElement('h2');
-        header.textContent = 'Leaderboard';
-        leaderboard.appendChild(header);
+function initLeaderboard() {
+    const leaderboard = document.getElementById('leaderboard');
+    leaderboard.innerHTML = ''; // Clear previous content if any
 
-        // Look up and save high scores in local storage.
-        initScores('SpellingBee');
-        initScores('Wordle');
-        initScores('Bike');
-        initScores('Connections');
+    const header = document.createElement('h2');
+    header.textContent = 'Leaderboard';
+    leaderboard.appendChild(header);
 
-        const scoreRow = document.createElement('div');
-        scoreRow.classList.add('leaderboard-grid');
+    const scoreRow = document.createElement('div');
+    scoreRow.classList.add('leaderboard-grid');
+    leaderboard.appendChild(scoreRow);
 
-        const sbScore = document.createElement('div');
-        const sbName = document.createElement('h3');
-        sbName.textContent = "Spelling Bee";
-        sbScore.appendChild(sbName);
-        for (let i = 1; i < 4; i++) {
-            let scoreKey = 'SpellingBeeScore' + i;
-            let scoreValue = localStorage.getItem(scoreKey);
-            if (scoreValue <= 0) {
-                break;
-            }
+    // Define the games we want to show
+    const games = [
+        { key: 'SpellingBee', title: 'Spelling Bee' },
+        { key: 'Wordle', title: 'Wordle' },
+        { key: 'Bike', title: 'Bike Game' },
+        { key: 'Connections', title: 'Connections' }
+    ];
 
-            let nameKey = 'SpellingBeeName' + i;
-            const playerScore = document.createElement('div');
-            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
-            sbScore.appendChild(playerScore);
-        }
-        scoreRow.appendChild(sbScore);
+    // Loop through each game to create its column
+    games.forEach(game => {
+        // 1. Create the visual structure immediately (so the layout doesn't jump)
+        const gameColumn = document.createElement('div');
+        const gameTitle = document.createElement('h3');
+        gameTitle.textContent = game.title;
+        gameColumn.appendChild(gameTitle);
+        
+        // Add a temporary loading text
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.textContent = 'Loading...';
+        loadingIndicator.style.fontSize = '0.8em';
+        loadingIndicator.style.color = '#888';
+        gameColumn.appendChild(loadingIndicator);
 
-        const wordleScore = document.createElement('div');
-        const wordleName = document.createElement('h3');
-        wordleName.textContent = "Wordle";
-        wordleScore.appendChild(wordleName);
-        for (let i = 1; i < 4; i++) {
-            let scoreKey = 'WordleScore' + i;
-            let scoreValue = localStorage.getItem(scoreKey);
-            if (scoreValue <= 0) {
-                break;
-            }
+        scoreRow.appendChild(gameColumn);
 
-            let nameKey = 'WordleName' + i;
-            const playerScore = document.createElement('div');
-            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
-            wordleScore.appendChild(playerScore);
-        }
-        scoreRow.appendChild(wordleScore);
+        // 2. Fetch the data in the background
+        getGameScores(game.key).then(scores => {
+            // Remove loading text
+            loadingIndicator.remove();
 
-        const bikeScore = document.createElement('div');
-        const bikeName = document.createElement('h3');
-        bikeName.textContent = "Bike Game";
-        bikeScore.appendChild(bikeName);
-        for (let i = 1; i < 4; i++) {
-            let scoreKey = 'BikeScore' + i;
-            let scoreValue = localStorage.getItem(scoreKey);
-            if (scoreValue <= 0) {
-                break;
-            }
-
-            let nameKey = 'BikeName' + i;
-            const playerScore = document.createElement('div');
-            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
-            bikeScore.appendChild(playerScore);
-        }
-        scoreRow.appendChild(bikeScore);
-
-        const connectionScore = document.createElement('div');
-        const connectionName = document.createElement('h3');
-        connectionName.textContent = "Connections";
-        connectionScore.appendChild(connectionName);
-        for (let i = 1; i < 4; i++) {
-            let scoreKey = 'ConnectionsScore' + i;
-            let scoreValue = localStorage.getItem(scoreKey);
-            if (scoreValue <= 0) {
-                break;
-            }
-
-            let nameKey = 'ConnectionsName' + i;
-            const playerScore = document.createElement('div');
-            playerScore.textContent = localStorage.getItem(nameKey) + ": " + scoreValue;
-            connectionScore.appendChild(playerScore);
-        }
-        scoreRow.appendChild(connectionScore);
-
-        leaderboard.appendChild(scoreRow);
-    }
+            // 3. Render the scores as soon as they arrive
+            scores.forEach(entry => {
+                // Only show if valid and score is positive
+                if (entry && entry.score > 0) {
+                    const scoreEntry = document.createElement('div');
+                    scoreEntry.textContent = `${entry.name}: ${entry.score}`;
+                    gameColumn.appendChild(scoreEntry);
+                }
+            });
+        });
+    });
+}
 
     function initDinoGame() {
         const canvas = document.getElementById('dino-canvas');
@@ -508,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (guess === secretWord) {
-                const score = numGuesses - currentRow;
+                const score = currentRow + 1;
                 if (confirm(`You win! Do you want to record your win? David and Amanda might use your score for a fun activity at the wedding.`)) {
                     recordHighScore('Wordle', score);
                 }
