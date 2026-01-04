@@ -808,6 +808,11 @@ gmp-map {
     margin-top: 3rem;
 }
 
+.too-big-img {
+    max-width: 75px;
+    object-fit: contain;
+}
+
 .game-item {
     text-align: center;
     border: 1px solid #ddd;
@@ -824,7 +829,7 @@ gmp-map {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.game-item img {
+.game-img {
     max-width: 100px;
     height: 100px;
     margin-bottom: 1rem;
