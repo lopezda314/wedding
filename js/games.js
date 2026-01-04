@@ -1024,10 +1024,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const feedback = document.querySelector('.game-feedback');
         const guessDisplay = document.getElementById('connections-guesses');
         const groups = [
-            { category: 'Fish', difficulty: 1, words: ['Bass', 'Flounder', 'Salmon', 'Trout'] },
-            { category: 'Musical Instruments', difficulty: 2, words: ['Piano', 'Guitar', 'Violin', 'Drum'] },
-            { category: 'Colors', difficulty: 3, words: ['Red', 'Blue', 'Green', 'Yellow'] },
-            { category: 'Planets', difficulty: 4, words: ['Earth', 'Mars', 'Jupiter', 'Saturn'] }
+            { category: 'Outdoor Sports Brands', difficulty: 3, words: ['Trek', 'Patagonia', 'Black Diamond', 'Osprey'] },
+            { category: 'Activities David & Amanda Enjoy', difficulty: 2, words: ['Hike', 'Bike', 'Pickleball', 'Ski'] },
+            { category: 'Board Games David & Amanda Have Played Together', difficulty: 1, words: ['Puerto Rico', 'Scythe', 'Codenames', 'Wingspan'] },
+            { category: 'Destinations Amanda & David Have Visited Together', difficulty: 4, words: ['Taiwan', 'Peru', 'Spain', 'Galapagos'] }
         ];
         let words = groups.flatMap(g => g.words);
         let selectedWords = [];
@@ -1059,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedWords.length === 4) {
                 const correctGroup = groups.find(g => g.words.every(w => selectedWords.includes(w)));
                 if (correctGroup) {
-                    showFeedback(`Correct! Category: ${correctGroup.category}`);
+                    showFeedback(`Correct!<br> Category: ${correctGroup.category}`);
                     correctGroups++;
                     selectedWords.forEach(word => {
                         const el = Array.from(gridElement.children).find(child => child.textContent === word);
@@ -1092,7 +1092,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function showFeedback(message) {
-            feedback.textContent = message;
+            feedback.innerHTML = message;
             feedback.classList.add('fade-in');
 
             setTimeout(() => {
