@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 3. Render the scores as soon as they arrive
                 scores.forEach(entry => {
-                    // Only show if valid and score is positive
-                    if (entry && entry.score > 0) {
+                    // Only show if valid and score is positive number
+                    if (entry && typeof entry.score === 'number' && entry.score > 0) {
                         const fullName = entry.name;
                         const firstName = fullName.trim().split(' ')[0];
                         const scoreEntry = document.createElement('div');
@@ -445,6 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tryAgainButton = document.getElementById('wordle-try-again');
         const secretWord = 'ENOKI';
         const numGuesses = 6;
+        let previousAttempts = 0;
         let currentRow = 0;
         let currentCol = 0;
         let guess = '';
@@ -558,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (guess === secretWord) {
-                const score = currentRow + 1;
+                const score = currentRow + 1 + (previousAttempts * numGuesses);
                 if (confirm(`You win! Do you want to record your win? David and Amanda might use your score for a fun activity at the wedding.`)) {
                     recordHighScore('Wordle', score);
                 }
@@ -568,9 +569,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentRow++;
                 currentCol = 0;
                 guess = '';
-                // TODO add previous attempts to score
                 if (currentRow === numGuesses) {
                     alert(`You lose! Try again to record your score.`);
+                    previousAttempts++;
                     tryAgainButton.classList.remove('hide');
                 }
             }
@@ -833,7 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         shuffleButton.addEventListener('click', () => {
-            recordHighScore('SpellingBee', 200);
             const outerButtons = [];
             buttons.forEach((button, i) => {
                 if (i !== centerIndex) {
@@ -1069,7 +1069,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     selectedWords = [];
 
-                    // TODO keep track of guess count.
                     if (correctGroups === 4) {
                         if (confirm(`You've found all connections! Do you want to record your achievement?`)) {
                             recordHighScore('Connections', numGuesses);
