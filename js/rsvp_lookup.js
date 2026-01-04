@@ -30,8 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function lookupAndDisplayRsvp(guestName) {
-        lookupStatus.textContent = 'Searching...';
         lookupStatus.style.color = '#333';
+        lookupStatus.textContent = 'Searching...';
+        lookupSection.style.display = 'none';
 
         fetch(`${SCRIPT_URL}?name\=${guestName}`)
             .then(response => response.json())
@@ -44,12 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     lookupStatus.textContent = "We couldn't find that name. Please ensure it matches your invitation exactly.";
                     lookupStatus.style.color = '#a94442';
+                    lookupSection.style.display = 'block';
                 }
             })
             .catch(error => {
                 console.error('Lookup Error!', error);
                 lookupStatus.textContent = 'An error occurred. Please try again.';
                 lookupStatus.style.color = '#a94442';
+                lookupSection.style.display = 'block';
             });
     }
 
