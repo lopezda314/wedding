@@ -15,12 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const rsvpSection = document.getElementById('rsvp-section');
     const lookupSection = document.getElementById('lookup-section');
 
+    const guestName = localStorage.getItem('guestName');
+    if (guestName) {
+        lookupAndDisplayRsvp(guestName);
+    }
+
     lookupForm.addEventListener('submit', e => {
         e.preventDefault();
         const nameInput = document.getElementById('lookup-name');
         const guestName = nameInput.value.trim();
         if (!guestName) return;
 
+        lookupAndDisplayRsvp(guestName);
+    });
+
+    function lookupAndDisplayRsvp(guestName) {
         lookupStatus.textContent = 'Searching...';
         lookupStatus.style.color = '#333';
 
@@ -42,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lookupStatus.textContent = 'An error occurred. Please try again.';
                 lookupStatus.style.color = '#a94442';
             });
-    });
+    }
 
     function displayRsvpForm(guestData) {
         lookupSection.style.display = 'none';
