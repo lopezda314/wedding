@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function lookupAndDisplayRsvp(guestName) {
         lookupStatus.style.color = '#333';
         lookupStatus.textContent = 'Searching...';
+        lookupStatus.style.display = 'block';
         lookupSection.style.display = 'none';
 
         fetch(`${SCRIPT_URL}?name\=${guestName}`)
