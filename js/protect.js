@@ -2,7 +2,7 @@
 
 // Check if a 'guestGroup' is stored in the session.
 // sessionStorage is cleared when the browser tab is closed.
-const guestGroup = sessionStorage.getItem('guestGroup');
+const guestGroup = localStorage.getItem('guestGroup');
 
 if (!guestGroup) {
     // If no guest group is found, redirect back to the login page.

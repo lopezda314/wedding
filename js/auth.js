@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (hashedInput === PASSWORDS[group]) {
                 // SUCCESS!
                 // Store the user's group for use on other pages
-                sessionStorage.setItem('guestGroup', group);
+                localStorage.setItem('guestGroup', group);
                 
                 // Redirect to the home page
                 window.location.href = 'home.html';
