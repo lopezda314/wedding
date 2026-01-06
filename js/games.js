@@ -638,10 +638,12 @@ document.addEventListener('DOMContentLoaded', () => {
             "OUTCASTS",
             "ACCOST",
             "ACCOSTS",
+            "ANNATTO",
             "CANNON",
             "CANNOT",
             "CANNONS",
             "CANON",
+            "CANONS",
             "COCOON",
             "COCOONS",
             "COTTON",
@@ -681,26 +683,34 @@ document.addEventListener('DOMContentLoaded', () => {
             "COST",
             "COOT",
             "COOTS",
+            "CONS",
             "NOON",
             "NOUN",
             "NOUNS",
             "ONTO",
             "ONUS",
             "OUST",
+            "OUSTS",
+            "OUTS",
+            "OATS",
             "SNOT",
             "SOOT",
             "SOON",
+            "SONS",
             "TACO",
             "TACOS",
             "TONS",
             "TOON",
+            "TOONS",
             "TOOT",
             "TOOTS",
             "TOSS",
             "TOUT",
             "TOUTS",
             "UNTO",
-        ]; // Placeholder, 462 points total
+            "TOTS",
+            "AUTOS",
+        ]; // Placeholder, 495 points total
         const validWordsSet = new Set(validWords.map(word => word.toUpperCase()));
 
         const validPangrams = [
@@ -736,7 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Great', score: 148 }, // 32%
             { name: 'Amazing', score: 231 }, // 50%
             { name: 'Genius', score: 323 }, // 70%
-            { name: 'Queen Bee', score: 462 }, // 100%
+            { name: 'Queen Bee', score: 495 }, // 100%
         ];
 
         let score = 0;
