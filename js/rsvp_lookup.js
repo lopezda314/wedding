@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             </label>
                                             <div class="event-attendance-details" style="display: none;">
                                                 <div class="form-group adults-input">
-                                                    <label for="adults-${eventId}">Attendees</label>
+                                                    <label for="adults-${eventId}" class="attendees">Attendees</label>
                                                     <input type="number" id="adults-${eventId}" name="adults-${eventId}" min="0" max="${attendees.length}" value="${guestData[`${EVENT_TO_COLUMN_MAP[eventId]}Adults`] || 0}">
                                                 </div>
                                                 <div class="kids-input-container" style="display: none;">
@@ -191,6 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         attendeeCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateDynamicFields);
+        });
+
+        bringingKidsCheckbox.addEventListener('change', () => {
+            const attendeeLabels = document.getElementsByClassName('attendees');
+            for (const attendeeLabel of attendeeLabels) {
+                attendeeLabel.textContent = bringingKidsCheckbox.checked ? 'Adults' : 'Attendees';
+            }
         });
 
         eventCheckboxes.forEach(checkbox => {
