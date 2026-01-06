@@ -113,9 +113,21 @@ body {
 /* --- Main Layout & Navigation --- */
 .main-content {
     max-width: 900px;
-    margin: 0 auto;
     padding: 2rem;
     text-align: center;
+}
+
+/* --- Media Query for Mobile Devices. --- */
+@media (max-width: 768px) {
+    .main-content {
+        margin: 0 auto;
+    }
+}
+/* --- Media Query for Desktop Devices to prevent navbar overlap. --- */
+@media (min-width: 769px) {
+    .main-content {
+        margin: 0 270px;
+    }
 }
 
 .primary-navigation {
