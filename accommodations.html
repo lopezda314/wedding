@@ -30,10 +30,12 @@
             <p>Our venue has a limited number of on-site rooms. Follow the booking steps below to see prices and
                 reserve.</p>
             <div class="booking-steps">
-                <p class="booking-steps-header">Steps to book:</p>
-                <p>1. Visit <a href="https://cigarraldelasmercedes.com/en/">https://cigarraldelasmercedes.com</a></p>
-                <p>2. Enter the dates of your stay</p>
-                <p>3. In the promotional code section, enter the code "AmandayDavid". We have a discounted rate from October 12 to 14.</p>
+                <div class="booking-steps-header">Steps to book:</div>
+                <ol>
+                <li>Visit <a target="_blank" href="https://cigarraldelasmercedes.com/en/">https://cigarraldelasmercedes.com</a>.</ul>
+                <li>In the promotional code section, enter the code "AmandayDavid". We have a discounted rate from October 12 to 14. Dates will be unavailable without the promo code.</ul>
+                <li>Enter the dates of your stay.</ul>
+                </ol>
             </div>
             <p>Note that some Classic rooms can accommodate up to 3 people. To include an additional bed or a cot,
                 please make a note in the observations box when you finish your reservation, or contact the hotel at reservas@cigarraldelasmercedes.com.</p>
@@ -43,8 +45,8 @@
 
         <div class="hotel">
             <h2>Airbnbs</h2>
-            <p>There are lots of Airbnbs nearby! We've compiled a list with a few options to help you get started</p>
-            <a style="text-decoration: none;"
+            <p>There are lots of Airbnbs nearby! We've compiled a list with a few options to help you get started.</p>
+            <a style="text-decoration: none;" target="_blank"
                 href="https://www.airbnb.com/wishlists/invite/3deeeae9-a200-484a-908b-37e0eb153281?s=67&unique_share_id=f4cc9f0c-c432-498b-8a4e-d8a00f97ba80">
                 <div class="airbnb-link">View Airbnb List</div>
             </a>
@@ -134,7 +136,7 @@
             content.classList.add("hotel");
             content.innerHTML = `
         <h3 class="hotel-name">${hotel.name}</h3>
-        <a class="hotel-link" href="${hotel.url}">View on Google Maps</a>
+        <a class="hotel-link" target="_blank" href="${hotel.url}">View on Google Maps</a>
     `;
             return content;
         }

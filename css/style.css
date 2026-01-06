@@ -752,6 +752,10 @@ object-fit: contain;
     margin-bottom: 2em;
 }
 
+ol {
+    margin-top: 12px;
+}
+
 .booking-steps {
     text-align: left;
 }
