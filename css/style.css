@@ -160,6 +160,85 @@ body {
     color: #75130f;
 }
 
+/* --- Mobile Navigation (defaults to hidden) --- */
+.mobile-nav-toggle {
+    display: none; /* Hidden on desktop */
+    position: fixed;
+    z-index: 1000;
+    top: 2rem;
+    right: 2rem;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+/* The hamburger icon lines */
+.mobile-nav-toggle::before,
+.mobile-nav-toggle::after,
+.mobile-nav-toggle span {
+    content: '';
+    display: block;
+    background-color: #333;
+    height: 3px;
+    width: 25px;
+    margin: 5px 0;
+    transition: transform 0.3s ease-out, opacity 0.1s ease-out;
+}
+
+/* --- Media Query for Mobile Devices --- */
+@media (max-width: 768px) {
+    .primary-navigation {
+        /* On mobile, make it a full-screen overlay */
+        position: fixed;
+        inset: 0 0 0 0; /* top, right, bottom, left */
+        background-color: #FFFDF7;
+        z-index: 999;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        /* Hide it by default */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .primary-navigation[data-visible="true"] {
+        /* Show it when toggled */
+        transform: translateY(0);
+    }
+    
+    .primary-navigation a {
+        font-size: 1.5rem;
+    }
+
+    .mobile-nav-toggle {
+        display: block; /* Show the hamburger */
+    }
+
+    /* Animate hamburger to an 'X' when menu is open */
+    .mobile-nav-toggle[aria-expanded="true"] span {
+       opacity: 0;
+    }
+    .mobile-nav-toggle[aria-expanded="true"]::before {
+        transform: translateY(0) rotate(45deg);
+    }
+    .mobile-nav-toggle[aria-expanded="true"]::after {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-open .main-content {
+        display: none;
+    }
+    
+    .connection-word {
+        padding: 10px;
+        font-size: clamp(0.7rem, 2vw, 1rem);
+    }
+}
+
+
 /* --- Homepage Hero Section --- */
 .hero {
     margin-top: 5rem;
@@ -356,99 +435,6 @@ animation: rotate calc(var(--time) * 3) linear 0s infinite;
     background-color: #555;
 }
 
-/* --- Mobile Navigation (defaults to hidden) --- */
-.mobile-nav-toggle {
-    display: none; /* Hidden on desktop */
-    position: absolute;
-    z-index: 1000;
-    top: 1rem;
-    right: 2rem;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-}
-
-/* The hamburger icon lines */
-.mobile-nav-toggle::before,
-.mobile-nav-toggle::after,
-.mobile-nav-toggle span {
-    content: '';
-    display: block;
-    background-color: #333;
-    height: 3px;
-    width: 25px;
-    margin: 5px 0;
-    transition: transform 0.3s ease-out, opacity 0.1s ease-out;
-}
-
-/* --- Media Query for Mobile Devices --- */
-@media (max-width: 768px) {
-    .site-header {
-        width: 100%;
-        background:#FFFDF7;
-        position: sticky;
-        top: 0;
-        z-index: 999;
-    }
-
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.5rem;
-        position: relative; /* For absolute positioning of button */
-    }
-
-    .primary-navigation {
-        /* On mobile, make it a full-screen overlay */
-        position: fixed;
-        inset: 0 0 0 0; /* top, right, bottom, left */
-        background-color: #FFFDF7;
-        z-index: 100;
-        
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-
-        /* Hide it by default */
-        transform: translateY(-100%);
-        transition: transform 0.3s ease-in-out;
-    }
-    
-    .primary-navigation[data-visible="true"] {
-        /* Show it when toggled */
-        transform: translateY(0);
-    }
-    
-    .primary-navigation a {
-        font-size: 1.5rem;
-    }
-
-    .mobile-nav-toggle {
-        display: block; /* Show the hamburger */
-    }
-
-    /* Animate hamburger to an 'X' when menu is open */
-    .mobile-nav-toggle[aria-expanded="true"] span {
-       opacity: 0;
-    }
-    .mobile-nav-toggle[aria-expanded="true"]::before {
-        transform: translateY(0) rotate(45deg);
-    }
-    .mobile-nav-toggle[aria-expanded="true"]::after {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-    .nav-open .main-content {
-        display: none;
-    }
-    
-    .connection-word {
-        padding: 10px;
-        font-size: clamp(0.7rem, 2vw, 1rem);
-    }
-}
 
 /* --- Site Footer --- */
 .site-footer {
@@ -1209,6 +1195,51 @@ gmp-map {
     margin: 26px 0 26px -0.4rem;
 }
 
+/* Container for the solved rows */
+#solved-categories-container {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* The individual solved block */
+.solved-category {
+    padding: 15px;
+    border-radius: 8px; /* Matches standard rounded look */
+    text-align: center;
+    color: black; /* Or white, depending on your difficulty colors */
+    animation: popIn 0.3s ease-out;
+}
+
+.solved-category.correct1 {
+    background-color: #f7de6c;
+}
+
+.solved-category.correct2 {
+    background-color: #a0c35a;
+}
+
+.solved-category.correct3 {
+    background-color: #afc4ef;
+}
+
+.solved-category.correct4 {
+    background-color: #b882c6;
+}
+
+.solved-category .category-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.solved-category .category-words {
+    font-size: 0.9em;
+}
+
 .connection-word {
     background-color: #efefef;
     padding: 15px;
@@ -1220,7 +1251,8 @@ gmp-map {
 }
 
 .connection-word.selected {
-    background-color: #bbde;
+    background-color: #818380;
+    color: #fff;
 }
 
 .connection-word.correct1 {
@@ -1344,4 +1376,13 @@ gmp-map {
     max-width: 600px;
     width: 100%;
     height: auto;
+}
+
+#header {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    background-color: #FFFDF7;
+    z-index: 998; /* Below the mobile nav overlay */
+    width: 100%;
 }

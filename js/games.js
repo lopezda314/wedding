@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
+
     function getNameForGame(gameKey) {
         const gameNames = {
             "SpellingBee": "Spelling Bee",
@@ -198,9 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (!scoresShown) {
-                        const noScoresElement = document.createElement('div');
-                        noScoresElement.textContent = `No high scores`;
-                        gameColumn.appendChild(noScoresElement);
+                    const noScoresElement = document.createElement('div');
+                    noScoresElement.textContent = `No high scores`;
+                    gameColumn.appendChild(noScoresElement);
                 }
             });
         });
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return data;
         } catch (e) {
             // This usually happens if Google returns an HTML error page
-            console.error("Server returned non-JSON response"); 
+            console.error("Server returned non-JSON response");
             return null;
         }
     }
@@ -647,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "COCOON",
             "COCOONS",
             "COTTON",
+            "COTTONS",
             "CUTOUTS",
             "CUTOUT",
             "SONATA",
@@ -710,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "UNTO",
             "TOTS",
             "AUTOS",
-        ]; // Placeholder, 495 points total
+        ]; // Placeholder, 502 points total
         const validWordsSet = new Set(validWords.map(word => word.toUpperCase()));
 
         const validPangrams = [
@@ -746,7 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Great', score: 148 }, // 32%
             { name: 'Amazing', score: 231 }, // 50%
             { name: 'Genius', score: 323 }, // 70%
-            { name: 'Queen Bee', score: 495 }, // 100%
+            { name: 'Queen Bee', score: 502 }, // 100%
         ];
 
         let score = 0;
@@ -982,7 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     { num: 1, clue: 'The Great British _____ Off' },
                     { num: 5, clue: "First name of 'Bennie and the Jets' singer" },
                     { num: 10, clue: 'Type of food avoided by those with lactose intolerance' },
-                    { num: 15, clue: "The bride's first two initials and last name"},
+                    { num: 15, clue: "The bride's first two initials and last name" },
                     { num: 20, clue: "Puzzle-within-a-puzzle (that you won't find here)" },
                 ],
                 down: [
@@ -1015,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (numberedCells.includes(gridVal)) {
                     const number = document.createElement('span');
                     number.textContent = puzzle.grid[r][c];
-                    number.classList.add('crossword-cell-number') ;
+                    number.classList.add('crossword-cell-number');
                     cell.appendChild(number);
                 }
                 gridElement.appendChild(cell);
@@ -1063,17 +1064,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitButton = document.getElementById('connections-submit');
         const feedback = document.querySelector('.game-feedback');
         const guessDisplay = document.getElementById('connections-guesses');
+        const solvedContainer = document.getElementById('solved-categories-container');
         const groups = [
             { category: 'Outdoor Sports Brands', difficulty: 3, words: ['Trek', 'Patagonia', 'Black Diamond', 'Osprey'] },
             { category: 'Activities David & Amanda Enjoy', difficulty: 2, words: ['Hike', 'Bike', 'Pickleball', 'Ski'] },
             { category: 'Board Games David & Amanda Have Played Together', difficulty: 1, words: ['Puerto Rico', 'Scythe', 'Codenames', 'Wingspan'] },
             { category: 'Destinations Amanda & David Have Visited Together', difficulty: 4, words: ['Taiwan', 'Peru', 'Spain', 'Galapagos'] }
         ];
-        let words = groups.flatMap(g => g.words);
-        let selectedWords = [];
-        let correctGroups = 0;
-        let numGuesses = 0;
 
+        // Load State from LocalStorage
+        let savedState = JSON.parse(localStorage.getItem('connections-saved-state')) || { solvedCategories: [], guesses: 0 };
+        let correctGroups = savedState.solvedCategories.length;
+        let numGuesses = savedState.guesses;
+        let selectedWords = [];
+        guessDisplay.textContent = numGuesses;
+
+        // Helper function to create the Solved Row UI
+        function createSolvedRow(group) {
+            const solvedRow = document.createElement('div');
+            solvedRow.classList.add('solved-category');
+            solvedRow.classList.add('correct' + group.difficulty);
+            solvedRow.innerHTML = `
+            <div class="category-title">${group.category}</div>
+            <div class="category-words">${group.words.join(', ')}</div>
+        `;
+            solvedContainer.appendChild(solvedRow);
+        }
+
+        // Helper: Mark a word as solved in the grid
+        function markGridWordAsSolved(word, difficulty) {
+            // Find the element in the grid by text content
+            const el = Array.from(gridElement.children).find(child => child.textContent === word);
+            if (el) {
+                el.classList.remove('selected');
+                el.classList.add('correct');
+                el.classList.add('correct' + difficulty);
+            }
+        }
+
+        let words = groups.flatMap(g => g.words);
         // Shuffle words
         words.sort(() => Math.random() - 0.5);
 
@@ -1095,11 +1124,39 @@ document.addEventListener('DOMContentLoaded', () => {
             gridElement.appendChild(wordElement);
         });
 
+        // Apply Saved State (Color the grid and fill legend)
+        savedState.solvedCategories.forEach(categoryName => {
+            const group = groups.find(g => g.category === categoryName);
+            if (group) {
+                createSolvedRow(group); // Add to top legend
+                group.words.forEach(w => markGridWordAsSolved(w, group.difficulty)); // Color grid
+            }
+        });
+
+        // Check if game was already finished
+        if (savedState.solvedCategories.length === 4) {
+            submitButton.textContent = "Completed";
+            submitButton.disabled = true;
+        }
+
         submitButton.addEventListener('click', () => {
             if (selectedWords.length === 4) {
                 const correctGroup = groups.find(g => g.words.every(w => selectedWords.includes(w)));
                 if (correctGroup) {
-                    showFeedback(`Correct!<br> Category: ${correctGroup.category}`);
+                    // Create the Solved Row Element
+                    const solvedRow = document.createElement('div');
+                    solvedRow.classList.add('solved-category');
+                    solvedRow.classList.add('correct' + correctGroup.difficulty); // Uses your difficulty colors
+
+                    // Content: Category Name in bold, followed by the words
+                    solvedRow.innerHTML = `
+                        <div class="category-title">${correctGroup.category}</div>
+                        <div class="category-words">${correctGroup.words.join(', ')}</div>
+                    `;
+
+                    // Append to the top container
+                    solvedContainer.appendChild(solvedRow);
+
                     correctGroups++;
                     selectedWords.forEach(word => {
                         const el = Array.from(gridElement.children).find(child => child.textContent === word);
@@ -1107,11 +1164,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         el.classList.add('correct' + correctGroup.difficulty);
                         el.classList.remove('selected');
                     });
+
+                    // Update Storage.
+                    savedState.solvedCategories.push(correctGroup.category);
+
                     selectedWords = [];
 
                     if (correctGroups === 4) {
                         if (confirm(`You've found all connections! Do you want to record your achievement?`)) {
-                            recordHighScore('Connections', numGuesses+1);
+                            recordHighScore('Connections', numGuesses + 1);
                         }
                     }
                 } else {
@@ -1127,6 +1188,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Increase guess count.
                 numGuesses++;
                 guessDisplay.textContent = numGuesses;
+
+                // Update Storage.
+                savedState.guesses = numGuesses;
+                localStorage.setItem('connections-saved-state', JSON.stringify(savedState));
             }
         });
 
