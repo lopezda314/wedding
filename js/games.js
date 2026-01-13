@@ -772,6 +772,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            if (currentRank.name === 'Great') {
+                const greatAchieved = localStorage.getItem('greatAchieved');
+                if (!greatAchieved) {
+                    if (confirm("You've reached Great! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', score);
+                    }
+                }
+            }
+
+            if (currentRank.name === 'Amazing') {
+                const amazingAchieved = localStorage.getItem('amazingAchieved');
+                if (!amazingAchieved) {
+                    if (confirm("You've reached Amazing! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
+                        recordHighScore('SpellingBee', score);
+                    }
+                }
+            }
+
             if (currentRank.name === 'Genius') {
                 const geniusAchieved = localStorage.getItem('geniusAchieved');
                 if (!geniusAchieved) {
