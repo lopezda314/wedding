@@ -76,9 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
-                    if (game === 'SpellingBee') {
-                        localStorage.setItem('geniusAchieved', 'true');
-                    }
                     alert(`Congratulations, ${guestName}! Your high score for ${getNameForGame(game)} has been recorded.`);
                 } else {
                     alert("There was an error recording your high score. Please try again.");
@@ -778,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("You've reached Great! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
                     }
+                    localStorage.setItem('greatAchieved', 'true');
                 }
             }
 
@@ -787,6 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("You've reached Amazing! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
                     }
+                    localStorage.setItem('amazingAchieved', 'true');
                 }
             }
 
@@ -796,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("You've reached Genius! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
                     }
+                    localStorage.setItem('geniusAchieved', 'true');
                 } else {
                     if (score >= 428) {
                         if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
@@ -819,6 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (confirm("You've reached Queen Bee! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
                     }
+                    localStorage.setItem('queenBeeAchieved', 'true');
                 }
             }
         }
