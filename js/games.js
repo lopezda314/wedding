@@ -46,6 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function recordHighScore(game, score) {
+        // Show alert message by default if not specified.
+        recordHighScore(game, score, /* showMessage= */ true);
+    }
+
+    function recordHighScore(game, score, showMessage) {
         let guestName = localStorage.getItem('guestName');
 
         if (!guestName) {
@@ -76,14 +81,20 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
-                    alert(`Congratulations, ${guestName}! Your high score for ${getNameForGame(game)} has been recorded.`);
+                    if (showMessage) {
+                        alert(`Congratulations, ${guestName}! Your high score for ${getNameForGame(game)} has been recorded.`);
+                    }
                 } else {
-                    alert("There was an error recording your high score. Please try again.");
+                    if (showMessage) {
+                        alert("There was an error recording your high score. Please try again.");
+                    }
                     console.error('Error recording high score:', data.message);
                 }
             })
             .catch(error => {
-                alert("There was an error recording your high score. Please try again.");
+                if (showMessage) {
+                    alert("There was an error recording your high score. Please try again.");
+                }
                 console.error('Error:', error);
             });
     }
@@ -769,58 +780,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            const enableSpellingBeeScore = localStorage.getItem('enableSpellingBeeScore');
+
             if (currentRank.name === 'Great') {
                 const greatAchieved = localStorage.getItem('greatAchieved');
                 if (!greatAchieved) {
                     if (confirm("You've reached Great! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
                         recordHighScore('SpellingBee', score);
+                        localStorage.setItem('enableSpellingBeeScore', 'true');
                     }
                     localStorage.setItem('greatAchieved', 'true');
+                } else if (enableSpellingBeeScore) {
+                    recordHighScore('SpellingBee', score, /* showMessage= */ false);
                 }
             }
 
-            if (currentRank.name === 'Amazing') {
-                const amazingAchieved = localStorage.getItem('amazingAchieved');
-                if (!amazingAchieved) {
-                    if (confirm("You've reached Amazing! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                    }
-                    localStorage.setItem('amazingAchieved', 'true');
-                }
-            }
-
-            if (currentRank.name === 'Genius') {
-                const geniusAchieved = localStorage.getItem('geniusAchieved');
-                if (!geniusAchieved) {
-                    if (confirm("You've reached Genius! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                    }
-                    localStorage.setItem('geniusAchieved', 'true');
-                } else {
-                    if (score >= 428) {
-                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                            recordHighScore('SpellingBee', score);
-                        }
-                    } else if (score >= 393) {
-                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                            recordHighScore('SpellingBee', score);
-                        }
-                    } else if (score >= 358) {
-                        if (confirm("Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.")) {
-                            recordHighScore('SpellingBee', score);
-                        }
-                    }
+            if (currentRank.name === 'Amazing' || currentRank.name === 'Genius') {
+                // amazingAchieved needs to be checked for players who started before enableSpellingBeeScore was added.
+                if (localStorage.getItem('amazingAchieved') || enableSpellingBeeScore) {
+                    recordHighScore('SpellingBee', score, /* showMessage= */ false);
                 }
             }
 
             if (currentRank.name === 'Queen Bee') {
                 const queenBeeAchieved = localStorage.getItem('queenBeeAchieved');
                 if (!queenBeeAchieved) {
-                    if (confirm("You've reached Queen Bee! Do you want to record your achievement? David and Amanda might use your score for a fun activity at the wedding.")) {
-                        recordHighScore('SpellingBee', score);
-                    }
+                    alert("You've reached Queen Bee!");
                     localStorage.setItem('queenBeeAchieved', 'true');
                 }
+                recordHighScore('SpellingBee', score, /* showMessage= */ false);
             }
         }
 
