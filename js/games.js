@@ -265,18 +265,23 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        let highScore = parseInt(localStorage.getItem('dino-high-score')) || 0;
+        let highScore = parseInt(localStorage.getItem('dino-high-score-new')) || 0;
         loadGameProgress().then(cloudData => {
             // Update high score to backend data if it's greater than local score.
             if (cloudData && cloudData.guestData !== undefined) {
                 const oldScore = cloudData.guestData.DinoGame;
                 if (parseInt(oldScore) > parseInt(highScore)) {
-                    localStorage.setItem('dino-high-score', oldScore);
+                    localStorage.setItem('dino-high-score-new', oldScore);
                     highScore = oldScore;
                     drawScore();
                 }
             }
         });
+
+        // --- GAME VARIABLES ---
+        const initialSpeed = 2;
+        const maxSpeed = 10;    // Cap speed so it's not impossible
+        let gameSpeed = initialSpeed;
 
         let bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
         let obstacles = [];
@@ -286,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let gameLoop;
         let gameOver = false;
         let gameStarted = false;
+
         const bikeImage = new Image();
         bikeImage.src = 'https://res.cloudinary.com/duk0nthsi/image/upload/v1754954198/pixil-frame-0_1_xh7orx.png';
         const carImage = new Image();
@@ -358,6 +364,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Increase Game Speed gradually
+            if (gameSpeed < maxSpeed) {
+                gameSpeed += 0.0005; // Increase speed slightly every frame
+            }
+
             // Bike physics
             if (!bike.onGround) {
                 bike.dy += bike.gravity;
@@ -373,17 +384,35 @@ document.addEventListener('DOMContentLoaded', () => {
             // Obstacles
             frame++;
             if (frame > nextObstacleFrame) {
-                let type = Math.random() < 0.5 ? 'car' : 'truck';
-                if (type === 'car') {
-                    obstacles.push({ x: canvas.width, y: canvas.height - 20, width: 29, height: 15, type: 'car' });
-                } else {
-                    obstacles.push({ x: canvas.width, y: canvas.height - 25, width: 40, height: 20, type: 'truck' });
-                }
-                nextObstacleFrame = frame + Math.floor(Math.random() * 120) + 100; // Random time for next obstacle
+            let type = Math.random() < 0.5 ? 'car' : 'truck';
+            let obsWidth, obsHeight, obsY;
+            
+            if (type === 'car') {
+                obsWidth = 29; obsHeight = 15; obsY = canvas.height - 20;
+            } else {
+                obsWidth = 40; obsHeight = 20; obsY = canvas.height - 25;
             }
 
+            obstacles.push({ x: canvas.width, y: obsY, width: obsWidth, height: obsHeight, type: type });
+
+            // Calculate next spawn based on DISTANCE, not just time.
+            // As speed increases, we need fewer frames to cover the same distance.
+            // Min distance ensures strict playability (approx 200px + random buffer)
+            // Max distance reduces as speed increases to keep intensity up
+            
+            let minDistance = 300; // Minimum gap in pixels (needs to be jumpable)
+            let maxDistance = 700 + (Math.random() * 200); 
+            
+            let distanceGap = Math.floor(Math.random() * (maxDistance - minDistance + 1) + minDistance);
+            
+            // Convert distance to frames: Time = Distance / Speed
+            let framesToWait = distanceGap / gameSpeed;
+            
+            nextObstacleFrame = frame + framesToWait;
+        }
+
             obstacles.forEach((obstacle, index) => {
-                obstacle.x -= 2;
+                obstacle.x -= gameSpeed;
                 if (obstacle.x + obstacle.width < 0) {
                     obstacles.splice(index, 1);
                     score++;
@@ -400,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameOverTimestamp = Date.now();
                     if (score > highScore) {
                         highScore = score;
-                        localStorage.setItem('dino-high-score', highScore);
+                        localStorage.setItem('dino-high-score-new', highScore);
                         if (confirm(`Your new high score is ${highScore}! Do you want to record your score? David and Amanda might use your score for a fun activity at the wedding.`)) {
                             recordHighScore('DinoGame', highScore);
                         }
@@ -417,7 +446,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function restart() {
-            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.33, jumpPower: -10, onGround: true };
+            // Reset speed and physics on restart
+            gameSpeed = initialSpeed;
+            bike = { x: 10, y: canvas.height - 5, width: 37, height: 20, dy: 0, gravity: 0.4, jumpPower: -10, onGround: true };
             obstacles = [];
             score = 0;
             frame = 0;
