@@ -263,8 +263,8 @@ body {
 }
 
 .hero .hero-image {
-    width: clamp(112px, 20vw, 180px); /* Responsive image size */
-    height: clamp(112px, 20vw, 180px);
+    width: clamp(105px, 20vw, 180px); /* Responsive image size */
+    height: clamp(105px, 20vw, 180px);
     overflow: hidden;
     border: 2px solid #000;
     object-fit: cover; /* Prevents image from stretching */
