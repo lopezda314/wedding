@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        canvas.addEventListener('pointerdown', () => {
+        canvas.addEventListener('pointerdown', (e) => {
             if (!gameStarted) {
                 gameStarted = true;
                 update();
@@ -475,6 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 jump();
             }
+            e.preventDefault();
         });
 
         document.addEventListener('keydown', (e) => {
@@ -490,6 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     jump();
                 }
             }
+            e.preventDefault();
         });
 
         bikeImage.onload = () => {
