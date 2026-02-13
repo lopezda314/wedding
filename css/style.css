@@ -882,6 +882,12 @@ gmp-map {
     gap: 2rem;
 }
 
+.leaderboard-grid-static {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
 @media (max-width: 768px) {
     .leaderboard-grid {
         grid-template-columns: repeat(2, 1fr);
